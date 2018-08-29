@@ -16,12 +16,27 @@ public class DoubleMathKingGyro extends LinearOpMode{
     private DcMotor motor4 = null;
     private GyroSensor gyro = null;
     public ElapsedTime timer = new ElapsedTime();
+    double sum_error = 0;
+    double delta_error = 0;
+
+    private double PID(double y, double r, long deltat){
+        double u = 0;
+        double kp = 0;
+        double ki = 0;
+        double kd = 0;
+        double e = y - r;
+        delta_error = (e - delta_error)/deltat;
+        sum_error += delta_error;
+        u = kp*e + ki*sum_error + kd*delta_error;
+        //u(t) = K_p * e(t) + K_i * integral(0, t)(e(t')dt) + K_d * d/dt(e(t))
+        return u;
+    }
 
     private static double sigmoid(long time,
                                   boolean derivative,
                                   boolean integral,
                                   boolean inverse,
-                                  float a, float b, float c){
+                                  double a, double b, double c){
         //Sigmoid function is NOT log base (*)
         double fzero = Math.log((b/a)/(1-(b/a)));
         double y = a/(1+Math.exp(-c*time-fzero));
@@ -66,8 +81,6 @@ public class DoubleMathKingGyro extends LinearOpMode{
 
         //Array zero position
         int base = 0;
-
-        boolean press = false;
         long base_time = 0;
 
         //Wait until phone interrupt
@@ -93,7 +106,11 @@ public class DoubleMathKingGyro extends LinearOpMode{
             if (gamepad1.atRest()){
                 base_time = timer.nanoseconds();
             } else {
-                //double power = sigmoid((timer.nanoseconds()- base_time)/timer.SECOND_IN_NANO,false, false);
+                long deltat = (timer.nanoseconds()-base_time)/timer.SECOND_IN_NANO;
+
+                power = sigmoid((timer.nanoseconds()- base_time)/timer.SECOND_IN_NANO,
+                        false, false, false, 0.5, 0.1, 0);
+                PID(power, 0, deltat);
                 /*
                 The motors are paired and power based on being the x or y component
                 of the vector.
@@ -114,15 +131,15 @@ public class DoubleMathKingGyro extends LinearOpMode{
 
                 //x component vector
                 //motor 2
-                motors[(2+base_angle)%4].setPower(power*(-left_x+left_t-right_t));
+                motors[(2+base)%4].setPower(power*(-left_x+left_t-right_t));
                 //motor4
-                motors[(3+base_angle)%4].setPower(power*(left_x+left_t-right_t));
+                motors[(3+base)%4].setPower(power*(left_x+left_t-right_t));
 
                 //y vector
                 //motor1
-                motors[(0+base_angle)%4].setPower(power*(left_y+left_t-right_t));
+                motors[(0+base)%4].setPower(power*(left_y+left_t-right_t));
                 //motor3
-                motors[(1+base_angle)%4].setPower(power*(-left_y+left_t-right_t));
+                motors[(1+base)%4].setPower(power*(-left_y+left_t-right_t));
 
             }
 
