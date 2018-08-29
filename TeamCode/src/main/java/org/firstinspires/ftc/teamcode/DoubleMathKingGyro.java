@@ -21,9 +21,9 @@ public class DoubleMathKingGyro extends LinearOpMode{
 
     private double PID(double y, double r, long deltat){
         double u = 0;
-        double kp = 0;
-        double ki = 0;
-        double kd = 0;
+        double kp = 0.6;
+        double ki = 0.4;
+        double kd = 0.75;
         double e = y - r;
         delta_error = (e - delta_error)/deltat;
         sum_error += delta_error;
@@ -109,7 +109,7 @@ public class DoubleMathKingGyro extends LinearOpMode{
                 long deltat = (timer.nanoseconds()-base_time)/timer.SECOND_IN_NANO;
 
                 power = sigmoid((timer.nanoseconds()- base_time)/timer.SECOND_IN_NANO,
-                        false, false, false, 0.5, 0.1, 0);
+                        false, false, false, 0.5, 0.1, 2);
                 PID(power, 0, deltat);
                 /*
                 The motors are paired and power based on being the x or y component
