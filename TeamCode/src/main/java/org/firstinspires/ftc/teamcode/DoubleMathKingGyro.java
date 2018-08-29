@@ -18,24 +18,37 @@ public class DoubleMathKingGyro extends LinearOpMode{
     private GyroSensor gyro = null;
     public ElapsedTime timer = new ElapsedTime();
 
-    private static double sigmoid(long time, boolean derivative, boolean inverse){
+    private static double sigmoid(long time,
+                                  boolean derivative,
+                                  boolean integeral,
+                                  boolean inverse,
+                                  float a, float b, float c){
         //Sigmoid function is NOT log base (*)
-        double y = 1/(1+Math.exp(-time));
-        if (inverse){
-            //Derivative of logistic function
-            if (derivative){
-                y = Math.log(time/(1-time));
-            } else{
-                y = 1/(time-time*time);
+        double fzero = Math.log((b/a)/(1-(b/a)));
+        double y = a/(1+Math.exp(-c*time-fzero));
+        if (integral){
+            if (inverse){
+                y = (Math.log(Math.exp((c*x)/a)-1)-fzero)/c
+            } else {
+                y = a*Math.log(1+Math.exp(c*time+fzero))/c;
             }
         } else if (derivative){
-            y = y*(1-y);
+            if (inverse){
+               //Not accounted for
+            } else {
+                y = c*(y*(1-y/a));
+            }
+        } else {
+            if (inverse){
+                y = (Math.log(time/(a-x))-fzero)/c
+            }
         }
         return y;
     }
 
 
     public void runOpMode(){
+        float power = 0.1;
         //Telemetry initialized message
         telemetry.addData(  "Status",   "Initialized");
         telemetry.update();
@@ -81,7 +94,7 @@ public class DoubleMathKingGyro extends LinearOpMode{
             if (gamepad1.atRest()){
                 base_time = timer.nanoseconds();
             } else {
-                double power = sigmoid((timer.nanoseconds()- base_time)/timer.SECOND_IN_NANO,false, false);
+                //double power = sigmoid((timer.nanoseconds()- base_time)/timer.SECOND_IN_NANO,false, false);
                 /*
                 The motors are paired and power based on being the x or y component
                 of the vector.
