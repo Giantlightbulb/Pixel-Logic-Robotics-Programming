@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name="Double Math King Gyro", group="Basic OP Mode")
-@Disabled
 
 public class DoubleMathKingGyro extends LinearOpMode{
     //Initializes motor variables
@@ -20,7 +19,7 @@ public class DoubleMathKingGyro extends LinearOpMode{
 
     private static double sigmoid(long time,
                                   boolean derivative,
-                                  boolean integeral,
+                                  boolean integral,
                                   boolean inverse,
                                   float a, float b, float c){
         //Sigmoid function is NOT log base (*)
@@ -28,7 +27,7 @@ public class DoubleMathKingGyro extends LinearOpMode{
         double y = a/(1+Math.exp(-c*time-fzero));
         if (integral){
             if (inverse){
-                y = (Math.log(Math.exp((c*x)/a)-1)-fzero)/c
+                y = (Math.log(Math.exp((c*time)/a)-1)-fzero)/c;
             } else {
                 y = a*Math.log(1+Math.exp(c*time+fzero))/c;
             }
@@ -40,7 +39,7 @@ public class DoubleMathKingGyro extends LinearOpMode{
             }
         } else {
             if (inverse){
-                y = (Math.log(time/(a-x))-fzero)/c
+                y = (Math.log(time/(a-time))-fzero)/c;
             }
         }
         return y;
@@ -48,7 +47,7 @@ public class DoubleMathKingGyro extends LinearOpMode{
 
 
     public void runOpMode(){
-        float power = 0.1;
+        double power = 0.1;
         //Telemetry initialized message
         telemetry.addData(  "Status",   "Initialized");
         telemetry.update();
