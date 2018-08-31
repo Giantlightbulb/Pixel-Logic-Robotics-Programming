@@ -20,12 +20,12 @@ public class DoubleMathKingGyro extends LinearOpMode{
     private DcMotor motor2 = null;
     private DcMotor motor3 = null;
     private DcMotor motor4 = null;
-    IntegratingGyroscope gyro;
-    ModernRoboticsI2cGyro modernRoboticsI2cGyro;
+    private IntegratingGyroscope gyro;
+    private ModernRoboticsI2cGyro modernRoboticsI2cGyro;
 
-    public ElapsedTime timer = new ElapsedTime();
-    double sum_error = 0;
-    double delta_error = 0;
+    private ElapsedTime timer = new ElapsedTime();
+    private double sum_error = 0;
+    private double delta_error = 0;
 
     private double PID(double y, double r, long deltat){
         double u = 0;
@@ -103,17 +103,16 @@ public class DoubleMathKingGyro extends LinearOpMode{
 
         //Array zero position
         int base = 0;
-        long base_time = 0;
 
         //Wait until phone interrupt
         waitForStart();
         //While loop for robot operation
         while (opModeIsActive()){
-            //Gamepad's left stick x and y values
+            //Game Pad's left stick x and y values
             double left_y = -gamepad1.left_stick_y;
             double left_x = gamepad1.left_stick_x;
 
-            //Gamepad's left and right trigger values
+            //Game Pad's left and right trigger values
             double left_t = gamepad1.left_trigger;
             double right_t = gamepad1.right_trigger;
 
@@ -125,6 +124,7 @@ public class DoubleMathKingGyro extends LinearOpMode{
             }
 
             //Power variable (0,1), average drive train motor speed
+<<<<<<< HEAD
             //long deltat = (timer.nanoseconds()-base_time)/timer.SECOND_IN_NANO;
                 /*
                 power = sigmoid((timer.nanoseconds()- base_time)/timer.SECOND_IN_NANO,
@@ -148,6 +148,25 @@ public class DoubleMathKingGyro extends LinearOpMode{
                 All of this is multiplied by the power variable allowing fine power
                 control.
                 */
+=======
+            /*
+            The motors are paired and power based on being the x or y component
+            of the vector.
+
+            The - on the left_x or left_y ensures that the "paired" motors run in
+            tandem.
+
+            The difference left_t-right_t calculates the delta between the right
+            and left triggers. They are not multiplied as the motors are supposed
+            to run in a circle.
+
+            The sum of the left_(x/y) and the trigger difference allows for movement
+            on the x y plane with added rotation. Think drifting.
+
+            All of this is multiplied by the power variable allowing fine power
+            control.
+            */
+>>>>>>> d8d9fe77d5cc6789973333af6cb79cd43da59a51
 
             //x component vector
             //motor 2
@@ -157,7 +176,11 @@ public class DoubleMathKingGyro extends LinearOpMode{
 
             //y vector
             //motor1
+<<<<<<< HEAD
             motors[(0+base)%4].setPower(power*(left_y+left_t-right_t));
+=======
+            motors[(base)%4].setPower(power*(left_y+left_t-right_t));
+>>>>>>> d8d9fe77d5cc6789973333af6cb79cd43da59a51
             //motor3
             motors[(1+base)%4].setPower(power*(-left_y+left_t-right_t));
 
