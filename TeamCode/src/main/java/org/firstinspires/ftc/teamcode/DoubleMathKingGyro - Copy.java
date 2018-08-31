@@ -117,13 +117,38 @@ public class DoubleMathKingGyro extends LinearOpMode{
             double right_t = gamepad1.right_trigger;
 
             //Boolean for distance reset
-            double g_angle = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+            double g_angle = Math.abs(gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);
             if ((Math.abs(g_angle-base_angle)-90) > 0){
                 base_angle = g_angle;
                 base += 2;
             }
 
             //Power variable (0,1), average drive train motor speed
+<<<<<<< HEAD
+            //long deltat = (timer.nanoseconds()-base_time)/timer.SECOND_IN_NANO;
+                /*
+                power = sigmoid((timer.nanoseconds()- base_time)/timer.SECOND_IN_NANO,
+                        false, false, false, 0.5, 0.1, 2);
+                */
+            //PID(power, 0, deltat);
+                /*
+                The motors are paired and power based on being the x or y component
+                of the vector.
+
+                The - on the left_x or left_y ensures that the "paired" motors run in
+                tandem.
+
+                The difference left_t-right_t calculates the delta between the right
+                and left triggers. They are not multiplied as the motors are supposed
+                to run in a circle.
+
+                The sum of the left_(x/y) and the trigger difference allows for movement
+                on the x y plane with added rotation. Think drifting.
+
+                All of this is multiplied by the power variable allowing fine power
+                control.
+                */
+=======
             /*
             The motors are paired and power based on being the x or y component
             of the vector.
@@ -141,6 +166,7 @@ public class DoubleMathKingGyro extends LinearOpMode{
             All of this is multiplied by the power variable allowing fine power
             control.
             */
+>>>>>>> d8d9fe77d5cc6789973333af6cb79cd43da59a51
 
             //x component vector
             //motor 2
@@ -150,7 +176,11 @@ public class DoubleMathKingGyro extends LinearOpMode{
 
             //y vector
             //motor1
+<<<<<<< HEAD
+            motors[(0+base)%4].setPower(power*(left_y+left_t-right_t));
+=======
             motors[(base)%4].setPower(power*(left_y+left_t-right_t));
+>>>>>>> d8d9fe77d5cc6789973333af6cb79cd43da59a51
             //motor3
             motors[(1+base)%4].setPower(power*(-left_y+left_t-right_t));
 
