@@ -45,13 +45,23 @@ public class RegisterOpModes
     @OpModeRegistrar
     public static void registerMyOpModes(OpModeManager manager) {
 
+        //Operating Op-Modes
+        manager.register("VProjControl", VProjControl.class);
+
+        //Drive Op-Modes
         //manager.register("Drive Now",       DriveNow.class);
         //manager.register( "MFC", MFC.class);
         //manager.register( "TeamBoolean", TeamBoolean.class);
-        manager.register( "DoubleMathKing", DoubleMathKing.class);
-        manager.register("GyroTest",    GyroTest.class);
-        manager.register("TouchTest",   TouchTest.class);
-        manager.register("DoubleMathKingGyro", DoubleMathKingGyro.class);
+        //manager.register( "DoubleMathKing", DoubleMathKing.class);
+        //manager.register("DoubleMathKingGyro", DoubleMathKingGyro.class);
+
+        //Test Op-Modes
+        //manager.register("GyroTest",    GyroTest.class);
+        //manager.register("TouchTest",   TouchTest.class);
+
+
+
+
         // Un-comment any line to enable that sample.
         // Or add your own lines to register your Team opmodes.
 
