@@ -75,15 +75,15 @@ public class GyroTest extends LinearOpMode {
         telemetry.update();
 
         if (zAngle > 0) {
-            motor1.setPower(0.5);
-            motor2.setPower(0.5);
-            motor3.setPower(0.5);
-            motor4.setPower(0.5);
+            motor1.setPower(0.1);
+            motor2.setPower(0.1);
+            motor3.setPower(0.1);
+            motor4.setPower(0.1);
         }else if (zAngle < 0){
-            motor1.setPower(-0.5);
-            motor2.setPower(-0.5);
-            motor3.setPower(-0.5);
-            motor4.setPower(-0.5);
+            motor1.setPower(-0.1);
+            motor2.setPower(-0.1);
+            motor3.setPower(-0.1);
+            motor4.setPower(-0.1);
         } else if (zAngle == 0) {
             motor1.setPower(0);
             motor2.setPower(0);

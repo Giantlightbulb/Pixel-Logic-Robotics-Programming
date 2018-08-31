@@ -118,22 +118,19 @@ public class DoubleMathKingGyro extends LinearOpMode{
             double right_t = gamepad1.right_trigger;
 
             //Boolean for distance reset
-            double g_angle = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+            double g_angle = Math.abs(gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);
             if ((Math.abs(g_angle-base_angle)-90) > 0){
                 base_angle = g_angle;
                 base += 2;
             }
 
             //Power variable (0,1), average drive train motor speed
-            if (gamepad1.atRest()){
-                base_time = timer.nanoseconds();
-            } else {
-                //long deltat = (timer.nanoseconds()-base_time)/timer.SECOND_IN_NANO;
+            //long deltat = (timer.nanoseconds()-base_time)/timer.SECOND_IN_NANO;
                 /*
                 power = sigmoid((timer.nanoseconds()- base_time)/timer.SECOND_IN_NANO,
                         false, false, false, 0.5, 0.1, 2);
                 */
-                //PID(power, 0, deltat);
+            //PID(power, 0, deltat);
                 /*
                 The motors are paired and power based on being the x or y component
                 of the vector.
@@ -152,19 +149,17 @@ public class DoubleMathKingGyro extends LinearOpMode{
                 control.
                 */
 
-                //x component vector
-                //motor 2
-                motors[(2+base)%4].setPower(power*(-left_x+left_t-right_t));
-                //motor4
-                motors[(3+base)%4].setPower(power*(left_x+left_t-right_t));
+            //x component vector
+            //motor 2
+            motors[(2+base)%4].setPower(power*(-left_x+left_t-right_t));
+            //motor4
+            motors[(3+base)%4].setPower(power*(left_x+left_t-right_t));
 
-                //y vector
-                //motor1
-                motors[(0+base)%4].setPower(power*(left_y+left_t-right_t));
-                //motor3
-                motors[(1+base)%4].setPower(power*(-left_y+left_t-right_t));
-
-            }
+            //y vector
+            //motor1
+            motors[(0+base)%4].setPower(power*(left_y+left_t-right_t));
+            //motor3
+            motors[(1+base)%4].setPower(power*(-left_y+left_t-right_t));
 
             //More telemetry. Adds left stick values and trigger values
             telemetry.addLine()
