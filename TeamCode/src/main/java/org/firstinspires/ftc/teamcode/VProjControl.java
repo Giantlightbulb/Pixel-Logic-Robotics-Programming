@@ -68,22 +68,27 @@ public class VProjControl extends LinearOpMode{
 
             //Boolean for distance reset
             double g_angle = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
-            double compy = left_x*Math.cos(g_angle)+left_y*Math.sin(g_angle);
-            double compx = left_x*Math.sin(g_angle)+left_y*-Math.cos(g_angle);
+            double []Robot_y = {Math.cos(g_angle), Math.sin(g_angle)};
+            double []Robot_x = {Robot_y[1], -Robot_y[0]};
+            //Magnitude is already 1.
+            //double Robot_yMag = Math.sqrt(Robot_y[0]*Robot_y[0]+Robot_y[1]*Robot_y[1]);
+            //double Robot_xMag = Math.sqrt(Robot_x[0]*Robot_x[0]+Robot_x[1]*Robot_x[1]);;
+            double compy = (left_x*Robot_y[0]+left_y*Robot_y[1]);
+            double compx = (left_x*Robot_x[1]+left_y*Robot_x[1]);
 
             //Power variable (0,1), average drive train motor speed
 
             //x component vector
             //motor 2
-            motor2.setPower(power*(-left_x/compx+left_t-right_t));
+            motor2.setPower(power*(compx+left_t-right_t));
             //motor4
-            motor4.setPower(power*(left_x/compx+left_t-right_t));
+            motor4.setPower(power*(compx+left_t-right_t));
 
             //y vector
             //motor1
-            motor1.setPower(power*(left_y/compy+left_t-right_t));
+            motor1.setPower(power*(compy+left_t-right_t));
             //motor3
-            motor3.setPower(power*(-left_y/compy+left_t-right_t));
+            motor3.setPower(power*(compy+left_t-right_t));
 
             //More telemetry. Adds left stick values and trigger values
             telemetry.addLine()
