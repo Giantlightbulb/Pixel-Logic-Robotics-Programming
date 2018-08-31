@@ -2,9 +2,15 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
+//Gyro
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
+import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
+import com.qualcomm.robotcore.hardware.GyroSensor;
 
 @TeleOp(name="Double Math King Gyro", group="Basic OP Mode")
 
@@ -14,7 +20,9 @@ public class DoubleMathKingGyro extends LinearOpMode{
     private DcMotor motor2 = null;
     private DcMotor motor3 = null;
     private DcMotor motor4 = null;
-    private GyroSensor gyro = null;
+    IntegratingGyroscope gyro;
+    ModernRoboticsI2cGyro modernRoboticsI2cGyro;
+
     public ElapsedTime timer = new ElapsedTime();
     double sum_error = 0;
     double delta_error = 0;
@@ -72,12 +80,26 @@ public class DoubleMathKingGyro extends LinearOpMode{
         motor2 = hardwareMap.get(DcMotor.class,"motor2");
         motor3 = hardwareMap.get(DcMotor.class,"motor3");
         motor4 = hardwareMap.get(DcMotor.class,"motor4");
-        gyro = hardwareMap.get(GyroSensor.class,"gyro");
+        modernRoboticsI2cGyro = hardwareMap.get(ModernRoboticsI2cGyro.class, "gyro");
+        gyro = (IntegratingGyroscope)modernRoboticsI2cGyro;
+        telemetry.log().add("Gyro Calibrating. Do Not Move!");
+        modernRoboticsI2cGyro.calibrate();
+
+        timer.reset();
+        while (!isStopRequested() && modernRoboticsI2cGyro.isCalibrating()) {
+            telemetry.addData("calibrating", "%s", Math.round(timer.seconds()) % 2 == 0 ? "|.." : "..|");
+            telemetry.update();
+            sleep(50);
+        }
+
+        telemetry.log().clear(); telemetry.log().add("Gyro Calibrated. Press Start.");
+        telemetry.clear(); telemetry.update();
+
         //Motor List
         DcMotor[] motors = {motor1, motor3, motor2, motor4};
 
         //Base angle/Zero position angle
-        int base_angle = 0;
+        double base_angle = 0;
 
         //Array zero position
         int base = 0;
@@ -96,9 +118,9 @@ public class DoubleMathKingGyro extends LinearOpMode{
             double right_t = gamepad1.right_trigger;
 
             //Boolean for distance reset
-            double g_angle = gyro.getRotationFraction();
-            if ((Math.abs(g_angle)-base_angle-90) > 0){
-                base_angle += 90;
+            double g_angle = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+            if ((Math.abs(g_angle-base_angle)-90) > 0){
+                base_angle = g_angle;
                 base += 2;
             }
 
@@ -106,11 +128,12 @@ public class DoubleMathKingGyro extends LinearOpMode{
             if (gamepad1.atRest()){
                 base_time = timer.nanoseconds();
             } else {
-                long deltat = (timer.nanoseconds()-base_time)/timer.SECOND_IN_NANO;
-
+                //long deltat = (timer.nanoseconds()-base_time)/timer.SECOND_IN_NANO;
+                /*
                 power = sigmoid((timer.nanoseconds()- base_time)/timer.SECOND_IN_NANO,
                         false, false, false, 0.5, 0.1, 2);
-                PID(power, 0, deltat);
+                */
+                //PID(power, 0, deltat);
                 /*
                 The motors are paired and power based on being the x or y component
                 of the vector.
@@ -152,6 +175,8 @@ public class DoubleMathKingGyro extends LinearOpMode{
                     .addData("right trigger", right_t);
             telemetry.addLine()
                     .addData("angle", g_angle);
+            telemetry.addLine()
+                    .addData("List position", base);
 
             telemetry.update();
         }
