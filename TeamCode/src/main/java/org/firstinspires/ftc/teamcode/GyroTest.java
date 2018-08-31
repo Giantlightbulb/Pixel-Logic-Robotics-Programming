@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.Hardware;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -18,11 +19,21 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 public class GyroTest extends LinearOpMode {
     IntegratingGyroscope gyro;
     ModernRoboticsI2cGyro modernRoboticsI2cGyro;
+
     DcMotor motor1 = null;
+    DcMotor motor2 = null;
+    DcMotor motor3 = null;
+    DcMotor motor4 = null;
 
     ElapsedTime timer = new ElapsedTime();
 
     public void runOpMode(){
+
+        motor1 = hardwareMap.get(DcMotor.class,     "motor1");
+        motor2 = hardwareMap.get(DcMotor.class,     "motor2");
+        motor3 = hardwareMap.get(DcMotor.class,     "motor3");
+        motor4 = hardwareMap.get(DcMotor.class,     "motor4");
+
         boolean lastResetState = false;
         boolean curResetState  = false;
 
@@ -58,13 +69,28 @@ public class GyroTest extends LinearOpMode {
         //telemetry.log().add("X = " + rawX);
         //telemetry.log().add("Y = " + rawY);
         //telemetry.log().add("Z = " + rawZ);
-        telemetry.log().add("Angular Orientation " + zAngle);
+        telemetry.log().add("Angular Orientation: " + zAngle);
         sleep(100);
         telemetry.clear();
         telemetry.update();
 
         if (zAngle > 0) {
             motor1.setPower(0.5);
+            motor2.setPower(0.5);
+            motor3.setPower(0.5);
+            motor4.setPower(0.5);
+        }else if (zAngle < 0){
+            motor1.setPower(-0.5);
+            motor2.setPower(-0.5);
+            motor3.setPower(-0.5);
+            motor4.setPower(-0.5);
+        } else if (zAngle == 0) {
+            motor1.setPower(0);
+            motor2.setPower(0);
+            motor3.setPower(0);
+            motor4.setPower(0);
+            telemetry.log().add("Success");
+
 
 
         }
