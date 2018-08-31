@@ -124,7 +124,6 @@ public class DoubleMathKingGyro extends LinearOpMode{
             }
 
             //Power variable (0,1), average drive train motor speed
-<<<<<<< HEAD
             //long deltat = (timer.nanoseconds()-base_time)/timer.SECOND_IN_NANO;
                 /*
                 power = sigmoid((timer.nanoseconds()- base_time)/timer.SECOND_IN_NANO,
@@ -148,7 +147,6 @@ public class DoubleMathKingGyro extends LinearOpMode{
                 All of this is multiplied by the power variable allowing fine power
                 control.
                 */
-=======
             /*
             The motors are paired and power based on being the x or y component
             of the vector.
@@ -166,7 +164,6 @@ public class DoubleMathKingGyro extends LinearOpMode{
             All of this is multiplied by the power variable allowing fine power
             control.
             */
->>>>>>> d8d9fe77d5cc6789973333af6cb79cd43da59a51
 
             //x component vector
             //motor 2
@@ -176,11 +173,8 @@ public class DoubleMathKingGyro extends LinearOpMode{
 
             //y vector
             //motor1
-<<<<<<< HEAD
             motors[(0+base)%4].setPower(power*(left_y+left_t-right_t));
-=======
             motors[(base)%4].setPower(power*(left_y+left_t-right_t));
->>>>>>> d8d9fe77d5cc6789973333af6cb79cd43da59a51
             //motor3
             motors[(1+base)%4].setPower(power*(-left_y+left_t-right_t));
 
