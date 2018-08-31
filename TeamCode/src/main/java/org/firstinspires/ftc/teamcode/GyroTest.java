@@ -2,17 +2,23 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+
 @TeleOp(name="Gyro Test", group="Sensor Test")
-@Disabled
+
 
 public class GyroTest extends LinearOpMode {
     IntegratingGyroscope gyro;
     ModernRoboticsI2cGyro modernRoboticsI2cGyro;
+    DcMotor motor1 = null;
 
     ElapsedTime timer = new ElapsedTime();
 
@@ -43,21 +49,27 @@ public class GyroTest extends LinearOpMode {
 
     while (opModeIsActive()){
 
+        float zAngle = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+
         int rawX = modernRoboticsI2cGyro.rawX();
         int rawY = modernRoboticsI2cGyro.rawY();
         int rawZ = modernRoboticsI2cGyro.rawZ();
 
-        telemetry.log().add("X = " + rawX);
-        telemetry.log().add("Y = " + rawY);
-        telemetry.log().add("Z = " + rawZ);
-        sleep(3000);
+        //telemetry.log().add("X = " + rawX);
+        //telemetry.log().add("Y = " + rawY);
+        //telemetry.log().add("Z = " + rawZ);
+        telemetry.log().add("Angular Orientation " + zAngle);
+        sleep(100);
         telemetry.clear();
         telemetry.update();
 
-        if ((gamepad1.a) && (gamepad1.b)){
-            telemetry.clear();
-            sleep(5000);
+        if (zAngle > 0) {
+            motor1.setPower(0.5);
+
+
         }
+
+
 
 
 
