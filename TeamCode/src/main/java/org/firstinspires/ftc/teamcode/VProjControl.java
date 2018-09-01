@@ -51,44 +51,45 @@ public class VProjControl extends LinearOpMode{
         telemetry.log().clear(); telemetry.log().add("Gyro Calibrated. Press Start.");
         telemetry.clear(); telemetry.update();
 
-
+        //Variable instantiation
+        double left_y, left_x;
+        double left_t, right_t;
+        double g_angle;
+        double abs_x, abs_y;
         //Wait until phone interrupt
         waitForStart();
         //While loop for robot operation
+
         while (opModeIsActive()){
             //Gamepad's left stick x and y values
-            double left_y = -gamepad1.left_stick_y;
-            double left_x = gamepad1.left_stick_x;
+            left_y = -gamepad1.left_stick_y;
+            left_x = gamepad1.left_stick_x;
 
             //Gamepad's left and right trigger values
-            double left_t = gamepad1.left_trigger;
-            double right_t = gamepad1.right_trigger;
+            left_t = gamepad1.left_trigger;
+            right_t = gamepad1.right_trigger;
 
             //Robot Heading Unit Vector
 
             //Boolean for distance reset
-            double g_angle = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
-            double []Robot_y = {Math.cos(g_angle), Math.sin(g_angle)};
-            double []Robot_x = {Robot_y[1], -Robot_y[0]};
-            //Magnitude is already 1.
-            //double Robot_yMag = Math.sqrt(Robot_y[0]*Robot_y[0]+Robot_y[1]*Robot_y[1]);
-            //double Robot_xMag = Math.sqrt(Robot_x[0]*Robot_x[0]+Robot_x[1]*Robot_x[1]);;
-            double compy = (left_x*Robot_y[0]+left_y*Robot_y[1]);
-            double compx = (left_x*Robot_x[1]+left_y*Robot_x[1]);
+            g_angle = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+            g_angle *= Math.PI/180;
+            abs_x = (left_x*Math.cos(g_angle)-left_y*Math.sin(g_angle));
+            abs_y = (left_x*Math.sin(g_angle)+left_y*Math.cos(g_angle));
 
             //Power variable (0,1), average drive train motor speed
 
             //x component vector
             //motor 2
-            motor2.setPower(power*(compx+left_t-right_t));
+            motor2.setPower(power*(abs_x+left_t-right_t));
             //motor4
-            motor4.setPower(power*(compx+left_t-right_t));
+            motor4.setPower(power*(abs_x+left_t-right_t));
 
             //y vector
             //motor1
-            motor1.setPower(power*(compy+left_t-right_t));
+            motor1.setPower(power*(abs_y+left_t-right_t));
             //motor3
-            motor3.setPower(power*(compy+left_t-right_t));
+            motor3.setPower(power*(abs_y+left_t-right_t));
 
             //More telemetry. Adds left stick values and trigger values
             telemetry.addLine()
