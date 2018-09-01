@@ -12,7 +12,7 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 
-@TeleOp(name="Double Math King Gyro", group="Basic OP Mode")
+//@TeleOp(name="Double Math King Gyro", group="Basic OP Mode")
 
 public class DoubleMathKingGyro extends LinearOpMode{
     //Initializes motor variables
