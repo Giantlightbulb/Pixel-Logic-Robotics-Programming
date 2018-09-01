@@ -24,7 +24,7 @@ public class VProjControl extends LinearOpMode{
 
     public ElapsedTime timer = new ElapsedTime();
     public void runOpMode(){
-        double power = 0.1;
+        double power = 0.2;
         //Telemetry initialized message
         telemetry.addData(  "Status",   "Initialized");
         telemetry.update();
@@ -74,14 +74,14 @@ public class VProjControl extends LinearOpMode{
             //Boolean for distance reset
             g_angle = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
             g_angle *= Math.PI/180;
-            abs_x = (left_x*Math.cos(g_angle)-left_y*Math.sin(g_angle));
-            abs_y = (left_x*Math.sin(g_angle)+left_y*Math.cos(g_angle));
+            abs_x = (left_x*Math.cos(-g_angle)-left_y*Math.sin(-g_angle));
+            abs_y = (left_x*Math.sin(-g_angle)+left_y*Math.cos(-g_angle));
 
             //Power variable (0,1), average drive train motor speed
 
             //x component vector
             //motor 2
-            motor2.setPower(power*(abs_x+left_t-right_t));
+            motor2.setPower(power*(-abs_x+left_t-right_t));
             //motor4
             motor4.setPower(power*(abs_x+left_t-right_t));
 
@@ -89,15 +89,16 @@ public class VProjControl extends LinearOpMode{
             //motor1
             motor1.setPower(power*(abs_y+left_t-right_t));
             //motor3
-            motor3.setPower(power*(abs_y+left_t-right_t));
+            motor3.setPower(power*(-abs_y+left_t-right_t));
 
             //More telemetry. Adds left stick values and trigger values
             telemetry.addLine()
                     .addData("right_y", left_y)
                     .addData("left_x", left_x );
             telemetry.addLine()
-                    .addData("left trigger", left_t)
-                    .addData("right trigger", right_t);
+                    .addData("Motor 1+3", abs_y);
+            telemetry.addLine()
+                    .addData("Motor 2+4", abs_x);
             telemetry.addLine()
                     .addData("angle", g_angle);
 

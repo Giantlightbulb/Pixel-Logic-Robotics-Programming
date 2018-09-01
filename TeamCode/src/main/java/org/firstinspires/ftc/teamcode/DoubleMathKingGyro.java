@@ -173,7 +173,6 @@ public class DoubleMathKingGyro extends LinearOpMode{
 
             //y vector
             //motor1
-            motors[(0+base)%4].setPower(power*(left_y+left_t-right_t));
             motors[(base)%4].setPower(power*(left_y+left_t-right_t));
             //motor3
             motors[(1+base)%4].setPower(power*(-left_y+left_t-right_t));
