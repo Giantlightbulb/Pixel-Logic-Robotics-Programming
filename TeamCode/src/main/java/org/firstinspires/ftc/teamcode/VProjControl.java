@@ -8,8 +8,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+
+//Sensors
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
+import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 
 @TeleOp(name="Double Math King Gyro", group="Basic OP Mode")
 
@@ -19,10 +22,43 @@ public class VProjControl extends LinearOpMode{
     private DcMotor motor2;
     private DcMotor motor3;
     private DcMotor motor4;
-    IntegratingGyroscope gyro;
-    ModernRoboticsI2cGyro modernRoboticsI2cGyro;
+    private IntegratingGyroscope gyro;
+    private ModernRoboticsI2cGyro modernRoboticsI2cGyro;
+    private OpticalDistanceSensor ods;
+
 
     public ElapsedTime timer = new ElapsedTime();
+
+    private static double sigmoid(long time,
+                                  boolean derivative,
+                                  boolean integral,
+                                  boolean inverse,
+                                  double a,
+                                  double b,
+                                  double c){
+        //Sigmoid function is NOT log base (*)
+        double fzero = Math.log((b/a)/(1-(b/a)));
+        double y = a/(1+Math.exp(-c*time-fzero));
+        if (integral){
+            if (inverse){
+                y = (Math.log(Math.exp((c*time)/a)-1)-fzero)/c;
+            } else {
+                y = a*Math.log(1+Math.exp(c*time+fzero))/c;
+            }
+        } else if (derivative){
+            if (inverse){
+                //Not accounted for
+            } else {
+                y = c*(y*(1-y/a));
+            }
+        } else {
+            if (inverse){
+                y = (Math.log(time/(a-time))-fzero)/c;
+            }
+        }
+        return y;
+    }
+
     public void runOpMode(){
         double power = 0.2;
         //Telemetry initialized message
@@ -38,10 +74,12 @@ public class VProjControl extends LinearOpMode{
         modernRoboticsI2cGyro = hardwareMap.get(ModernRoboticsI2cGyro.class, "gyro");
         gyro = (IntegratingGyroscope)modernRoboticsI2cGyro;
 
+        ods = hardwareMap.opticalDistanceSensor.get("ods");
+        ods.enableLed(true);
+
         telemetry.log().add("Gyro Calibrating. Do Not Move!");
         modernRoboticsI2cGyro.calibrate();
 
-        timer.reset();
         while (!isStopRequested() && modernRoboticsI2cGyro.isCalibrating()) {
             telemetry.addData("calibrating", "%s", Math.round(timer.seconds()) % 2 == 0 ? "|.." : "..|");
             telemetry.update();
@@ -56,11 +94,16 @@ public class VProjControl extends LinearOpMode{
         double left_t, right_t;
         double g_angle;
         double abs_x, abs_y;
+        long time_base = 0;
+
         //Wait until phone interrupt
         waitForStart();
+        timer.reset();
         //While loop for robot operation
-
         while (opModeIsActive()){
+            //long delta_t = (time_base - timer.nanoseconds())/timer.SECOND_IN_NANO;
+            //sigmoid(delta_t, false, false,false, 0.5, 0.1, 2);
+
             //Gamepad's left stick x and y values
             left_y = -gamepad1.left_stick_y;
             left_x = gamepad1.left_stick_x;
@@ -92,6 +135,7 @@ public class VProjControl extends LinearOpMode{
             motor3.setPower(power*(-abs_y+left_t-right_t));
 
             //More telemetry. Adds left stick values and trigger values
+            /*
             telemetry.addLine()
                     .addData("right_y", left_y)
                     .addData("left_x", left_x );
@@ -101,6 +145,18 @@ public class VProjControl extends LinearOpMode{
                     .addData("Motor 2+4", abs_x);
             telemetry.addLine()
                     .addData("angle", g_angle);
+            */
+            telemetry.addLine()
+                    .addData("distance", ods.getRawLightDetected());
+            telemetry.addLine()
+                    .addData("distance normal", ods.getLightDetected());
+            telemetry.addLine()
+                    .addData("ods", ods.status());
+            //telemetry.addLine().addData("Delta_t", delta_t);
+
+
+
+
 
             telemetry.update();
         }
