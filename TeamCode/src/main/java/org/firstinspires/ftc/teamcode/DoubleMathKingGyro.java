@@ -76,12 +76,17 @@ public class DoubleMathKingGyro extends LinearOpMode{
         telemetry.update();
 
         //Hardware definitions
+        //Motors
         motor1 = hardwareMap.get(DcMotor.class,"motor1");
         motor2 = hardwareMap.get(DcMotor.class,"motor2");
         motor3 = hardwareMap.get(DcMotor.class,"motor3");
         motor4 = hardwareMap.get(DcMotor.class,"motor4");
+        //Gyro
         modernRoboticsI2cGyro = hardwareMap.get(ModernRoboticsI2cGyro.class, "gyro");
         gyro = (IntegratingGyroscope)modernRoboticsI2cGyro;
+
+
+
         telemetry.log().add("Gyro Calibrating. Do Not Move!");
         modernRoboticsI2cGyro.calibrate();
 

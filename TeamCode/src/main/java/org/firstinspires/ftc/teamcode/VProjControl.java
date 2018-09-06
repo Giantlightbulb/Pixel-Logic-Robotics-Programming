@@ -1,18 +1,24 @@
 package org.firstinspires.ftc.teamcode;
 
+//TeleOp and Hardware
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
-//Gyro
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
+//Sensors
+//   Gyro
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
+import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
+//  ODS
+import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
+
+//Gyro References
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
-//Sensors
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
-import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
-import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 
 @TeleOp(name="Double Math King Gyro", group="Basic OP Mode")
 
@@ -22,42 +28,15 @@ public class VProjControl extends LinearOpMode{
     private DcMotor motor2;
     private DcMotor motor3;
     private DcMotor motor4;
+    //Initializes Sensors
     private IntegratingGyroscope gyro;
     private ModernRoboticsI2cGyro modernRoboticsI2cGyro;
+
     private OpticalDistanceSensor ods;
 
 
     public ElapsedTime timer = new ElapsedTime();
 
-    private static double sigmoid(long time,
-                                  boolean derivative,
-                                  boolean integral,
-                                  boolean inverse,
-                                  double a,
-                                  double b,
-                                  double c){
-        //Sigmoid function is NOT log base (*)
-        double fzero = Math.log((b/a)/(1-(b/a)));
-        double y = a/(1+Math.exp(-c*time-fzero));
-        if (integral){
-            if (inverse){
-                y = (Math.log(Math.exp((c*time)/a)-1)-fzero)/c;
-            } else {
-                y = a*Math.log(1+Math.exp(c*time+fzero))/c;
-            }
-        } else if (derivative){
-            if (inverse){
-                //Not accounted for
-            } else {
-                y = c*(y*(1-y/a));
-            }
-        } else {
-            if (inverse){
-                y = (Math.log(time/(a-time))-fzero)/c;
-            }
-        }
-        return y;
-    }
 
     public void runOpMode(){
         double power = 0.2;
@@ -94,16 +73,12 @@ public class VProjControl extends LinearOpMode{
         double left_t, right_t;
         double g_angle;
         double abs_x, abs_y;
-        long time_base = 0;
 
         //Wait until phone interrupt
         waitForStart();
         timer.reset();
         //While loop for robot operation
         while (opModeIsActive()){
-            //long delta_t = (time_base - timer.nanoseconds())/timer.SECOND_IN_NANO;
-            //sigmoid(delta_t, false, false,false, 0.5, 0.1, 2);
-
             //Gamepad's left stick x and y values
             left_y = -gamepad1.left_stick_y;
             left_x = gamepad1.left_stick_x;

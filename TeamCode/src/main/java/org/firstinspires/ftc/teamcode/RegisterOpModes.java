@@ -47,6 +47,7 @@ public class RegisterOpModes
 
         //Operating Op-Modes
         manager.register("VProjControl", VProjControl.class);
+        manager.register("AbsoluteControlColor", AbsoluteControlColor.class);
 
         //Drive Op-Modes
         //manager.register("Drive Now",       DriveNow.class);
