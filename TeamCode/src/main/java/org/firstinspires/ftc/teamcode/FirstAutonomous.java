@@ -13,25 +13,7 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
 @Autonomous(name="Pushbot: Auto Drive By Encoder", group="Pushbot")
 @Disabled
-public class FirstAutonomous extends LinearOpMode{
-
-    public void runOpMode(){
-
-        waitForStart();
-
-    }
-    private void position(double x, double y, double time){
-
-    }
-    private void distance(){
-
-    }
-    private void time(){
-
-    }
-    private void velocity(){
-
-    }
-
+public class FirstAutonomous{
+    AutonomousMethods auMe = new AutonomousMethods();
 
 }
