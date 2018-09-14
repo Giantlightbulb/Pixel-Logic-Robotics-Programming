@@ -79,9 +79,6 @@ public class AbsoluteChaosControl extends LinearOpMode{
         float[] hsvValues = new float[3];
         final float values[] = hsvValues;
 
-        boolean bPrevState = false;
-        boolean bCurrState = false;
-
         //Telemetry initialized message
         telemetry.addData(  "Status",   "Initialized");
         telemetry.update();
@@ -122,8 +119,9 @@ public class AbsoluteChaosControl extends LinearOpMode{
         double left_t, right_t;
         double g_angle;
         double abs_x, abs_y;
-        long time_base = 0;
-
+        int iteration = 0;
+        boolean bPrevState = false;
+        boolean bCurrState;
         //Wait until phone interrupt
         waitForStart();
         timer.reset();
@@ -131,7 +129,9 @@ public class AbsoluteChaosControl extends LinearOpMode{
         while (opModeIsActive()){
             //long delta_t = (time_base - timer.nanoseconds())/timer.SECOND_IN_NANO;
             //sigmoid(delta_t, false, false,false, 0.5, 0.1, 2);
+            iteration ++;
             bCurrState = gamepad1.x;
+            //Toggle for light, this is the general toggle setup.
             if (bCurrState != bPrevState) {
                 if (bCurrState) {
                     if (colorSensor instanceof SwitchableLight) {
@@ -141,8 +141,6 @@ public class AbsoluteChaosControl extends LinearOpMode{
                 }
             }
             bPrevState = bCurrState;
-
-            NormalizedRGBA colors = colorSensor.getNormalizedColors();
 
             //Gamepad's left stick x and y values
             left_y = -gamepad1.left_stick_y;
@@ -186,6 +184,7 @@ public class AbsoluteChaosControl extends LinearOpMode{
             telemetry.addLine()
                     .addData("angle", g_angle);
             */
+            NormalizedRGBA colors = colorSensor.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
             telemetry.addLine()
                     .addData("H", "%.3f", hsvValues[0])
