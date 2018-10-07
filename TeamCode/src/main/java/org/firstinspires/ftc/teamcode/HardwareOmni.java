@@ -33,11 +33,15 @@ public class HardwareOmni {
     public ElapsedTime timer  = new ElapsedTime();
 
     //Initializes hardware variables
+    //Drive train motors
     public DcMotor motor1;
     public DcMotor motor2;
     public DcMotor motor3;
     public DcMotor motor4;
+    //Vacuum motor
     public DcMotor motor5;
+    //Telescoping lift motor
+    public DcMotor motor6;
 
     //Initializes Sensors
     //  Gyro
@@ -67,11 +71,15 @@ public class HardwareOmni {
 
 
         //Hardware definitions
+        //Drivetrain motors
         motor1 = hwMap.get(DcMotor.class,"motor1");
         motor2 = hwMap.get(DcMotor.class,"motor2");
         motor3 = hwMap.get(DcMotor.class,"motor3");
         motor4 = hwMap.get(DcMotor.class,"motor4");
+        //Vacuum motor
         motor5 = hwMap.get(DcMotor.class, "motor5");
+        //Telescoping lift motor
+        motor6 = hwMap.get(DcMotor.class, "motor6");
         //  Sensors
         //  Gyro
         modernRoboticsI2cGyro = hwMap.get(ModernRoboticsI2cGyro.class, "gyro");
