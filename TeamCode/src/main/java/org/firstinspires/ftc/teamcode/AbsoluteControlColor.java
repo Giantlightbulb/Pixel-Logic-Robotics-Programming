@@ -48,6 +48,7 @@ public class AbsoluteControlColor extends LinearOpMode{
 
         boolean bPrevState = false;
         boolean bCurrState = false;
+        boolean aButton;
 
         //Telemetry initialized message
         telemetry.log().add("Gyro Calibrating. Do Not Move!");
@@ -81,6 +82,8 @@ public class AbsoluteControlColor extends LinearOpMode{
         //While loop for robot operation
         while (opModeIsActive()){
             bCurrState = gamepad1.x;
+            aButton = gamepad1.a;
+
             if (bCurrState != bPrevState) {
               if (bCurrState) {
                 if (robot.colorSensor instanceof SwitchableLight) {
@@ -89,6 +92,8 @@ public class AbsoluteControlColor extends LinearOpMode{
                 }
               }
             }
+
+            robot.motor5.setPower(gamepad1.right_stick_x);
             bPrevState = bCurrState;
 
             robot.colors = robot.colorSensor.getNormalizedColors();
@@ -161,15 +166,16 @@ public class AbsoluteControlColor extends LinearOpMode{
                             .addData("r", "%02x", Color.red(color))
                             .addData("g", "%02x", Color.green(color))
                             .addData("b", "%02x", Color.blue(color));
-            telemetry.update();
             // convert the RGB values to HSV values.
             Color.RGBToHSV(Color.red(color), Color.green(color), Color.blue(color), hsvValues);
             telemetry.addLine()
                     .addData("distance", robot.ods.getRawLightDetected());
             telemetry.addLine().addData("distance normal", robot.ods.getLightDetected());
             telemetry.addLine()
-                    .addData("ods", robot.ods.status());
+                    .addData("A:", aButton);
             //telemetry.addLine().addData("Delta_t", delta_t);
+
+            telemetry.update();
             robot.relativeLayout.post(new Runnable() {
               public void run() {
                 robot.relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));

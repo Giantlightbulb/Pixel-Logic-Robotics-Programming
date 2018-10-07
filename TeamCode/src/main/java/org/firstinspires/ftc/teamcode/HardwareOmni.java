@@ -37,6 +37,7 @@ public class HardwareOmni {
     public DcMotor motor2;
     public DcMotor motor3;
     public DcMotor motor4;
+    public DcMotor motor5;
 
     //Initializes Sensors
     //  Gyro
@@ -70,6 +71,7 @@ public class HardwareOmni {
         motor2 = hwMap.get(DcMotor.class,"motor2");
         motor3 = hwMap.get(DcMotor.class,"motor3");
         motor4 = hwMap.get(DcMotor.class,"motor4");
+        motor5 = hwMap.get(DcMotor.class, "motor5");
         //  Sensors
         //  Gyro
         modernRoboticsI2cGyro = hwMap.get(ModernRoboticsI2cGyro.class, "gyro");

@@ -14,6 +14,5 @@ import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
 @Autonomous(name="Pushbot: Auto Drive By Encoder", group="Pushbot")
 @Disabled
 public class FirstAutonomous{
-    AutonomousMethods auMe = new AutonomousMethods();
 
 }
