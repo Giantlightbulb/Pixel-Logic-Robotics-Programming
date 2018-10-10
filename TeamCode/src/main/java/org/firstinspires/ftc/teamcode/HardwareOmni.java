@@ -60,8 +60,7 @@ public class HardwareOmni {
     View relativeLayout;
 
     //Constructor (Currently empty)
-    public HardwareOmni(){
-
+    public HardwareOmni() {
     }
 
     /* Initialize standard Hardware interfaces */
