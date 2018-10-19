@@ -49,6 +49,9 @@ public class AbsoluteControlColor extends LinearOpMode{
         boolean bPrevState = false;
         boolean bCurrState = false;
         boolean aButton;
+        boolean dPadUp;
+        boolean dPadDown;
+
 
         //Telemetry initialized message
         telemetry.log().add("Gyro Calibrating. Do Not Move!");
@@ -84,6 +87,7 @@ public class AbsoluteControlColor extends LinearOpMode{
             bCurrState = gamepad1.x;
             aButton = gamepad1.a;
 
+
             if (bCurrState != bPrevState) {
               if (bCurrState) {
                 if (robot.colorSensor instanceof SwitchableLight) {
@@ -93,7 +97,7 @@ public class AbsoluteControlColor extends LinearOpMode{
               }
             }
 
-            robot.motor5.setPower(gamepad1.right_stick_x);
+            robot.motor5.setPower(gamepad1.right_stick_y);
             bPrevState = bCurrState;
 
             robot.colors = robot.colorSensor.getNormalizedColors();

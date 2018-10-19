@@ -1,3 +1,4 @@
+//Defines various methods to for calculation
 package org.firstinspires.ftc.teamcode;
 
 public class MethodMaster {
