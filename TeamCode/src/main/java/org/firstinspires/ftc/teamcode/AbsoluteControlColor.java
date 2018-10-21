@@ -76,7 +76,10 @@ public class AbsoluteControlColor extends LinearOpMode{
         double left_t, right_t;
         double g_angle;
         double abs_x, abs_y;
-        long time_base = 0;
+        double rSum = 0;
+        double gSum = 0;
+        double bSum = 0;
+        int step = 1;
 
         //Wait until phone interrupt
         waitForStart();
@@ -164,12 +167,14 @@ public class AbsoluteControlColor extends LinearOpMode{
             robot.colors.red   /= max;
             robot.colors.green /= max;
             robot.colors.blue  /= max;
+
             color = robot.colors.toColor();
             telemetry.addLine("normalized color:  ")
                             .addData("a", "%02x", Color.alpha(color))
                             .addData("r", "%02x", Color.red(color))
                             .addData("g", "%02x", Color.green(color))
                             .addData("b", "%02x", Color.blue(color));
+
             // convert the RGB values to HSV values.
             Color.RGBToHSV(Color.red(color), Color.green(color), Color.blue(color), hsvValues);
             telemetry.addLine()
@@ -180,6 +185,9 @@ public class AbsoluteControlColor extends LinearOpMode{
             //telemetry.addLine().addData("Delta_t", delta_t);
 
             telemetry.update();
+
+            step ++;
+
             robot.relativeLayout.post(new Runnable() {
               public void run() {
                 robot.relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
