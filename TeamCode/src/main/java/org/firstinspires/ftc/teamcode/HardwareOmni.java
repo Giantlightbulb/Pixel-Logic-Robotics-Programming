@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 //TeleOp and Hardware
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -15,6 +16,12 @@ import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
+
+//Range Sensor
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
+
+//Compass Sensor
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cCompassSensor;
 
 //Gyro References
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -38,16 +45,27 @@ public class HardwareOmni {
     public DcMotor motor2;
     public DcMotor motor3;
     public DcMotor motor4;
-    //Vacuum motor
+
+    //Extension Motor
     public DcMotor motor5;
     //Telescoping lift motor
     public DcMotor motor6;
+
+    //Chariot Motors
+    //Arm
+    public DcMotor motor7;
+    //Whipper
+    public DcMotor motor8;
+
+    //Servos
+    public Servo servo1;
 
     //Initializes Sensors
     //  Gyro
     public IntegratingGyroscope gyro;
     public ModernRoboticsI2cGyro modernRoboticsI2cGyro;
 
+    //Axes
     public AxesReference aRefInt = AxesReference.INTRINSIC;
     public AxesOrder aOrderXYZ = AxesOrder.XYZ;
     public AngleUnit aUnit = AngleUnit.DEGREES;
@@ -56,6 +74,10 @@ public class HardwareOmni {
     public OpticalDistanceSensor ods;
     //  Color Sensor
     NormalizedColorSensor colorSensor;
+    //  Compass Sensor
+    ModernRoboticsI2cCompassSensor compass;
+    //  Range Sensor
+    ModernRoboticsI2cRangeSensor rangeSensor;
     //  Initializes layout
     View relativeLayout;
 
@@ -79,6 +101,13 @@ public class HardwareOmni {
         motor5 = hwMap.get(DcMotor.class, "motor5");
         //Telescoping lift motor
         motor6 = hwMap.get(DcMotor.class, "motor6");
+        //Chariot Motors
+        motor7 = hwMap.get(DcMotor.class, "motor7");
+        motor8 = hwMap.get(DcMotor.class, "motor8");
+
+        //Servos
+        servo1 = hwMap.get(Servo.class, "servo1");
+
         //  Sensors
         //  Gyro
         modernRoboticsI2cGyro = hwMap.get(ModernRoboticsI2cGyro.class, "gyro");
@@ -92,6 +121,10 @@ public class HardwareOmni {
         if (colorSensor instanceof SwitchableLight) {
             ((SwitchableLight)colorSensor).enableLight(true);
         }
+        //  Compass
+        compass = hwMap.get(ModernRoboticsI2cCompassSensor.class, "compass");
+        //  Range Sensor
+        rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "range");
 
         //  Application Color
         int relativeLayoutId = hwMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hwMap.appContext.getPackageName());
@@ -102,6 +135,10 @@ public class HardwareOmni {
         motor2.setPower(0);
         motor3.setPower(0);
         motor4.setPower(0);
+        motor5.setPower(0);
+        motor6.setPower(0);
+        motor7.setPower(0);
+        motor8.setPower(0);
 
     }
 

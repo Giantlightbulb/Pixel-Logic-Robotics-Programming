@@ -21,7 +21,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 
-@TeleOp(name="Double Math King Gyro", group="Basic OP Mode")
+@TeleOp(name="VProjControl", group="Basic OP Mode")
 
 public class VProjControl extends LinearOpMode{
     //Initializes hardware
