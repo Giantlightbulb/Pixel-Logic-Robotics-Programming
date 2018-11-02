@@ -16,65 +16,107 @@ public class FinalOpModeV1 extends LinearOpMode{
         robot.init(hardwareMap);
         double power = 0.2;
 
-        //Variables for switchable light
+        //Control variables
+        //Light switch
         boolean bPrevState = false;
-        boolean bCurrState = false;
-        boolean aButton;
+        boolean bCurrState = bPrevState;
+        //Whipper toggle
+        boolean xPrevState = false;
+        boolean xCurrState = xPrevState;
+        //Arm
         boolean dPadUp;
         boolean dPadDown;
+        //Scoop
+        boolean dPadRight;
+        boolean dPadLeft;
+
+        //Drive train vector
+        double left_y, left_x;
+        //Rotation
+        double left_t, right_t;
+        //Rotated drive train vectors
+        double abs_x, abs_y;
+
+        //Extension control
+        double right_y, right_x;
+        //Extension time limiters
+        double horizontalTime, verticalTime;
+
+        //Sensor variables
+        //Gyroscope angle
+        double g_angle;
+
 
 
         //Telemetry initialized message
         telemetry.log().add("Gyro Calibrating. Do Not Move!");
 
-
         //Gyro calibrating
         robot.modernRoboticsI2cGyro.calibrate();
-
         while (!isStopRequested() && robot.modernRoboticsI2cGyro.isCalibrating()) {
             telemetry.addData("calibrating", "%s", Math.round(robot.timer.seconds()) % 2 == 0 ? "|.." : "..|");
             telemetry.update();
             sleep(50);
         }
-
         //Finalized gyro calibration.
         telemetry.log().clear(); telemetry.log().add("Gyro Calibrated. Press Start.");
         telemetry.clear(); telemetry.update();
 
-
-        //Variable instantiation
-        double left_y, left_x;
-        double left_t, right_t;
-        double g_angle;
-        double abs_x, abs_y;
-        int step = 1;
-
-        //Wait until phone interrupt
+        //Wait until op-mode start
         waitForStart();
+        //Resets timer
         robot.timer.reset();
 
         //While loop for robot operation
         while (opModeIsActive()) {
+
+            //Light switch control for color sensor
             bCurrState = gamepad1.x;
-            aButton = gamepad1.a;
-
-
+            //Checks for a different state
             if (bCurrState != bPrevState) {
+                //Checks if the button is enabled
                 if (bCurrState) {
+                    //Checks if the robot has a switchable light
                     if (robot.colorSensor instanceof SwitchableLight) {
+                        //Toggles light
                         SwitchableLight light = (SwitchableLight) robot.colorSensor;
                         light.enableLight(!light.isLightOn());
                     }
                 }
             }
-
-            robot.motor5.setPower(gamepad1.right_stick_y);
+            //Updates bPrevState
             bPrevState = bCurrState;
 
-            robot.colors = robot.colorSensor.getNormalizedColors();
+            //Whipper switch
+            xCurrState = gamepad1.x;
+            //Checks difference in state
+            if (xCurrState != xPrevState) {
+                if (xCurrState) {
+                    robot.motor7.setPower(0.5);
+                } else {
+                    robot.motor7.setPower(0);
+                }
+            }
+            //Updates xCurrState
+            xPrevState = xCurrState;
+
+            //Lift
+            robot.motor6.setPower(-gamepad1.right_stick_y);
+
+            //Extension
+            robot.motor5.setPower(gamepad1.right_stick_x);
+
+            //Arm
+            if (gamepad1.dpad_up) {
+                robot.motor8.setPower(0.5);
+            } else {
+                robot.motor8.setPower(0);
+            }
 
             //Gamepad's left stick x and y values
+            //Inverts y's sign
             left_y = -gamepad1.left_stick_y;
+            //Receives x
             left_x = gamepad1.left_stick_x;
 
             //Gamepad's left and right trigger values

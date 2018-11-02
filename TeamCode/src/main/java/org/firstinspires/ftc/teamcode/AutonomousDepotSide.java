@@ -12,9 +12,9 @@ import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 
 import android.graphics.Color;
-@Autonomous(name="AutonomousCraterSide", group="Autonomous")
+@Autonomous(name="AutonomousDepotSide", group="Autonomous")
 
-public class AutonomousCraterSide extends LinearOpMode {
+public class AutonomousDepotSide extends LinearOpMode {
     HardwareOmni robot = new HardwareOmni();
     public void runOpMode() {
         robot.init(hardwareMap);
@@ -45,7 +45,7 @@ public class AutonomousCraterSide extends LinearOpMode {
         Motor 7: Chariot Rotation
         Motor 8: Whipper
          */
-        /*
+
         //Lower the robot
         //Telescoping lift lower down
         robot.motor6.setPower(0.5);
@@ -110,48 +110,20 @@ public class AutonomousCraterSide extends LinearOpMode {
         robot.motor2.setPower(-0.5);
         robot.motor4.setPower(0.5);
         robot.timer.reset();
-        */
 
         //Need to add color condition
         double timeToFind = 0;
-        int alpha = 0;
-        int red = 0;
-        int green = 0;
-        int blue = 0;
-        while (opModeIsActive() &&
-                (robot.timer.seconds() < 10.0) &&
-                !((Math.abs(alpha - 70) < 50 ) &&
-                (Math.abs(red - 255) < 50 ) &&
-                (Math.abs(green - 107) < 50 ) &&
-                (Math.abs(blue) < 10 ))) {
-            robot.colors = robot.colorSensor.getNormalizedColors();
-            float max = Math.max(Math.max(Math.max(robot.colors.red, robot.colors.green), robot.colors.blue), robot.colors.alpha);
-            robot.colors.red   /= max;
-            robot.colors.green /= max;
-            robot.colors.blue  /= max;
-            int color = robot.colors.toColor();
-            alpha = Color.alpha(color);
-            red = Color.red(color);
-            green = Color.green(color);
-            blue = Color.blue(color);
+        boolean found = false;
+        while (opModeIsActive() && (robot.timer.seconds() < 3.0)) {
             telemetry.addData("Sampling", "Sampling: %2.5f S Elapsed", robot.timer.seconds());
-            telemetry.addData("a", alpha);
-            telemetry.addData("r", red);
-            telemetry.addData("g", green);
-            telemetry.addData("b", blue);
             //Amount of time taken to find the sample
             timeToFind = robot.timer.seconds();
             telemetry.update();
         }
         robot.timer.reset();
-        robot.motor2.setPower(0);
-        robot.motor4.setPower(0);
 
-        //Retrieves mineral only if the mineral was correctly sampled/the correct color was found
-        if (((Math.abs(alpha - 70) < 50 ) &&
-                (Math.abs(red - 255) < 50 ) &&
-                (Math.abs(green - 107) < 50 ) &&
-                (Math.abs(blue) < 10 ))) {
+        //Retrieves mineral only if the mineral was correctly sampled
+        if (found) {
             robot.motor2.setPower(0);
             robot.motor4.setPower(0);
             //Extension
@@ -268,3 +240,4 @@ public class AutonomousCraterSide extends LinearOpMode {
 
     }
 }
+

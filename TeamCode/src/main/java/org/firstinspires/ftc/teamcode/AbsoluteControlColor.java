@@ -48,7 +48,8 @@ public class AbsoluteControlColor extends LinearOpMode{
 
         boolean bPrevState = false;
         boolean bCurrState = false;
-        boolean aButton;
+        boolean aPrevState = false;
+        boolean aCurrState = aPrevState;
         boolean dPadUp;
         boolean dPadDown;
 
@@ -80,6 +81,7 @@ public class AbsoluteControlColor extends LinearOpMode{
         double gSum = 0;
         double bSum = 0;
         int step = 1;
+        int colorAvg = 0;
 
         //Wait until phone interrupt
         waitForStart();
@@ -88,7 +90,7 @@ public class AbsoluteControlColor extends LinearOpMode{
         //While loop for robot operation
         while (opModeIsActive()){
             bCurrState = gamepad1.x;
-            aButton = gamepad1.a;
+
 
 
             if (bCurrState != bPrevState) {
@@ -149,20 +151,20 @@ public class AbsoluteControlColor extends LinearOpMode{
             */
             Color.colorToHSV(robot.colors.toColor(), hsvValues);
             telemetry.addLine()
-                    .addData("H", "%.3f", hsvValues[0])
-                    .addData("S", "%.3f", hsvValues[1])
-                    .addData("V", "%.3f", hsvValues[2]);
+                    .addData("H",  hsvValues[0])
+                    .addData("S",  hsvValues[1])
+                    .addData("V",  hsvValues[2]);
             telemetry.addLine()
-                    .addData("a", "%.3f", robot.colors.alpha)
-                    .addData("r", "%.3f", robot.colors.red)
-                    .addData("g", "%.3f", robot.colors.green)
-                    .addData("b", "%.3f", robot.colors.blue);
+                    .addData("a",  robot.colors.alpha)
+                    .addData("r",  robot.colors.red)
+                    .addData("g",  robot.colors.green)
+                    .addData("b",  robot.colors.blue);
             int color = robot.colors.toColor();
             telemetry.addLine("raw Android color: ")
-                    .addData("a", "%02x", Color.alpha(color))
-                    .addData("r", "%02x", Color.red(color))
-                    .addData("g", "%02x", Color.green(color))
-                    .addData("b", "%02x", Color.blue(color));
+                    .addData("a",  Color.alpha(color))
+                    .addData("r",  Color.red(color))
+                    .addData("g",  Color.green(color))
+                    .addData("b",  Color.blue(color));
             float max = Math.max(Math.max(Math.max(robot.colors.red, robot.colors.green), robot.colors.blue), robot.colors.alpha);
             robot.colors.red   /= max;
             robot.colors.green /= max;
@@ -170,10 +172,21 @@ public class AbsoluteControlColor extends LinearOpMode{
 
             color = robot.colors.toColor();
             telemetry.addLine("normalized color:  ")
-                            .addData("a", "%02x", Color.alpha(color))
-                            .addData("r", "%02x", Color.red(color))
-                            .addData("g", "%02x", Color.green(color))
-                            .addData("b", "%02x", Color.blue(color));
+                            .addData("a",  Color.alpha(color))
+                            .addData("r",  Color.red(color))
+                            .addData("g",  Color.green(color))
+                            .addData("b", Color.blue(color));
+            aCurrState = gamepad1.a;
+            if (aCurrState != aPrevState) {
+                colorAvg += color;
+                step++;
+            }
+            aPrevState = aCurrState;
+            telemetry.addLine("Color Average")
+                    .addData("a", Color.alpha(colorAvg/step))
+                    .addData("r", Color.alpha(colorAvg/step))
+                    .addData("g",  Color.green(colorAvg/step))
+                    .addData("b", Color.blue(colorAvg/step));
 
             // convert the RGB values to HSV values.
             Color.RGBToHSV(Color.red(color), Color.green(color), Color.blue(color), hsvValues);
@@ -181,7 +194,7 @@ public class AbsoluteControlColor extends LinearOpMode{
                     .addData("distance", robot.ods.getRawLightDetected());
             telemetry.addLine().addData("distance normal", robot.ods.getLightDetected());
             telemetry.addLine()
-                    .addData("A:", aButton);
+                    .addData("A:", aCurrState);
             //telemetry.addLine().addData("Delta_t", delta_t);
 
             telemetry.update();
