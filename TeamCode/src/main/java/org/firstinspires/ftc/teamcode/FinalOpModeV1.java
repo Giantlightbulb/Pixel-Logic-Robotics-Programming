@@ -93,40 +93,41 @@ public class FinalOpModeV1 extends LinearOpMode{
 
             //Whipper switch
             xCurrState = gamepad1.x;
-            //Checks difference in state
-            if (xCurrState != xPrevState) {
-                if (xCurrState) {
-                    robot.servo3.setPower(0.5);
-                } else {
-                    robot.servo3.setPower(0);
-                }
+            yCurrState = gamepad1.y;
+            if (xCurrState && !yCurrState) {
+                telemetry.addLine()
+                        .addData("Whipper Online:", 0.5);
+                robot.servo3.setPower(0.5);
+            } else if (yCurrState && !xCurrState) {
+                robot.servo3.setPower(-0.5);
+                telemetry.addLine()
+                        .addData("Whipper Online:", -0.5);
+            } else {
+                robot.servo3.setPower(0);
+                telemetry.addLine()
+                        .addData("Whipper Offline:", 0);
             }
-            //Updates xCurrState
+
+            //Updates yPrevState
+            yPrevState = yCurrState;
+            //Updates xPrevState
             xPrevState = xCurrState;
 
-            yCurrState = gamepad1.y;
-            //Checks difference in state
-            if (yCurrState != yPrevState) {
-                if (xCurrState) {
-                    robot.servo3.setPower(-0.5);
-                } else {
-                    robot.servo3.setPower(0);
-                }
-            }
-            //Updates xCurrState
-            yPrevState = yCurrState;
-
             //Lift
-            robot.motor6.setPower(-gamepad1.right_stick_y);
+            robot.motor6.setPower(gamepad1.right_stick_y);
 
             //Extension
             robot.motor5.setPower(gamepad1.right_stick_x);
 
             //Bucket Flipper
             if (gamepad1.dpad_right) {
-                robot.servo2.setPosition(60);
+                telemetry.addLine()
+                        .addData("Bucket Flipping Back:", 0.4);
+                robot.servo2.setPosition(0.4);
             } else {
-                robot.servo2.setPosition(15);
+                telemetry.addLine()
+                        .addData("Bucket Returning:", 0.3);
+                robot.servo2.setPosition(0.3);
             }
             //Arm
             if (gamepad1.dpad_up) {
@@ -154,7 +155,11 @@ public class FinalOpModeV1 extends LinearOpMode{
             g_angle *= Math.PI / 180;
             abs_x = (left_x * Math.cos(-g_angle) - left_y * Math.sin(-g_angle));
             abs_y = (left_x * Math.sin(-g_angle) + left_y * Math.cos(-g_angle));
-
+            telemetry.addLine()
+                    .addData("Angle:", g_angle);
+            telemetry.addLine()
+                    .addData("Left Stick X:", left_x)
+                    .addData("Left Stick Y:", left_y);
             //Power variable (0,1), average drive train motor speed
 
             //x component vector

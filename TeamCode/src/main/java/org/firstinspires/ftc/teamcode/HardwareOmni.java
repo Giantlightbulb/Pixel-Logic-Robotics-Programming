@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.CRServoImpl;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -111,7 +112,7 @@ public class HardwareOmni {
         //Servos
         servo1 = hwMap.get(Servo.class, "servo1");
         servo2 = hwMap.get(Servo.class, "servo2");
-        servo3 = hwMap.get(CRServo.class, "servo3");
+        servo3 = hwMap.get(CRServoImpl.class, "servo3");
 
         //  Sensors
         //  Gyro
