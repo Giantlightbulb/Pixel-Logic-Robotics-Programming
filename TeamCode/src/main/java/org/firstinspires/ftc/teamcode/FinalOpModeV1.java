@@ -20,9 +20,13 @@ public class FinalOpModeV1 extends LinearOpMode{
         //Light switch
         boolean bPrevState = false;
         boolean bCurrState = bPrevState;
-        //Whipper toggle
+        //Whipper toggle one way
         boolean xPrevState = false;
         boolean xCurrState = xPrevState;
+        //Whipper toggle the other way
+        boolean yPrevState = false;
+        boolean yCurrState = yPrevState;
+
         //Arm
         boolean dPadUp;
         boolean dPadDown;
@@ -71,7 +75,7 @@ public class FinalOpModeV1 extends LinearOpMode{
         while (opModeIsActive()) {
 
             //Light switch control for color sensor
-            bCurrState = gamepad1.x;
+            bCurrState = gamepad1.b;
             //Checks for a different state
             if (bCurrState != bPrevState) {
                 //Checks if the button is enabled
@@ -92,13 +96,25 @@ public class FinalOpModeV1 extends LinearOpMode{
             //Checks difference in state
             if (xCurrState != xPrevState) {
                 if (xCurrState) {
-                    robot.motor7.setPower(0.5);
+                    robot.servo3.setPower(0.5);
                 } else {
-                    robot.motor7.setPower(0);
+                    robot.servo3.setPower(0);
                 }
             }
             //Updates xCurrState
             xPrevState = xCurrState;
+
+            yCurrState = gamepad1.y;
+            //Checks difference in state
+            if (yCurrState != yPrevState) {
+                if (xCurrState) {
+                    robot.servo3.setPower(-0.5);
+                } else {
+                    robot.servo3.setPower(0);
+                }
+            }
+            //Updates xCurrState
+            yPrevState = yCurrState;
 
             //Lift
             robot.motor6.setPower(-gamepad1.right_stick_y);
@@ -106,11 +122,19 @@ public class FinalOpModeV1 extends LinearOpMode{
             //Extension
             robot.motor5.setPower(gamepad1.right_stick_x);
 
+            //Bucket Flipper
+            if (gamepad1.dpad_right) {
+                robot.servo2.setPosition(60);
+            } else {
+                robot.servo2.setPosition(15);
+            }
             //Arm
             if (gamepad1.dpad_up) {
-                robot.motor8.setPower(0.5);
+                robot.motor7.setPower(-0.25);
+            } else if (gamepad1.dpad_down) {
+                robot.motor7.setPower(0.25);
             } else {
-                robot.motor8.setPower(0);
+                robot.motor7.setPower(0);
             }
 
             //Gamepad's left stick x and y values

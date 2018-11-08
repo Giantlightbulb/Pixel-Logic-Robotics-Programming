@@ -129,7 +129,7 @@ public class AutonomousDepotSide extends LinearOpMode {
             //Extension
             robot.motor5.setPower(1);
             //Whipper is maintained
-            robot.motor8.setPower(1);
+            //robot.motor8.setPower(1);
             while (opModeIsActive() && (robot.timer.seconds() < 3.0)) {
                 telemetry.addData("Retrieving mineral", "Retrieving: %2.5f S Elapsed", robot.timer.seconds());
                 telemetry.update();

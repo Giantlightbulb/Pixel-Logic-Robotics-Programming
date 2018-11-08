@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 //TeleOp and Hardware
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -54,11 +55,13 @@ public class HardwareOmni {
     //Chariot Motors
     //Arm
     public DcMotor motor7;
-    //Whipper
-    public DcMotor motor8;
+    //Whipper - Defunct
+    //public DcMotor motor8;
 
     //Servos
     public Servo servo1;
+    public Servo servo2;
+    public CRServo servo3;
 
     //Initializes Sensors
     //  Gyro
@@ -103,10 +106,12 @@ public class HardwareOmni {
         motor6 = hwMap.get(DcMotor.class, "motor6");
         //Chariot Motors
         motor7 = hwMap.get(DcMotor.class, "motor7");
-        motor8 = hwMap.get(DcMotor.class, "motor8");
+        //motor8 = hwMap.get(DcMotor.class, "motor8");
 
         //Servos
         servo1 = hwMap.get(Servo.class, "servo1");
+        servo2 = hwMap.get(Servo.class, "servo2");
+        servo3 = hwMap.get(CRServo.class, "servo3");
 
         //  Sensors
         //  Gyro
@@ -138,7 +143,7 @@ public class HardwareOmni {
         motor5.setPower(0);
         motor6.setPower(0);
         motor7.setPower(0);
-        motor8.setPower(0);
+        //motor8.setPower(0);
 
     }
 

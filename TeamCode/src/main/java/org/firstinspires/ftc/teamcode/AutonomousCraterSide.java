@@ -157,7 +157,7 @@ public class AutonomousCraterSide extends LinearOpMode {
             //Extension
             robot.motor5.setPower(1);
             //Whipper is maintained
-            robot.motor8.setPower(1);
+            //robot.motor8.setPower(1);
             while (opModeIsActive() && (robot.timer.seconds() < 3.0)) {
                 telemetry.addData("Retrieving mineral", "Retrieving: %2.5f S Elapsed", robot.timer.seconds());
                 telemetry.update();
@@ -264,7 +264,5 @@ public class AutonomousCraterSide extends LinearOpMode {
         robot.motor3.setPower(0);
         telemetry.addLine()
                 .addData("Parked:", "Completed");
-
-
     }
 }
