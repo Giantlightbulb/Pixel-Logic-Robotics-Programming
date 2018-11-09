@@ -48,7 +48,7 @@ public class AutonomousDepotSide extends LinearOpMode {
         Motor 5: Horizontal Extension
         Motor 6: Vertical Extension
         Motor 7: Chariot Rotation
-        Motor 8: Whipper
+        Motor 8: NA
          */
 
         //Lower the robot
@@ -99,8 +99,8 @@ public class AutonomousDepotSide extends LinearOpMode {
         //BEGIN SAMPLING ==========================================================================
 
         //Moving right, parallel to sampling
-        robot.motor2.setPower(-0.2);
-        robot.motor4.setPower(0.2);
+        robot.motor2.setPower(-0.3);
+        robot.motor4.setPower(0.3);
         robot.timer.reset();
 
         double timeToFind = 0;
@@ -137,18 +137,6 @@ public class AutonomousDepotSide extends LinearOpMode {
         robot.motor4.setPower(0);
         robot.timer.reset();
 
-
-        //Need to add color condition
-        double timeToFind = 0;
-        boolean found = false;
-        while (opModeIsActive() && (robot.timer.seconds() < 3.0)) {
-            telemetry.addData("Sampling", "Sampling: %2.5f S Elapsed", robot.timer.seconds());
-            //Amount of time taken to find the sample
-            timeToFind = robot.timer.seconds();
-            telemetry.update();
-        }
-        robot.timer.reset();
-
         //Retrieves mineral only if the mineral was correctly sampled
         if (found) {
             robot.motor2.setPower(0);
@@ -173,8 +161,8 @@ public class AutonomousDepotSide extends LinearOpMode {
         //Return to original position
         robot.timer.reset();
         //Reversed motion
-        robot.motor2.setPower(0.5);
-        robot.motor4.setPower(-0.5);
+        robot.motor2.setPower(0.3);
+        robot.motor4.setPower(-0.3);
         //Moves for the same length of time
         while (opModeIsActive() && (robot.timer.seconds() < timeToFind)){
             telemetry.addData("Returning to initial position", "Returning: %2.5f S Elapsed", robot.timer.seconds());
@@ -184,39 +172,53 @@ public class AutonomousDepotSide extends LinearOpMode {
         robot.motor4.setPower(0);
         robot.timer.reset();
 
-        //Depot
-        //Straight line towards the depot
-        robot.motor2.setPower(-0.5);
-        robot.motor4.setPower(0.5);
-        robot.motor1.setPower(-0.5);
-        robot.motor3.setPower(0.5);
-        while (opModeIsActive() && (robot.timer.seconds() < 3)){
+        // BEGIN DEPOT ============================================================================
+
+        // Move past Sampling Row to avoid knocking unobtanium
+        robot.motor2.setPower(0.5);
+        robot.motor4.setPower(-0.5);
+        while (opModeIsActive() && (robot.timer.seconds() < 1)){ // move left 26 inches
+            telemetry.addData("Aligning with depot", "Approaching: %2.5f S Elapsed", robot.timer.seconds());
+            telemetry.update();
+        }
+        robot.motor1.setPower(0);
+        robot.motor3.setPower(0);
+
+
+        //Spin 45 degrees. Check with the gyro sensor
+        robot.motor2.setPower(0.3);
+        robot.motor4.setPower(0.3);
+        robot.motor1.setPower(0.3);
+        robot.motor3.setPower(0.3);
+        //
+
+        while (opModeIsActive() && (robot.timer.seconds() < 1)){ // 45 degrees clockwise
             telemetry.addData("Approaching depot", "Approaching: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
         }
         robot.motor1.setPower(0);
         robot.motor3.setPower(0);
-        robot.timer.reset();
-        //Diagonal towards wall
-        while (opModeIsActive() && (robot.timer.seconds() < 3)){
-            telemetry.addData("Approaching depot wall", "Approaching: %2.5f S Elapsed", robot.timer.seconds());
-            telemetry.update();
-        }
-        double depotEnter = 3.0;
-        //Diagonal towards depot
-        robot.motor2.setPower(0.5);
-        robot.motor4.setPower(-0.5);
-        robot.timer.reset();
-        while (opModeIsActive() && (robot.timer.seconds() < depotEnter)){
-            telemetry.addData("Entering Depot", "Entering: %2.5f S Elapsed", robot.timer.seconds());
-            telemetry.update();
-        }
         robot.motor2.setPower(0);
         robot.motor4.setPower(0);
         robot.timer.reset();
+
+
+        robot.motor1.setPower(0.5);
+        robot.motor3.setPower(0.5);
+        //
+        while (opModeIsActive() && (robot.timer.seconds() < 5)){ // 64 inches forward
+            telemetry.addData("Approaching depot wall", "Approaching: %2.5f S Elapsed", robot.timer.seconds());
+            telemetry.update();
+        }
+
+        robot.motor1.setPower(0);
+        robot.motor3.setPower(0);
+        robot.timer.reset();
+
+
         //Mascot knockoff
         //Mineral Drop
-        robot.motor5.setPower(0);
+        // robot.motor8.setPower(release payload!);
         robot.servo1.setPosition(90);
         robot.servo1.setPosition(0);
         //Return to wall

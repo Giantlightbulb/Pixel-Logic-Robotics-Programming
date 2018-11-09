@@ -43,7 +43,7 @@ public class AutonomousCraterSide extends LinearOpMode {
         Motor 5: Horizontal Extension
         Motor 6: Vertical Extension
         Motor 7: Chariot Rotation
-        Motor 8: Whipper
+        Motor 8: NA
          */
         /*
         //Lower the robot
@@ -147,7 +147,6 @@ public class AutonomousCraterSide extends LinearOpMode {
         robot.motor2.setPower(0);
         robot.motor4.setPower(0);
 
-
         //Retrieves mineral only if the mineral was correctly sampled/the correct color was found
         if (((Math.abs(alpha - 70) < 50 ) &&
                 (Math.abs(red - 255) < 50 ) &&
@@ -223,7 +222,7 @@ public class AutonomousCraterSide extends LinearOpMode {
         robot.servo1.setPosition(0);
         //Return to wall
         robot.motor2.setPower(-0.5);
-        robot.motor2.setPower(0.5);
+        robot.motor4.setPower(0.5);
         while (opModeIsActive() && (robot.timer.seconds() < depotEnter)){
             telemetry.addData("Exiting Depot", "Exiting: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();

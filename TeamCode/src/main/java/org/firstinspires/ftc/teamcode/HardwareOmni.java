@@ -59,8 +59,11 @@ public class HardwareOmni {
     //public DcMotor motor8;
 
     //Servos
+    //Mascot
     public Servo servo1;
+    //Bucket Arm
     public Servo servo2;
+    //Whipper
     public CRServo servo3;
 
     //Initializes Sensors
