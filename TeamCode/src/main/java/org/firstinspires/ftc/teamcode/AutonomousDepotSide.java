@@ -141,18 +141,54 @@ public class AutonomousDepotSide extends LinearOpMode {
         if (found) {
             robot.motor2.setPower(0);
             robot.motor4.setPower(0);
-            //Extension
-            robot.motor5.setPower(1);
-            //Whipper is maintained
-            //robot.motor8.setPower(1);
-            while (opModeIsActive() && (robot.timer.seconds() < 3.0)) {
-                telemetry.addData("Retrieving mineral", "Retrieving: %2.5f S Elapsed", robot.timer.seconds());
+
+            robot.motor1.setPower(-0.3);
+            robot.motor3.setPower(0.3);
+            robot.timer.reset();
+
+            while (opModeIsActive() && (robot.timer.seconds() < 1.0)) {
+                telemetry.addData("Backing up to acquire mineral(1 sec)", "Backing up: %2.5f S Elapsed", robot.timer.seconds());
                 telemetry.update();
             }
+            robot.motor1.setPower(0);
+            robot.motor3.setPower(0);
+
+            //Extension
+            robot.motor5.setPower(1);
+            robot.timer.reset();
+
+            while (opModeIsActive() && (robot.timer.seconds() < 3.0)) {
+                telemetry.addData("Prepping Chariot (3 sec)", "Prepping: %2.5f S Elapsed", robot.timer.seconds());
+                telemetry.update();
+            }
+
+            robot.motor7.setPower(0.5);
+            robot.timer.reset();
+            while (opModeIsActive() && (robot.timer.seconds() < 1.0)) {
+                telemetry.addData("Lowering chariot(1 sec)", "Lowering: %2.5f S Elapsed", robot.timer.seconds());
+                telemetry.update();
+            }
+            robot.motor7.setPower(0);
+
+            //TURN ON WHIPPER
+            robot.motor8.setPower(1);
+
+
+            robot.motor1.setPower(0.3);
+            robot.motor3.setPower(-0.3);
+            robot.timer.reset();
+
+            while (opModeIsActive() && (robot.timer.seconds() < 1.0)) {
+                telemetry.addData("Acquiring mineral(1 sec)", "Acquring: %2.5f S Elapsed", robot.timer.seconds());
+                telemetry.update();
+            }
+            robot.motor1.setPower(0);
+            robot.motor3.setPower(0);
+
             //Retraction
             robot.motor5.setPower(-1);
             while (opModeIsActive() && (robot.timer.seconds() < 3.0)) {
-                telemetry.addData("Returning mineral", "Returning: %2.5f S Elapsed", robot.timer.seconds());
+                telemetry.addData("Storing mineral(3 sec)", "Storing: %2.5f S Elapsed", robot.timer.seconds());
                 telemetry.update();
             }
             robot.motor5.setPower(0);
@@ -165,7 +201,7 @@ public class AutonomousDepotSide extends LinearOpMode {
         robot.motor4.setPower(-0.3);
         //Moves for the same length of time
         while (opModeIsActive() && (robot.timer.seconds() < timeToFind)){
-            telemetry.addData("Returning to initial position", "Returning: %2.5f S Elapsed", robot.timer.seconds());
+            telemetry.addData("Returning to initial position (" + timeToFind + " sec)", "Returning: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
         }
         robot.motor2.setPower(0);
@@ -178,7 +214,7 @@ public class AutonomousDepotSide extends LinearOpMode {
         robot.motor2.setPower(0.5);
         robot.motor4.setPower(-0.5);
         while (opModeIsActive() && (robot.timer.seconds() < 1)){ // move left 26 inches
-            telemetry.addData("Aligning with depot", "Approaching: %2.5f S Elapsed", robot.timer.seconds());
+            telemetry.addData("Moving past Sampling Row(1 sec) ", "Moving: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
         }
         robot.motor1.setPower(0);
@@ -193,7 +229,7 @@ public class AutonomousDepotSide extends LinearOpMode {
         //
 
         while (opModeIsActive() && (robot.timer.seconds() < 1)){ // 45 degrees clockwise
-            telemetry.addData("Approaching depot", "Approaching: %2.5f S Elapsed", robot.timer.seconds());
+            telemetry.addData("Aligning with depot(1 sec)", "Aligning: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
         }
         robot.motor1.setPower(0);
@@ -207,7 +243,7 @@ public class AutonomousDepotSide extends LinearOpMode {
         robot.motor3.setPower(0.5);
         //
         while (opModeIsActive() && (robot.timer.seconds() < 5)){ // 64 inches forward
-            telemetry.addData("Approaching depot wall", "Approaching: %2.5f S Elapsed", robot.timer.seconds());
+            telemetry.addData("Approaching depot (5 sec)", "Approaching: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
         }
 
@@ -223,11 +259,15 @@ public class AutonomousDepotSide extends LinearOpMode {
         robot.servo1.setPosition(0);
         //Return to wall
         robot.motor2.setPower(-0.5);
-        robot.motor2.setPower(0.5);
-        while (opModeIsActive() && (robot.timer.seconds() < depotEnter)){
-            telemetry.addData("Exiting Depot", "Exiting: %2.5f S Elapsed", robot.timer.seconds());
+        robot.motor4.setPower(0.5);
+        robot.timer.reset();
+
+        while (opModeIsActive() && (robot.timer.seconds() < 6.5)){ // 75+ inches to crater
+            telemetry.addData("Approaching Crater (6.5 sec)", "Approaching: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
         }
+        robot.motor2.setPower(0);
+        robot.motor4.setPower(0);
         robot.timer.reset();
 
         /* Could account for traffic but currently unfinished and unrealistic
@@ -250,15 +290,7 @@ public class AutonomousDepotSide extends LinearOpMode {
         while (opModeIsActive() && (robot.timer.seconds() < 3.0) && (Math.abs(initialAngle -
         */
 
-        //Park Crater
-        //Movement towards crater
-        robot.motor1.setPower(0.5);
-        robot.motor3.setPower(-0.5);
-        while (opModeIsActive() && (robot.timer.seconds() < 3.0)){
-            telemetry.addData("Parking", "Parking: %2.5f S Elapsed", robot.timer.seconds());
-            telemetry.update();
-        }
-        robot.timer.reset();
+
         robot.motor2.setPower(0);
         robot.motor4.setPower(0);
         robot.motor1.setPower(0);
