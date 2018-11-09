@@ -147,6 +147,7 @@ public class AutonomousCraterSide extends LinearOpMode {
         robot.motor2.setPower(0);
         robot.motor4.setPower(0);
 
+
         //Retrieves mineral only if the mineral was correctly sampled/the correct color was found
         if (((Math.abs(alpha - 70) < 50 ) &&
                 (Math.abs(red - 255) < 50 ) &&
