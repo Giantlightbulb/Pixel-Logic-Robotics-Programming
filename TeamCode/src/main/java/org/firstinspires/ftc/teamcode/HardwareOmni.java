@@ -114,6 +114,7 @@ public class HardwareOmni {
         //Servos
         servo1 = hwMap.get(Servo.class, "servo1");
         servo2 = hwMap.get(Servo.class, "servo2");
+        //servo3 = Vacuum Whipper
         servo3 = hwMap.get(CRServo.class, "servo3");
 
         //  Sensors

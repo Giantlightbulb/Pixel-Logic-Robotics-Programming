@@ -171,7 +171,7 @@ public class AutonomousDepotSide extends LinearOpMode {
             robot.motor7.setPower(0);
 
             //TURN ON WHIPPER
-            robot.motor8.setPower(1);
+            robot.servo3.setPower(1);
 
 
             robot.motor1.setPower(0.3);
@@ -253,10 +253,11 @@ public class AutonomousDepotSide extends LinearOpMode {
 
 
         //Mascot knockoff
-        //Mineral Drop
-        // robot.motor8.setPower(release payload!);
         robot.servo1.setPosition(90);
         robot.servo1.setPosition(0);
+        //Mineral Dropoff
+        robot.servo3.setPower(-1);
+        robot.servo3.setPower(0);
         //Return to wall
         robot.motor2.setPower(-0.5);
         robot.motor4.setPower(0.5);
