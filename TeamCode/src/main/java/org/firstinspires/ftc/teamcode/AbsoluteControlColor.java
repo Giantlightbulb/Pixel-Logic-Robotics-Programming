@@ -120,6 +120,8 @@ public class AbsoluteControlColor extends LinearOpMode{
             //Boolean for distance reset
             g_angle = robot.gyro.getAngularOrientation(robot.aRefInt, robot.aOrderXYZ, robot.aUnit).firstAngle;
             g_angle *= Math.PI/180;
+            telemetry.addLine()
+                    .addData("Angle:", g_angle);
             abs_x = (left_x*Math.cos(-g_angle)-left_y*Math.sin(-g_angle));
             abs_y = (left_x*Math.sin(-g_angle)+left_y*Math.cos(-g_angle));
 

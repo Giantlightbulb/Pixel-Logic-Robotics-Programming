@@ -56,8 +56,8 @@ public class HardwareOmni {
     //Chariot Motors
     //Arm
     public DcMotor motor7;
-    //Whipper - Defunct
-    //public DcMotor motor8;
+    //Back Flip
+    public DcMotor motor8;
 
     //Servos
     public Servo servo1;
@@ -107,7 +107,8 @@ public class HardwareOmni {
         motor6 = hwMap.get(DcMotor.class, "motor6");
         //Chariot Motors
         motor7 = hwMap.get(DcMotor.class, "motor7");
-        //motor8 = hwMap.get(DcMotor.class, "motor8");
+        //Back Flip
+        motor8 = hwMap.get(DcMotor.class, "motor8");
 
         //Servos
         servo1 = hwMap.get(Servo.class, "servo1");

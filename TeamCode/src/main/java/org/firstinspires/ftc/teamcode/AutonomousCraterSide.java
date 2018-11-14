@@ -45,7 +45,6 @@ public class AutonomousCraterSide extends LinearOpMode {
         Motor 7: Chariot Rotation
         Motor 8: Whipper
          */
-        /*
         //Lower the robot
         //Telescoping lift lower down
         robot.motor6.setPower(0.5);
@@ -110,7 +109,7 @@ public class AutonomousCraterSide extends LinearOpMode {
         robot.motor2.setPower(-0.5);
         robot.motor4.setPower(0.5);
         robot.timer.reset();
-        */
+
 
         //Need to add color condition
         double timeToFind = 0;
@@ -154,10 +153,11 @@ public class AutonomousCraterSide extends LinearOpMode {
                 (Math.abs(blue) < 10 ))) {
             robot.motor2.setPower(0);
             robot.motor4.setPower(0);
-            //Extension
-            robot.motor5.setPower(1);
             //Whipper is maintained
             //robot.motor8.setPower(1);
+            robot.servo3.setPower(-1);
+            robot.motor2.setPower(-0.5);
+            robot.motor4.setPower(0.5);
             while (opModeIsActive() && (robot.timer.seconds() < 3.0)) {
                 telemetry.addData("Retrieving mineral", "Retrieving: %2.5f S Elapsed", robot.timer.seconds());
                 telemetry.update();
