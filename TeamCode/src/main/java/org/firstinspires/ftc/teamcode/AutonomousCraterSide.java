@@ -45,7 +45,7 @@ public class AutonomousCraterSide extends LinearOpMode {
         Motor 5: Horizontal Extension
         Motor 6: Vertical Extension
         Motor 7: Chariot Rotation
-        Motor 8: NA
+        Motor 8: Box Flipper
          */
         /*
         //Lower the robot
