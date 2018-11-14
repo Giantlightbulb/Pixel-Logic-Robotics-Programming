@@ -1,3 +1,5 @@
+//AUTONOMOUS CRATER SIDE
+
 package org.firstinspires.ftc.teamcode;
 
 //TeleOp and Hardware
@@ -43,7 +45,7 @@ public class AutonomousCraterSide extends LinearOpMode {
         Motor 5: Horizontal Extension
         Motor 6: Vertical Extension
         Motor 7: Chariot Rotation
-        Motor 8: Whipper
+        Motor 8: NA
          */
         //Lower the robot
         //Telescoping lift lower down
@@ -154,10 +156,14 @@ public class AutonomousCraterSide extends LinearOpMode {
             robot.motor2.setPower(0);
             robot.motor4.setPower(0);
             //Whipper is maintained
+<<<<<<< HEAD
             //robot.motor8.setPower(1);
             robot.servo3.setPower(-1);
             robot.motor2.setPower(-0.5);
             robot.motor4.setPower(0.5);
+=======
+            //robot.servo3.setPower(1);
+>>>>>>> 22ee591a0b3c45da52f2b7104d08f04d9bb23462
             while (opModeIsActive() && (robot.timer.seconds() < 3.0)) {
                 telemetry.addData("Retrieving mineral", "Retrieving: %2.5f S Elapsed", robot.timer.seconds());
                 telemetry.update();
@@ -222,7 +228,7 @@ public class AutonomousCraterSide extends LinearOpMode {
         robot.servo1.setPosition(0);
         //Return to wall
         robot.motor2.setPower(-0.5);
-        robot.motor2.setPower(0.5);
+        robot.motor4.setPower(0.5);
         while (opModeIsActive() && (robot.timer.seconds() < depotEnter)){
             telemetry.addData("Exiting Depot", "Exiting: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();

@@ -1,3 +1,5 @@
+//HARDWARE OMNI
+
 package org.firstinspires.ftc.teamcode;
 
 //TeleOp and Hardware
@@ -60,8 +62,11 @@ public class HardwareOmni {
     public DcMotor motor8;
 
     //Servos
+    //Mascot
     public Servo servo1;
+    //Bucket Arm
     public Servo servo2;
+    //Whipper
     public CRServo servo3;
 
     //Initializes Sensors
@@ -113,7 +118,12 @@ public class HardwareOmni {
         //Servos
         servo1 = hwMap.get(Servo.class, "servo1");
         servo2 = hwMap.get(Servo.class, "servo2");
+<<<<<<< HEAD
         servo3 = hwMap.get(CRServoImpl.class, "servo3");
+=======
+        //servo3 = Vacuum Whipper
+        servo3 = hwMap.get(CRServo.class, "servo3");
+>>>>>>> 22ee591a0b3c45da52f2b7104d08f04d9bb23462
 
         //  Sensors
         //  Gyro
