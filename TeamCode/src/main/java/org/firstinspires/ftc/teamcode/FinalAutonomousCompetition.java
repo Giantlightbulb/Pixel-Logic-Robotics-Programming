@@ -1,4 +1,4 @@
-// AUTONOMOUS DEPOT SIDE
+//FINAL AUTONOMOUS COMPETITION
 
 package org.firstinspires.ftc.teamcode;
 
@@ -14,9 +14,9 @@ import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 
 import android.graphics.Color;
-@Autonomous(name="AutonomousDepotSide", group="Autonomous")
+@Autonomous(name="FinalAutonomousCompetition", group="Autonomous")
 
-public class AutonomousDepotSide extends LinearOpMode {
+public class FinalAutonomousCompetition extends LinearOpMode {
     HardwareOmni robot = new HardwareOmni();
     public void runOpMode() {
         robot.init(hardwareMap);
@@ -24,12 +24,7 @@ public class AutonomousDepotSide extends LinearOpMode {
         telemetry.log().add("Gyro Calibrating. Do Not Move!");
 
 
-        //Approximate Speed at full power: 36 inches / 1.75 seconds
-        // Left motion motor 2 positive, motor 4 negative
-        // Forward motion motor 1 positive motor 3 negative
-
-
-        //Gyro calibating
+        //Gyro calibrating
         robot.modernRoboticsI2cGyro.calibrate();
 
         while (!isStopRequested() && robot.modernRoboticsI2cGyro.isCalibrating()) {
@@ -44,27 +39,80 @@ public class AutonomousDepotSide extends LinearOpMode {
 
         waitForStart();
         robot.timer.reset();
-/*
+        /*
         Motor 1 and 3: Left and Right Movement
         Motor 2 and 4: Forward and Backwards Movement
         Motor 5: Horizontal Extension
         Motor 6: Vertical Extension
         Motor 7: Chariot Rotation
         Motor 8: NA
-
-
+         */
         //Lower the robot
         //Telescoping lift lower down
-        robot.motor6.setPower(0.5);
-        while (opModeIsActive() && (robot.timer.seconds() < 3.0)){
+        //  ----------------------------------current location
+       /* robot.motor6.setPower(-0.3);
+        while (opModeIsActive() && (robot.timer.seconds() < 0.1)){
             telemetry.addData("Lower Down", "Lift: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
         }
         robot.motor6.setPower(0);
         robot.timer.reset();
+        robot.servo2.setPosition(0.68);
+
+        robot.motor6.setPower(0.2);
+        while (opModeIsActive() && (robot.timer.seconds() < 2.0)){
+            telemetry.addData("Lower Down", "Lift: %2.5f S Elapsed", robot.timer.seconds());
+            telemetry.update();
+        }
+        robot.motor6.setPower(0);
+        robot.timer.reset();
+
+        while (opModeIsActive() && (robot.timer.seconds() < 8.0)){
+            telemetry.addData("Lower Down", "Lift: %2.5f S Elapsed", robot.timer.seconds());
+            telemetry.update();
+        } // END LOWER DOWN AUTONOMOUS TEST SEQUENCEp
 */
         //Sideways motion to clear hook
-        robot.servo1.setPosition(0);
+        /*
+        double clearance = 3.0;
+        robot.motor2.setPower(0.2);
+        robot.motor4.setPower(-0.2);
+        while (opModeIsActive() && (robot.timer.seconds() < clearance)){
+            telemetry.addData("Clearance", "Left and Right: %2.5f S Elapsed", robot.timer.seconds());
+            telemetry.update();
+        }
+        robot.motor2.setPower(0);
+        robot.motor4.setPower(0);
+        robot.timer.reset();
+
+        //Backoff from Lander
+        robot.motor1.setPower(0.3);
+        robot.motor3.setPower(-0.3);
+        while (opModeIsActive() && (robot.timer.seconds() < 3.0)){
+            telemetry.addData("Backoff", "Left and Right: %2.5f S Elapsed", robot.timer.seconds());
+            telemetry.update();
+        }
+        robot.motor1.setPower(0);
+        robot.motor3.setPower(0);
+        robot.timer.reset();
+
+        //Recenter
+        //Same time for the clearance
+        robot.motor2.setPower(-0.3);
+        robot.motor4.setPower(0.3);
+        while (opModeIsActive() && (robot.timer.seconds() < clearance)){
+            telemetry.addData("Recenter", "Left and Right: %2.5f S Elapsed", robot.timer.seconds());
+            telemetry.update();
+        }
+        robot.motor2.setPower(0);
+        robot.motor4.setPower(0);
+        robot.timer.reset();
+        */
+        //Sample
+        //Approach position for sampling
+        //Diagonal movement to establish position
+        //Back
+        robot.servo1.setPosition(1);
         double CLEARANCE = 0.6;
         robot.motor2.setPower(0.2); // go left 2 inches
         robot.motor4.setPower(-0.2);// assist left 2 inches
@@ -81,7 +129,7 @@ public class AutonomousDepotSide extends LinearOpMode {
         //Leave Lander, GoTo Leftmost Sample (forward backward motion
         robot.motor1.setPower(0.2);
         robot.motor3.setPower(-0.2);
-        while (opModeIsActive() && (robot.timer.seconds() < 1.75)){ // 19 inches forward on this vector
+        while (opModeIsActive() && (robot.timer.seconds() < 1.8)){ // 19 inches forward on this vector
             telemetry.addData("Backoff", "Left and Right: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
         }
@@ -92,7 +140,7 @@ public class AutonomousDepotSide extends LinearOpMode {
         //Leave Lander, GoTo Leftmost Sample (left/right motion) // 14 inches left on this vector
         robot.motor2.setPower(0.2);
         robot.motor4.setPower(-0.2);
-        while (opModeIsActive() && (robot.timer.seconds() < 2.1)){
+        while (opModeIsActive() && (robot.timer.seconds() < 2.3)){
             telemetry.addData("Recenter", "Left and Right: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
         }
@@ -115,7 +163,7 @@ public class AutonomousDepotSide extends LinearOpMode {
         int green = 0;
         int blue = 0;
         while (opModeIsActive() &&
-                (robot.timer.seconds() < 3) &&
+                (robot.timer.seconds() < 3.1) &&
                 !((Math.abs(alpha - 70) < 75 ) &&
                         (Math.abs(red - 255) < 75 ) &&
                         (Math.abs(green - 107) < 75 ) &&
@@ -216,10 +264,11 @@ public class AutonomousDepotSide extends LinearOpMode {
         //Return to original position
         robot.timer.reset();
         //Reversed motion
+        /*
         robot.motor2.setPower(0.3);
         robot.motor4.setPower(-0.3);
         //Moves for the same length of time
-        while (opModeIsActive() && (robot.timer.seconds() < (timeToFind + 0.4))){
+        while (opModeIsActive() && (robot.timer.seconds() < (timeToFind + 0.3))){
             telemetry.addData("Returning to initial position (" + timeToFind + " sec)", "Returning: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
         }
@@ -227,68 +276,45 @@ public class AutonomousDepotSide extends LinearOpMode {
         robot.motor4.setPower(0);
         robot.timer.reset();
 
-        // BEGIN DEPOT ============================================================================
-
-        /*// Move past Sampling Row to avoid knocking unobtanium
-        robot.motor2.setPower(0.5);
-        robot.motor4.setPower(-0.5);
-        while (opModeIsActive() && (robot.timer.seconds() < 1)){ // move left 26 inches
-            telemetry.addData("Moving past Sampling Row(1 sec) ", "Moving: %2.5f S Elapsed", robot.timer.seconds());
-            telemetry.update();
-        }
-        robot.motor1.setPower(0);
-        robot.motor3.setPower(0);
-        */
-
-
-        //Spin 45 degrees. Check with the gyro sensor
-        robot.motor2.setPower(0.3);
-        robot.motor4.setPower(0.3);
-        robot.motor1.setPower(0.3);
-        robot.motor3.setPower(0.3);
-        //
-
-        while (opModeIsActive() && (robot.timer.seconds() < 1)){ // 45 degrees clockwise
-            telemetry.addData("Aligning with depot(1 sec)", "Aligning: %2.5f S Elapsed", robot.timer.seconds());
+        //Depot ================================================================================
+        //Straight line towards the depot
+        /*
+        robot.motor2.setPower(-0.25);
+        robot.motor4.setPower(0.25);
+        robot.motor1.setPower(0.25);
+        robot.motor3.setPower(-0.25);
+        while (opModeIsActive() && (robot.timer.seconds() < 3)){
+            telemetry.addData("Approaching depot", "Approaching: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
         }
         robot.motor1.setPower(0);
         robot.motor3.setPower(0);
         robot.motor2.setPower(0);
         robot.motor4.setPower(0);
+
         robot.timer.reset();
-
-
-        robot.motor1.setPower(0.5);
-        robot.motor3.setPower(0.5);
-        //
-        while (opModeIsActive() && (robot.timer.seconds() < 5)){ // 64 inches forward
-            telemetry.addData("Approaching depot (5 sec)", "Approaching: %2.5f S Elapsed", robot.timer.seconds());
-            telemetry.update();
-        }
-
-        robot.motor1.setPower(0);
-        robot.motor3.setPower(0);
-        robot.timer.reset();
-
-
         //Mascot knockoff
-        robot.servo1.setPosition(90);
         robot.servo1.setPosition(0);
-        //Mineral Dropoff
-        robot.servo3.setPower(-1);
-        robot.servo3.setPower(0);
-        //Return to wall
-        robot.motor2.setPower(-0.5);
-        robot.motor4.setPower(0.5);
-        robot.timer.reset();
+        /*
 
-        while (opModeIsActive() && (robot.timer.seconds() < 6.5)){ // 75+ inches to crater
-            telemetry.addData("Approaching Crater (6.5 sec)", "Approaching: %2.5f S Elapsed", robot.timer.seconds());
+
+        //Head towards Crater
+        robot.motor2.setPower(-0.25);
+        robot.motor4.setPower(0.25);
+        robot.motor1.setPower(0.25);
+        robot.motor3.setPower(-0.25);
+        robot.timer.reset();
+        while (opModeIsActive() && (robot.timer.seconds() < 6)){
+            telemetry.addData("Entering Depot", "Entering: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
         }
         robot.motor2.setPower(0);
         robot.motor4.setPower(0);
+        robot.motor1.setPower(0);
+        robot.motor3.setPower(0);
+
+
+
         robot.timer.reset();
 
         /* Could account for traffic but currently unfinished and unrealistic
@@ -309,17 +335,25 @@ public class AutonomousDepotSide extends LinearOpMode {
         robot.timer.reset();
         initialAngle = robot.gyro.getAngularOrientation(robot.aRefInt, robot.aOrderXYZ, robot.aUnit).firstAngle;
         while (opModeIsActive() && (robot.timer.seconds() < 3.0) && (Math.abs(initialAngle -
-        */
 
-
+        //Park Crater
+        //Movement towards crater
+        robot.motor1.setPower(0.5);
+        robot.motor3.setPower(-0.5);
+        while (opModeIsActive() && (robot.timer.seconds() < 3.0)){
+            telemetry.addData("Parking", "Parking: %2.5f S Elapsed", robot.timer.seconds());
+            telemetry.update();
+        }
+        robot.timer.reset();
         robot.motor2.setPower(0);
         robot.motor4.setPower(0);
         robot.motor1.setPower(0);
         robot.motor3.setPower(0);
+        */
+        //*/
+
         telemetry.addLine()
                 .addData("Parked:", "Completed");
 
-
     }
 }
-

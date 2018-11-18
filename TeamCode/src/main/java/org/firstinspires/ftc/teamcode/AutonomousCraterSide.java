@@ -49,6 +49,7 @@ public class AutonomousCraterSide extends LinearOpMode {
          */
         //Lower the robot
         //Telescoping lift lower down
+        /*
         robot.motor6.setPower(0.5);
         while (opModeIsActive() && (robot.timer.seconds() < 3.0)){
             telemetry.addData("Lower Down", "Lift: %2.5f S Elapsed", robot.timer.seconds());
@@ -56,11 +57,12 @@ public class AutonomousCraterSide extends LinearOpMode {
         }
         robot.motor6.setPower(0);
         robot.timer.reset();
-
+*/
         //Sideways motion to clear hook
+        /*
         double clearance = 3.0;
-        robot.motor2.setPower(0.5);
-        robot.motor4.setPower(-0.5);
+        robot.motor2.setPower(0.2);
+        robot.motor4.setPower(-0.2);
         while (opModeIsActive() && (robot.timer.seconds() < clearance)){
             telemetry.addData("Clearance", "Left and Right: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
@@ -70,8 +72,8 @@ public class AutonomousCraterSide extends LinearOpMode {
         robot.timer.reset();
 
         //Backoff from Lander
-        robot.motor1.setPower(0.5);
-        robot.motor3.setPower(-0.5);
+        robot.motor1.setPower(0.3);
+        robot.motor3.setPower(-0.3);
         while (opModeIsActive() && (robot.timer.seconds() < 3.0)){
             telemetry.addData("Backoff", "Left and Right: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
@@ -82,8 +84,8 @@ public class AutonomousCraterSide extends LinearOpMode {
 
         //Recenter
         //Same time for the clearance
-        robot.motor2.setPower(-0.5);
-        robot.motor4.setPower(0.5);
+        robot.motor2.setPower(-0.3);
+        robot.motor4.setPower(0.3);
         while (opModeIsActive() && (robot.timer.seconds() < clearance)){
             telemetry.addData("Recenter", "Left and Right: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
@@ -91,40 +93,41 @@ public class AutonomousCraterSide extends LinearOpMode {
         robot.motor2.setPower(0);
         robot.motor4.setPower(0);
         robot.timer.reset();
-
+        */
         //Sample
         //Approach position for sampling
         //Diagonal movement to establish position
         //Back
-        robot.motor1.setPower(0.5);
-        robot.motor3.setPower(-0.5);
+        robot.timer.reset();
+        robot.motor1.setPower(0.25);
+        robot.motor3.setPower(-0.25);
         //Right
-        robot.motor2.setPower(0.5);
-        robot.motor4.setPower(-0.5);
-        while (opModeIsActive() && (robot.timer.seconds() < 3.0)) {
+        robot.motor2.setPower(0.25);
+        robot.motor4.setPower(-0.25);
+        while (opModeIsActive() && (robot.timer.seconds() < 1.25)) {
             telemetry.addData("Sample Position", "Left and Right: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
         }
         robot.motor1.setPower(0);
         robot.motor3.setPower(0);
-        //Movement parallel to sampling
-        robot.motor2.setPower(-0.5);
-        robot.motor4.setPower(0.5);
         robot.timer.reset();
 
+        //Movement parallel to sampling
+        robot.motor2.setPower(-0.25);
+        robot.motor4.setPower(0.25);
+        robot.timer.reset();
 
-        //Need to add color condition
         double timeToFind = 0;
         int alpha = 0;
         int red = 0;
         int green = 0;
         int blue = 0;
         while (opModeIsActive() &&
-                (robot.timer.seconds() < 10.0) &&
-                !((Math.abs(alpha - 70) < 50 ) &&
-                (Math.abs(red - 255) < 50 ) &&
-                (Math.abs(green - 107) < 50 ) &&
-                (Math.abs(blue) < 10 ))) {
+                (robot.timer.seconds() < 6.0) &&
+                !((Math.abs(alpha - 70) < 75 ) &&
+                        (Math.abs(red - 255) < 75 ) &&
+                        (Math.abs(green - 107) < 75 ) &&
+                        (Math.abs(blue) < 30 ))) {
             robot.colors = robot.colorSensor.getNormalizedColors();
             float max = Math.max(Math.max(Math.max(robot.colors.red, robot.colors.green), robot.colors.blue), robot.colors.alpha);
             robot.colors.red   /= max;
@@ -144,53 +147,91 @@ public class AutonomousCraterSide extends LinearOpMode {
             timeToFind = robot.timer.seconds();
             telemetry.update();
         }
-        robot.timer.reset();
         robot.motor2.setPower(0);
         robot.motor4.setPower(0);
+        robot.timer.reset();
 
-        //Retrieves mineral only if the mineral was correctly sampled/the correct color was found
-        if (((Math.abs(alpha - 70) < 50 ) &&
-                (Math.abs(red - 255) < 50 ) &&
-                (Math.abs(green - 107) < 50 ) &&
-                (Math.abs(blue) < 10 ))) {
+        //Retrieves mineral only if the mineral was correctly sampled
+        if ((Math.abs(alpha - 70) < 70 ) &&
+                (Math.abs(red - 255) < 70 ) &&
+                (Math.abs(green - 107) < 70 ) &&
+                (Math.abs(blue) < 20 )) {
             robot.motor2.setPower(0);
             robot.motor4.setPower(0);
-            //Whipper is maintained
-<<<<<<< HEAD
-            //robot.motor8.setPower(1);
+
+            robot.motor1.setPower(-0.2);
+            robot.motor3.setPower(0.2);
+            robot.timer.reset();
+
+            while (opModeIsActive() && (robot.timer.seconds() < 0.9)) {
+                telemetry.addData("Backing up to acquire mineral(0.5 sec)", "Backing up: %2.5f S Elapsed", robot.timer.seconds());
+                telemetry.update();
+            }
+            robot.motor1.setPower(0);
+            robot.motor3.setPower(0);
+
+
+            robot.motor7.setPower(0.25);
+            robot.timer.reset();
+            while (opModeIsActive() && (robot.timer.seconds() < 0.75)) {
+                telemetry.addData("Lowering chariot(0.75 sec)", "Lowering: %2.5f S Elapsed", robot.timer.seconds());
+                telemetry.update();
+            }
+            robot.motor7.setPower(0);
+
+            //TURN ON WHIPPER
             robot.servo3.setPower(-1);
-            robot.motor2.setPower(-0.5);
-            robot.motor4.setPower(0.5);
-=======
-            //robot.servo3.setPower(1);
->>>>>>> 22ee591a0b3c45da52f2b7104d08f04d9bb23462
-            while (opModeIsActive() && (robot.timer.seconds() < 3.0)) {
-                telemetry.addData("Retrieving mineral", "Retrieving: %2.5f S Elapsed", robot.timer.seconds());
+
+
+            robot.motor1.setPower(0.2);
+            robot.motor3.setPower(-0.2);
+            robot.timer.reset();
+
+            while (opModeIsActive() && (robot.timer.seconds() < 0.9)) {
+                telemetry.addData("Acquiring mineral(1 sec)", "Acquring: %2.5f S Elapsed", robot.timer.seconds());
                 telemetry.update();
             }
-            //Retraction
-            robot.motor5.setPower(-1);
-            while (opModeIsActive() && (robot.timer.seconds() < 3.0)) {
-                telemetry.addData("Returning mineral", "Returning: %2.5f S Elapsed", robot.timer.seconds());
+            robot.motor1.setPower(0);
+            robot.motor3.setPower(0);
+
+            //Raising Chariot/Storing Mineral
+            robot.motor7.setPower(-0.35);
+            robot.timer.reset();
+            while (opModeIsActive() && (robot.timer.seconds() < 0.8)) {
+                telemetry.addData("Storing mineral(0.5 sec)", "Storing: %2.5f S Elapsed", robot.timer.seconds());
                 telemetry.update();
             }
-            robot.motor5.setPower(0);
+            robot.motor7.setPower(0);
+            robot.servo3.setPower(0);
+            /*
+            robot.motor1.setPower(-0.2);
+            robot.motor3.setPower(0.2);
+            robot.timer.reset();
+
+            while (opModeIsActive() && (robot.timer.seconds() < 0.9)) {
+                telemetry.addData("Acquiring mineral(1 sec)", "Acquring: %2.5f S Elapsed", robot.timer.seconds());
+                telemetry.update();
+            }
+            robot.motor1.setPower(0);
+            robot.motor3.setPower(0);
+            */
+
         }
 
         //Return to original position
         robot.timer.reset();
         //Reversed motion
-        robot.motor2.setPower(0.5);
-        robot.motor4.setPower(-0.5);
+        robot.motor2.setPower(0.3);
+        robot.motor4.setPower(-0.3);
         //Moves for the same length of time
         while (opModeIsActive() && (robot.timer.seconds() < timeToFind)){
-            telemetry.addData("Returning to initial position", "Returning: %2.5f S Elapsed", robot.timer.seconds());
+            telemetry.addData("Returning to initial position (" + timeToFind + " sec)", "Returning: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
         }
         robot.motor2.setPower(0);
         robot.motor4.setPower(0);
         robot.timer.reset();
-
+        /*
         //Depot
         //Straight line towards the depot
         robot.motor2.setPower(-0.5);
@@ -253,7 +294,6 @@ public class AutonomousCraterSide extends LinearOpMode {
         robot.timer.reset();
         initialAngle = robot.gyro.getAngularOrientation(robot.aRefInt, robot.aOrderXYZ, robot.aUnit).firstAngle;
         while (opModeIsActive() && (robot.timer.seconds() < 3.0) && (Math.abs(initialAngle -
-        */
 
         //Park Crater
         //Movement towards crater
@@ -268,7 +308,9 @@ public class AutonomousCraterSide extends LinearOpMode {
         robot.motor4.setPower(0);
         robot.motor1.setPower(0);
         robot.motor3.setPower(0);
+        */
         telemetry.addLine()
                 .addData("Parked:", "Completed");
+
     }
 }

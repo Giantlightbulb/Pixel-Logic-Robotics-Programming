@@ -116,14 +116,13 @@ public class HardwareOmni {
         motor8 = hwMap.get(DcMotor.class, "motor8");
 
         //Servos
+        //servo1 = Mascot Dump
         servo1 = hwMap.get(Servo.class, "servo1");
+        //servo2 = Robot Lock
         servo2 = hwMap.get(Servo.class, "servo2");
-<<<<<<< HEAD
         servo3 = hwMap.get(CRServoImpl.class, "servo3");
-=======
         //servo3 = Vacuum Whipper
         servo3 = hwMap.get(CRServo.class, "servo3");
->>>>>>> 22ee591a0b3c45da52f2b7104d08f04d9bb23462
 
         //  Sensors
         //  Gyro
