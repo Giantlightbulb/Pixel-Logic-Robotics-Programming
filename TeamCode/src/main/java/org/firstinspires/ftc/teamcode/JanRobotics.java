@@ -164,15 +164,15 @@ public class FinalOpModeDoubleControlV1 extends LinearOpMode{
 
             //x component vector
             //motor 2
-            robot.motor2.setPower(power * (-abs_x + left_t - right_t));
+            robot.frontMotor.setPower(power * (abs_x + left_t - right_t));
             //motor4
-            robot.motor4.setPower(power * (abs_x + left_t - right_t));
+            robot.backMotor.setPower(power * (abs_x + left_t - right_t));
 
             //y vector
             //motor1
-            robot.motor1.setPower(power * (abs_y + left_t - right_t));
+            robot.leftMotor.setPower(power * (abs_y + left_t - right_t));
             //motor3
-            robot.motor3.setPower(power * (-abs_y + left_t - right_t));
+            robot.rightMotor.setPower(power * (-abs_y + left_t - right_t));
             telemetry.update();
         }
     }
