@@ -21,34 +21,8 @@ public class FinalOpModeDoubleControlV1 extends LinearOpMode{
         robot.init(hardwareMap);
         double power = 0.3;
 
-        //Control variables
-        //Light switch
-        boolean bPrevState = false;
-        boolean bCurrState = bPrevState;
-        //Whipper toggle one way
-        boolean dUpPrevState = false;
-        boolean dUpCurrState = dUpPrevState;
-        //Whipper toggle the other way
+        boolean sensitivityControl = false;
 
-
-        //Arm
-        boolean dPadUp;
-        boolean dPadDown;
-        //Scoop
-        boolean dPadRight;
-        boolean dPadLeft;
-
-        //Drive train vector
-        double left_y, left_x;
-        //Rotation
-        double left_t, right_t;
-        //Rotated drive train vectors
-        double abs_x, abs_y;
-
-        //Extension control
-        double right_y, right_x;
-        //Extension time limiters
-        double horizontalTime, verticalTime;
 
         //Sensor variables
         //Gyroscope angle
@@ -78,29 +52,42 @@ public class FinalOpModeDoubleControlV1 extends LinearOpMode{
         //While loop for robot operation
         while (opModeIsActive()) {
 
-            //Bucket Flipper
-            if (gamepad1.right_bumper) {
-                telemetry.addLine()
-                        .addData("Bucket Flipping Back:", 0.4);
-                robot.motor8.setPower(-0.15);
-            } else if(gamepad1.left_bumper) {
-                telemetry.addLine()
-                        .addData("Bucket Returning:", 0.3);
-                robot.motor8.setPower(0.15);
-            } else {
-                robot.motor8.setPower(0);
+            //Sensitivity Control
+            if(gamepad2.x){
+                sensitivityControl = true;
+            }
+            else if(gamepad2.y){
+                sensitivityControl = false;
             }
 
-            if (gamepad1.a||gamepad1.b||gamepad1.x||gamepad1.y) {
-                robot.servo1.setPosition(0);
-            } else {
-                robot.servo1.setPosition(1);
+            //Forklift
+            if(sensitivityControl) {
+                robot.forklift.setPower(0.3 * gamepad2.left_stick_y);
+            }
+            else {
+                robot.forklift.setPower(0.8 * gamepad2.left_stick_y);
             }
 
-            if (gamepad2.x) {
-                robot.servo2.setPosition(0);
-            } else if(gamepad2.y){
-                robot.servo2.setPosition(1);
+            //Tape Extensions
+            if(gamepad2.right_trigger > 0) {
+                robot.leftTape.setPower(0.8 * gamepad2.right_trigger);
+                robot.rightTape.setPower(0.8 * gamepad2.right_trigger);
+            }
+            else{
+                robot.leftTape.setPower(0.8 * gamepad2.left_trigger);
+                robot.rightTape.setPower(0.8 * gamepad2.left_trigger);
+            }
+
+            if (gamepad1.x) {
+                robot.mascot.setPosition(0);
+            } else {
+                robot.mascot.setPosition(1);
+            }
+
+            if (gamepad2.a) {
+                robot.latch.setPosition(0);
+            } else if(gamepad2.b){
+                robot.latch.setPosition(1);
             }
 
             /*
@@ -126,25 +113,28 @@ public class FinalOpModeDoubleControlV1 extends LinearOpMode{
             //Whipper switch
 
 
-            if (gamepad2.left_bumper) {
-                robot.servo3.setPower(-1); //vacuum
-            } else if (gamepad2.right_bumper) {
-                robot.servo3.setPower(1); //spit
+            if (gamepad1.a) {
+                robot.vaccuum.setPower(-1); //suck
+            } else if (gamepad1.b) {
+                robot.vaccuum.setPower(1); //spit
             } else{
-                robot.servo3.setPower(0);
+                robot.vaccuum.setPower(0);
+            }
+
+            //Vertical Extension
+            if(gamepad1.dpad_up){
+                robot.verticalLift.setPower(0.8);
+            }
+            else if(gamepad1.dpad_down){
+                robot.verticalLift.setPower(-0.5);
+            }
+            else{
+                robot.verticalLift.setPower(0);
             }
 
 
-
-            //Horizontal Extension
-            robot.motor5.setPower(0.8*gamepad2.right_stick_y);
-
-            //Vertical Extension
-            robot.motor6.setPower(0.8*gamepad2.left_stick_y);
-
-
             //Chariot Lift
-            robot.motor7.setPower(0.8*gamepad1.right_stick_y);
+            //robot.motor7.setPower(0.8*gamepad1.right_stick_y);
 
 
             //Gamepad's left stick x and y values
