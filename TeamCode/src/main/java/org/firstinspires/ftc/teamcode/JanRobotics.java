@@ -11,9 +11,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
-@TeleOp(name="FinalOpModeV1", group="Tele-Op")
+@TeleOp(name="FinalOpModeDoubleControlV1", group="Tele-Op")
 
-public class FinalOpModeV1 extends LinearOpMode{
+public class FinalOpModeDoubleControlV1 extends LinearOpMode{
     //Initializes the robot hardware variables
     HardwareOmni robot = new HardwareOmni();
     public void runOpMode() {
@@ -29,8 +29,7 @@ public class FinalOpModeV1 extends LinearOpMode{
         boolean dUpPrevState = false;
         boolean dUpCurrState = dUpPrevState;
         //Whipper toggle the other way
-        boolean dDownPrevState = false;
-        boolean dDownCurrState = dDownPrevState;
+
 
         //Arm
         boolean dPadUp;
@@ -75,24 +74,36 @@ public class FinalOpModeV1 extends LinearOpMode{
         waitForStart();
         //Resets timer
         robot.timer.reset();
-        /*robot.servo2.setPosition(1.0);
+        robot.servo2.setPosition(1.0);
         //While loop for robot operation
         while (opModeIsActive()) {
-            if (gamepad1.left_bumper) {
-                //Unlock (1.0)
-                //servoPosition += 0.001;
-                robot.servo2.setPosition(1.0);
-            } else if (gamepad1.right_bumper) {
-                //Lock (0.68)
-                //servoPosition -= 0.001;
-                robot.servo2.setPosition(0.68);
+
+            //Bucket Flipper
+            if (gamepad1.right_bumper) {
+                telemetry.addLine()
+                        .addData("Bucket Flipping Back:", 0.4);
+                robot.motor8.setPower(-0.15);
+            } else if(gamepad1.left_bumper) {
+                telemetry.addLine()
+                        .addData("Bucket Returning:", 0.3);
+                robot.motor8.setPower(0.15);
+            } else {
+                robot.motor8.setPower(0);
             }
 
-            if (gamepad1.right_stick_button) {
+            if (gamepad1.a||gamepad1.b||gamepad1.x||gamepad1.y) {
                 robot.servo1.setPosition(0);
             } else {
                 robot.servo1.setPosition(1);
             }
+
+            if (gamepad2.x) {
+                robot.servo2.setPosition(0);
+            } else if(gamepad2.y){
+                robot.servo2.setPosition(1);
+            }
+
+            /*
             //Light switch control for color sensor
             bCurrState = gamepad1.b;
             //Checks for a different state
@@ -107,54 +118,34 @@ public class FinalOpModeV1 extends LinearOpMode{
                     }
                 }
             }
+
             //Updates bPrevState
             bPrevState = bCurrState;
+            */
 
             //Whipper switch
-            dUpCurrState = gamepad1.dpad_up;
-            dDownCurrState = gamepad1.dpad_down;
 
-            if (dUpCurrState != dUpPrevState || dDownCurrState != dDownPrevState) {
-                if (dUpCurrState && !dDownCurrState) {
-                    robot.servo3.setPower(-1);
-                } else if (dDownCurrState && !dUpCurrState) {
-                    robot.servo3.setPower(1);
-                } else if (!dUpCurrState && !dDownCurrState) {
-                    robot.servo3.setPower(0);
-                }
-            }
-            //Updates dDownPrevState
-            dDownPrevState = dDownCurrState;
-            //Updates xPrevState
-            dUpPrevState = dUpCurrState;
-*/
-            //Lift
-            robot.motor6.setPower(0.8*gamepad1.right_stick_y);
 
-            //Extension
-            robot.motor5.setPower(-0.8*gamepad1.right_stick_x);
-
-            //Bucket Flipper
-            if (gamepad1.dpad_right) {
-                telemetry.addLine()
-                        .addData("Bucket Flipping Back:", 0.4);
-                robot.motor8.setPower(-0.15);
-            } else if(gamepad1.dpad_left) {
-                telemetry.addLine()
-                        .addData("Bucket Returning:", 0.3);
-                robot.motor8.setPower(0.15);
-            } else {
-                robot.motor8.setPower(0);
+            if (gamepad2.left_bumper) {
+                robot.servo3.setPower(-1); //vacuum
+            } else if (gamepad2.right_bumper) {
+                robot.servo3.setPower(1); //spit
+            } else{
+                robot.servo3.setPower(0);
             }
 
-            //Arm
-            if (gamepad1.x) {
-                robot.motor7.setPower(-0.45);
-            } else if (gamepad1.y) {
-                robot.motor7.setPower(0.45);
-            } else {
-                robot.motor7.setPower(0);
-            }
+
+
+            //Horizontal Extension
+            robot.motor5.setPower(0.8*gamepad2.right_stick_y);
+
+            //Vertical Extension
+            robot.motor6.setPower(0.8*gamepad2.left_stick_y);
+
+
+            //Chariot Lift
+            robot.motor7.setPower(0.8*gamepad1.right_stick_y);
+
 
             //Gamepad's left stick x and y values
             //Inverts y's sign

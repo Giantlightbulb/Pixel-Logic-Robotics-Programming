@@ -45,21 +45,20 @@ public class HardwareOmni {
 
     //Initializes hardware variables
     //Drive train motors
-    public DcMotor motor1;
-    public DcMotor motor2;
-    public DcMotor motor3;
-    public DcMotor motor4;
+    public DcMotor motor1; //
+    public DcMotor motor2; //
+    public DcMotor motor3; //
+    public DcMotor motor4; //
 
-    //Extension Motor
-    public DcMotor motor5;
+    public DcMotor motor5; //Articulating Arm
     //Telescoping lift motor
-    public DcMotor motor6;
+    public DcMotor motor6; //Vertical Extension
 
     //Chariot Motors
     //Arm
-    public DcMotor motor7;
+    public DcMotor motor7; //Left Arm Extender
     //Back Flip
-    public DcMotor motor8;
+    public DcMotor motor8; //Right Arm Extender
 
     //Servos
     //Mascot
