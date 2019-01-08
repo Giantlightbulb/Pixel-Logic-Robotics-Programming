@@ -38,35 +38,35 @@ import android.graphics.Color;
 import android.view.View;
 
 
-public class HardwareOmni {
+public class JanuaryHardwareOmni {
     /* local OpMode members. */
     HardwareMap hwMap =  null;
     public ElapsedTime timer  = new ElapsedTime();
 
     //Initializes hardware variables
     //Drive train motors
-    public DcMotor motor1; //
-    public DcMotor motor2; //
-    public DcMotor motor3; //
-    public DcMotor motor4; //
+    public DcMotor frontDrive; //
+    public DcMotor backDrive; //
+    public DcMotor leftDrive; //
+    public DcMotor rightDrive; //
 
-    public DcMotor motor5; //Articulating Arm
+    public DcMotor forklift; //Articulating Arm
     //Telescoping lift motor
-    public DcMotor motor6; //Vertical Extension
+    public DcMotor verticalLift; //Vertical Extension
 
     //Chariot Motors
     //Arm
-    public DcMotor motor7; //Left Arm Extender
+    public DcMotor leftTape; //Left Arm Extender
     //Back Flip
-    public DcMotor motor8; //Right Arm Extender
+    public DcMotor rightTape; //Right Arm Extender
 
     //Servos
     //Mascot
-    public Servo servo1;
+    public Servo mascot;
     //Bucket Arm
-    public Servo servo2;
+    public Servo latch;
     //Whipper
-    public CRServo servo3;
+    public CRServo vaccum;
 
     //Initializes Sensors
     //  Gyro

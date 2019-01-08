@@ -11,9 +11,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
-@TeleOp(name="FinalOpModeDoubleControlV1", group="Tele-Op")
+@TeleOp(name="JanRobotics", group="Tele-Op")
 
-public class FinalOpModeDoubleControlV1 extends LinearOpMode{
+public class JanRobotics extends LinearOpMode{
     //Initializes the robot hardware variables
     HardwareOmni robot = new HardwareOmni();
     public void runOpMode() {
