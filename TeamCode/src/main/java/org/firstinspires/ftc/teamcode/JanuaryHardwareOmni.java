@@ -38,36 +38,35 @@ import android.graphics.Color;
 import android.view.View;
 
 
-public class HardwareOmni {
+public class JanuaryHardwareOmni {
     /* local OpMode members. */
-    HardwareMap hwMap =  null;
-    public ElapsedTime timer  = new ElapsedTime();
+    HardwareMap hwMap = null;
+    public ElapsedTime timer = new ElapsedTime();
 
     //Initializes hardware variables
     //Drive train motors
-    public DcMotor motor1;
-    public DcMotor motor2;
-    public DcMotor motor3;
-    public DcMotor motor4;
+    public DcMotor frontDrive; //
+    public DcMotor backDrive; //
+    public DcMotor leftDrive; //
+    public DcMotor rightDrive; //
 
-    //Extension Motor
-    public DcMotor motor5;
+    public DcMotor forklift; //Articulating Arm
     //Telescoping lift motor
-    public DcMotor motor6;
+    public DcMotor verticalLift; //Vertical Extension
 
     //Chariot Motors
     //Arm
-    public DcMotor motor7;
+    public DcMotor leftTape; //Left Arm Extender
     //Back Flip
-    public DcMotor motor8;
+    public DcMotor rightTape; //Right Arm Extender
 
     //Servos
     //Mascot
-    public Servo servo1;
+    public Servo mascot;
     //Bucket Arm
-    public Servo servo2;
+    public Servo latch;
     //Whipper
-    public CRServo servo3;
+    public CRServo vaccuum;
 
     //Initializes Sensors
     //  Gyro
@@ -91,7 +90,7 @@ public class HardwareOmni {
     View relativeLayout;
 
     //Constructor (Currently empty)
-    public HardwareOmni() {
+    public JanuaryHardwareOmni() {
     }
 
     /* Initialize standard Hardware interfaces */
@@ -102,27 +101,25 @@ public class HardwareOmni {
 
         //Hardware definitions
         //Drivetrain motors
-        motor1 = hwMap.get(DcMotor.class,"motor1");
-        motor2 = hwMap.get(DcMotor.class,"motor2");
-        motor3 = hwMap.get(DcMotor.class,"motor3");
-        motor4 = hwMap.get(DcMotor.class,"motor4");
-        //Vacuum motor
-        motor5 = hwMap.get(DcMotor.class, "motor5");
+        frontDrive = hwMap.get(DcMotor.class, "frontDrive");
+        backDrive = hwMap.get(DcMotor.class, "backDrive");
+        leftDrive = hwMap.get(DcMotor.class, "leftDrive");
+        rightDrive = hwMap.get(DcMotor.class, "rightDrive");
+        //Articulating Arm
+        forklift = hwMap.get(DcMotor.class, "forklift");
         //Telescoping lift motor
-        motor6 = hwMap.get(DcMotor.class, "motor6");
-        //Chariot Motors
-        motor7 = hwMap.get(DcMotor.class, "motor7");
-        //Back Flip
-        motor8 = hwMap.get(DcMotor.class, "motor8");
+        verticalLift = hwMap.get(DcMotor.class, "verticalLift");
+        //Tape Measure Extensions
+        leftTape = hwMap.get(DcMotor.class, "leftTape");
+        rightTape = hwMap.get(DcMotor.class, "rightTape");
 
         //Servos
         //servo1 = Mascot Dump
-        servo1 = hwMap.get(Servo.class, "servo1");
+        mascot = hwMap.get(Servo.class, "mascot");
         //servo2 = Robot Lock
-        servo2 = hwMap.get(Servo.class, "servo2");
-        servo3 = hwMap.get(CRServoImpl.class, "servo3");
+        latch = hwMap.get(Servo.class, "latch");
         //servo3 = Vacuum Whipper
-        servo3 = hwMap.get(CRServo.class, "servo3");
+        vaccuum = hwMap.get(CRServo.class, "vaccuum");
 
         //  Sensors
         //  Gyro
@@ -135,7 +132,7 @@ public class HardwareOmni {
         colorSensor = hwMap.get(NormalizedColorSensor.class, "color_sensor");
         //      Detects switchable light
         if (colorSensor instanceof SwitchableLight) {
-            ((SwitchableLight)colorSensor).enableLight(true);
+            ((SwitchableLight) colorSensor).enableLight(true);
         }
         //  Compass
         compass = hwMap.get(ModernRoboticsI2cCompassSensor.class, "compass");
@@ -147,35 +144,14 @@ public class HardwareOmni {
         relativeLayout = ((Activity) hwMap.appContext).findViewById(relativeLayoutId);
 
         //  Set all motors to zero power
-        motor1.setPower(0);
-        motor2.setPower(0);
-        motor3.setPower(0);
-        motor4.setPower(0);
-        motor5.setPower(0);
-        motor6.setPower(0);
-        motor7.setPower(0);
-        //motor8.setPower(0);
+        frontDrive.setPower(0);
+        backDrive.setPower(0);
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        forklift.setPower(0);
+        verticalLift.setPower(0);
+        leftTape.setPower(0);
+        rightTape.setPower(0);
 
     }
-
-    public void encoderRun(DcMotor firstMotor, DcMotor secondMotor, double power, double distance, double timeOut){
-        firstMotor.setPower(power);
-        secondMotor.setPower(power*-1);
-        firstMotor.setTargetPosition((int) distance);
-        secondMotor.setTargetPosition((int) distance*-1);
-        timer.reset();
-            while((firstMotor.getTargetPosition > firstMotor.currentPosition) &&
-              (secondMotor.getTargetPosition > secondMotor.currentPosition) &&
-               (timer.seconds() < timeOut ) &&
-                (opModeIsActive())) {
-
-                telemetry.addData("Running", "%2.5f distance left (firstMotor) %2.5f time left",(firstMotor.getTargetPosition - firstMotor.currentPosition), (timeOut - timer.seconds);
-                telemetry.update();
-
-            }
-        }
-    }
-
-    // robot.encoderRun(motor1, motor3, 0.5, 2, 1.0)
-
-
+}

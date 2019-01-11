@@ -11,33 +11,17 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
-@TeleOp(name="FinalOpModeV1", group="Tele-Op")
+@TeleOp(name="JanRobotics", group="Tele-Op")
 
-public class FinalOpModeV1 extends LinearOpMode{
+public class JanRobotics extends LinearOpMode{
     //Initializes the robot hardware variables
-    HardwareOmni robot = new HardwareOmni();
+    JanuaryHardwareOmni robot = new JanuaryHardwareOmni();
     public void runOpMode() {
         //Retrieves the mappings from runtime
         robot.init(hardwareMap);
         double power = 0.3;
 
-        //Control variables
-        //Light switch
-        boolean bPrevState = false;
-        boolean bCurrState = bPrevState;
-        //Whipper toggle one way
-        boolean dUpPrevState = false;
-        boolean dUpCurrState = dUpPrevState;
-        //Whipper toggle the other way
-        boolean dDownPrevState = false;
-        boolean dDownCurrState = dDownPrevState;
-
-        //Arm
-        boolean dPadUp;
-        boolean dPadDown;
-        //Scoop
-        boolean dPadRight;
-        boolean dPadLeft;
+        boolean sensitivityControl = false;
 
         //Drive train vector
         double left_y, left_x;
@@ -46,10 +30,6 @@ public class FinalOpModeV1 extends LinearOpMode{
         //Rotated drive train vectors
         double abs_x, abs_y;
 
-        //Extension control
-        double right_y, right_x;
-        //Extension time limiters
-        double horizontalTime, verticalTime;
 
         //Sensor variables
         //Gyroscope angle
@@ -75,24 +55,49 @@ public class FinalOpModeV1 extends LinearOpMode{
         waitForStart();
         //Resets timer
         robot.timer.reset();
-        /*robot.servo2.setPosition(1.0);
+        robot.latch.setPosition(1.0);
         //While loop for robot operation
         while (opModeIsActive()) {
-            if (gamepad1.left_bumper) {
-                //Unlock (1.0)
-                //servoPosition += 0.001;
-                robot.servo2.setPosition(1.0);
-            } else if (gamepad1.right_bumper) {
-                //Lock (0.68)
-                //servoPosition -= 0.001;
-                robot.servo2.setPosition(0.68);
+
+            //Sensitivity Control
+            if(gamepad2.x){
+                sensitivityControl = true;
+            }
+            else if(gamepad2.y){
+                sensitivityControl = false;
             }
 
-            if (gamepad1.right_stick_button) {
-                robot.servo1.setPosition(0);
-            } else {
-                robot.servo1.setPosition(1);
+            //Forklift
+            if(sensitivityControl) {
+                robot.forklift.setPower(0.3 * gamepad2.left_stick_y);
             }
+            else {
+                robot.forklift.setPower(0.8 * gamepad2.left_stick_y);
+            }
+
+            //Tape Extensions
+            if(gamepad2.right_trigger > 0) {
+                robot.leftTape.setPower(0.8 * gamepad2.right_trigger);
+                robot.rightTape.setPower(0.8 * gamepad2.right_trigger);
+            }
+            else{
+                robot.leftTape.setPower(0.8 * gamepad2.left_trigger);
+                robot.rightTape.setPower(0.8 * gamepad2.left_trigger);
+            }
+
+            if (gamepad1.x) {
+                robot.mascot.setPosition(0);
+            } else {
+                robot.mascot.setPosition(1);
+            }
+
+            if (gamepad2.a) {
+                robot.latch.setPosition(0);
+            } else if(gamepad2.b){
+                robot.latch.setPosition(1);
+            }
+
+            /*
             //Light switch control for color sensor
             bCurrState = gamepad1.b;
             //Checks for a different state
@@ -107,54 +112,37 @@ public class FinalOpModeV1 extends LinearOpMode{
                     }
                 }
             }
+
             //Updates bPrevState
             bPrevState = bCurrState;
+            */
 
             //Whipper switch
-            dUpCurrState = gamepad1.dpad_up;
-            dDownCurrState = gamepad1.dpad_down;
 
-            if (dUpCurrState != dUpPrevState || dDownCurrState != dDownPrevState) {
-                if (dUpCurrState && !dDownCurrState) {
-                    robot.servo3.setPower(-1);
-                } else if (dDownCurrState && !dUpCurrState) {
-                    robot.servo3.setPower(1);
-                } else if (!dUpCurrState && !dDownCurrState) {
-                    robot.servo3.setPower(0);
-                }
-            }
-            //Updates dDownPrevState
-            dDownPrevState = dDownCurrState;
-            //Updates xPrevState
-            dUpPrevState = dUpCurrState;
-*/
-            //Lift
-            robot.motor6.setPower(0.8*gamepad1.right_stick_y);
 
-            //Extension
-            robot.motor5.setPower(-0.8*gamepad1.right_stick_x);
-
-            //Bucket Flipper
-            if (gamepad1.dpad_right) {
-                telemetry.addLine()
-                        .addData("Bucket Flipping Back:", 0.4);
-                robot.motor8.setPower(-0.15);
-            } else if(gamepad1.dpad_left) {
-                telemetry.addLine()
-                        .addData("Bucket Returning:", 0.3);
-                robot.motor8.setPower(0.15);
-            } else {
-                robot.motor8.setPower(0);
+            if (gamepad1.a) {
+                robot.vaccuum.setPower(-1); //suck
+            } else if (gamepad1.b) {
+                robot.vaccuum.setPower(1); //spit
+            } else{
+                robot.vaccuum.setPower(0);
             }
 
-            //Arm
-            if (gamepad1.x) {
-                robot.motor7.setPower(-0.45);
-            } else if (gamepad1.y) {
-                robot.motor7.setPower(0.45);
-            } else {
-                robot.motor7.setPower(0);
+            //Vertical Extension
+            if(gamepad1.dpad_up){
+                robot.verticalLift.setPower(0.8);
             }
+            else if(gamepad1.dpad_down){
+                robot.verticalLift.setPower(-0.5);
+            }
+            else{
+                robot.verticalLift.setPower(0);
+            }
+
+
+            //Chariot Lift
+            //robot.motor7.setPower(0.8*gamepad1.right_stick_y);
+
 
             //Gamepad's left stick x and y values
             //Inverts y's sign
@@ -183,16 +171,16 @@ public class FinalOpModeV1 extends LinearOpMode{
 
             //x component vector
             //motor 2
-            robot.motor2.setPower(power * (-abs_x + left_t - right_t));
+            robot.frontDrive.setPower(power * (abs_x + left_t - right_t));
             //motor4
-            robot.motor4.setPower(power * (abs_x + left_t - right_t));
+            robot.backDrive.setPower(power * (abs_x + left_t - right_t));
 
             //y vector
             //motor1
-            robot.motor1.setPower(power * (abs_y + left_t - right_t));
+            robot.leftDrive.setPower(power * (abs_y + left_t - right_t));
             //motor3
-            robot.motor3.setPower(power * (-abs_y + left_t - right_t));
+            robot.rightDrive.setPower(power * (-abs_y + left_t - right_t));
             telemetry.update();
         }
     }
-
+}
