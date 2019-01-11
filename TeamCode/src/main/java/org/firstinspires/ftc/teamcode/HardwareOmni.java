@@ -156,7 +156,7 @@ public class HardwareOmni {
         //motor8.setPower(0);
 
     }
-
+/*
     public void encoderRun(DcMotor.class firstMotor, DcMotor.class secondMotor, double power, double distance, double timeOut){
         firstMotor.setPower(speed);
         secondMotor.setPower(speed*-1);
@@ -173,6 +173,7 @@ public class HardwareOmni {
 
             }
         }
+        */
     }
 
     // robot.encoderRun(motor1, motor3, 0.5, 2, 1.0)

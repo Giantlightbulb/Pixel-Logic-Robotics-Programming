@@ -1,5 +1,5 @@
 // ENCODER DEPOT
-
+/*
 package org.firstinspires.ftc.teamcode;
 
 //TeleOp and Hardware
@@ -66,7 +66,7 @@ public class EncoderDepot extends LinearOpMode {
         robot.timer.reset();
 */
 
-        robot.encoderRun(motor1, motor3, 0.5, 2, 3.0)
+       // robot.encoderRun(motor1, motor3, 0.5, 2, 3.0)
 
 
         /*
@@ -220,7 +220,7 @@ public class EncoderDepot extends LinearOpMode {
             robot.motor3.setPower(0);
             */
 
-        }
+        //}
         /*     - take out to run
 
 
@@ -320,7 +320,7 @@ public class EncoderDepot extends LinearOpMode {
         robot.timer.reset();
         initialAngle = robot.gyro.getAngularOrientation(robot.aRefInt, robot.aOrderXYZ, robot.aUnit).firstAngle;
         while (opModeIsActive() && (robot.timer.seconds() < 3.0) && (Math.abs(initialAngle -
-        */
+        *//*
 
 
         robot.motor2.setPower(0);
@@ -332,5 +332,5 @@ public class EncoderDepot extends LinearOpMode {
 
 
     }
-}
+}/*
 

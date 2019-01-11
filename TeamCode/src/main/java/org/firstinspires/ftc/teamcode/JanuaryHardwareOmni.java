@@ -40,8 +40,8 @@ import android.view.View;
 
 public class JanuaryHardwareOmni {
     /* local OpMode members. */
-    HardwareMap hwMap =  null;
-    public ElapsedTime timer  = new ElapsedTime();
+    HardwareMap hwMap = null;
+    public ElapsedTime timer = new ElapsedTime();
 
     //Initializes hardware variables
     //Drive train motors
@@ -66,7 +66,7 @@ public class JanuaryHardwareOmni {
     //Bucket Arm
     public Servo latch;
     //Whipper
-    public CRServo vaccum;
+    public CRServo vaccuum;
 
     //Initializes Sensors
     //  Gyro
@@ -90,7 +90,7 @@ public class JanuaryHardwareOmni {
     View relativeLayout;
 
     //Constructor (Currently empty)
-    public HardwareOmni() {
+    public JanuaryHardwareOmni() {
     }
 
     /* Initialize standard Hardware interfaces */
@@ -101,10 +101,10 @@ public class JanuaryHardwareOmni {
 
         //Hardware definitions
         //Drivetrain motors
-        frontDrive = hwMap.get(DcMotor.class,"frontDrive");
-        backDrive = hwMap.get(DcMotor.class,"backDrive");
-        leftDrive = hwMap.get(DcMotor.class,"leftDrive");
-        rightDrive = hwMap.get(DcMotor.class,"motor4");
+        frontDrive = hwMap.get(DcMotor.class, "frontDrive");
+        backDrive = hwMap.get(DcMotor.class, "backDrive");
+        leftDrive = hwMap.get(DcMotor.class, "leftDrive");
+        rightDrive = hwMap.get(DcMotor.class, "rightDrive");
         //Articulating Arm
         forklift = hwMap.get(DcMotor.class, "forklift");
         //Telescoping lift motor
@@ -119,7 +119,7 @@ public class JanuaryHardwareOmni {
         //servo2 = Robot Lock
         latch = hwMap.get(Servo.class, "latch");
         //servo3 = Vacuum Whipper
-        vaccum = hwMap.get(CRServo.class, "vaccuum");
+        vaccuum = hwMap.get(CRServo.class, "vaccuum");
 
         //  Sensors
         //  Gyro
@@ -132,7 +132,7 @@ public class JanuaryHardwareOmni {
         colorSensor = hwMap.get(NormalizedColorSensor.class, "color_sensor");
         //      Detects switchable light
         if (colorSensor instanceof SwitchableLight) {
-            ((SwitchableLight)colorSensor).enableLight(true);
+            ((SwitchableLight) colorSensor).enableLight(true);
         }
         //  Compass
         compass = hwMap.get(ModernRoboticsI2cCompassSensor.class, "compass");
@@ -154,3 +154,4 @@ public class JanuaryHardwareOmni {
         rightTape.setPower(0);
 
     }
+}

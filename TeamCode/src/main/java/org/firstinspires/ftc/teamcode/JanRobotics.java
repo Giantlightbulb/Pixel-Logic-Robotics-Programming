@@ -15,13 +15,20 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 public class JanRobotics extends LinearOpMode{
     //Initializes the robot hardware variables
-    HardwareOmni robot = new HardwareOmni();
+    JanuaryHardwareOmni robot = new JanuaryHardwareOmni();
     public void runOpMode() {
         //Retrieves the mappings from runtime
         robot.init(hardwareMap);
         double power = 0.3;
 
         boolean sensitivityControl = false;
+
+        //Drive train vector
+        double left_y, left_x;
+        //Rotation
+        double left_t, right_t;
+        //Rotated drive train vectors
+        double abs_x, abs_y;
 
 
         //Sensor variables
@@ -48,7 +55,7 @@ public class JanRobotics extends LinearOpMode{
         waitForStart();
         //Resets timer
         robot.timer.reset();
-        robot.servo2.setPosition(1.0);
+        robot.latch.setPosition(1.0);
         //While loop for robot operation
         while (opModeIsActive()) {
 
@@ -164,15 +171,15 @@ public class JanRobotics extends LinearOpMode{
 
             //x component vector
             //motor 2
-            robot.frontMotor.setPower(power * (abs_x + left_t - right_t));
+            robot.frontDrive.setPower(power * (abs_x + left_t - right_t));
             //motor4
-            robot.backMotor.setPower(power * (abs_x + left_t - right_t));
+            robot.backDrive.setPower(power * (abs_x + left_t - right_t));
 
             //y vector
             //motor1
-            robot.leftMotor.setPower(power * (abs_y + left_t - right_t));
+            robot.leftDrive.setPower(power * (abs_y + left_t - right_t));
             //motor3
-            robot.rightMotor.setPower(power * (-abs_y + left_t - right_t));
+            robot.rightDrive.setPower(power * (-abs_y + left_t - right_t));
             telemetry.update();
         }
     }
