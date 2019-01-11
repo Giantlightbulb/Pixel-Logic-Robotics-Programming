@@ -158,18 +158,18 @@ public class HardwareOmni {
 
     }
 
-    public void encoderRun(DcMotor.class firstMotor, DcMotor.class secondMotor, double power, double distance, double timeOut){
-        firstMotor.setPower(speed);
-        secondMotor.setPower(speed*-1);
-        firstMotor.setTargetPosition(distance);
-        secondMotor.setTargetPosition(distance*-1);
-        robot.timer.reset;
+    public void encoderRun(DcMotor firstMotor, DcMotor secondMotor, double power, double distance, double timeOut){
+        firstMotor.setPower(power);
+        secondMotor.setPower(power*-1);
+        firstMotor.setTargetPosition((int) distance);
+        secondMotor.setTargetPosition((int) distance*-1);
+        timer.reset();
             while((firstMotor.getTargetPosition > firstMotor.currentPosition) &&
               (secondMotor.getTargetPosition > secondMotor.currentPosition) &&
-               (robot.timer.seconds < timeOut ) &&
+               (timer.seconds() < timeOut ) &&
                 (opModeIsActive())) {
 
-                telemetry.addData("Running", "%2.5f distance left (firstMotor) %2.5f time left",(firstMotor.getTargetPosition - firstMotor.currentPosition), (timeOut - robot.timer.seconds);
+                telemetry.addData("Running", "%2.5f distance left (firstMotor) %2.5f time left",(firstMotor.getTargetPosition - firstMotor.currentPosition), (timeOut - timer.seconds);
                 telemetry.update();
 
             }

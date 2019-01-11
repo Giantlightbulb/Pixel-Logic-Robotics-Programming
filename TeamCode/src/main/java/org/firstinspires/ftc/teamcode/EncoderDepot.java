@@ -66,7 +66,7 @@ public class EncoderDepot extends LinearOpMode {
         robot.timer.reset();
 */
 
-        robot.encoderRun(motor1, motor3, 0.5, 2, 3.0)
+        robot.encoderRun(robot.motor1, robot.motor3, 0.5, 2, 3.0);
 
 
         /*
@@ -322,13 +322,6 @@ public class EncoderDepot extends LinearOpMode {
         while (opModeIsActive() && (robot.timer.seconds() < 3.0) && (Math.abs(initialAngle -
         */
 
-
-        robot.motor2.setPower(0);
-        robot.motor4.setPower(0);
-        robot.motor1.setPower(0);
-        robot.motor3.setPower(0);
-        telemetry.addLine()
-                .addData("Parked:", "Completed");
 
 
     }
