@@ -101,7 +101,7 @@ public class MatthewDriverOperatorOpMode extends LinearOpMode{
             //Power variable (0,1), average drive train motor speed
             //x component of the direction vector
             //Handles left and right motion
-            robot.frontDrive.setPower(power * (abs_x + left_t - right_t));
+            robot.frontDrive.setPower(power * (-abs_x + left_t - right_t));
             robot.backDrive.setPower(power * (abs_x + left_t - right_t));
 
             //y component of the direction vector
@@ -109,21 +109,17 @@ public class MatthewDriverOperatorOpMode extends LinearOpMode{
             robot.leftDrive.setPower(power * (abs_y + left_t - right_t));
             robot.rightDrive.setPower(power * (-abs_y + left_t - right_t));
 
-            //Vacuum Toggle
-            if (gamepad1.dpad_up) {
-                robot.vacuum.setPower(-1);
-            } else if (gamepad1.dpad_down) {
-                robot.vacuum.setPower(1);
-            } else {
-                robot.vacuum.setPower(0);
-            }
-
             //Drop Mascot
             if (gamepad1.a) {
                 robot.mascot.setPosition(1);
             } else {
                 robot.mascot.setPosition(0);
             }
+
+            //Latch
+            if (gamepad1.left_bumper)
+                upPrev = gamepad1.dpad_up;
+            downPrev = gamepad1.dpad_down;
 
             //Operator
             //Arm
@@ -134,13 +130,16 @@ public class MatthewDriverOperatorOpMode extends LinearOpMode{
             robot.rightTape.setPower(-power*gamepad2.right_stick_x);
 
             //Vertical Lift
-            robot.verticalLift.setPower(gamepad2.right_stick_y);
+            robot.verticalLift.setPower(power*gamepad2.right_stick_y);
 
-
-            //Latch
-            if (gamepad1.left_bumper)
-            upPrev = gamepad1.dpad_up;
-            downPrev = gamepad1.dpad_down;
+            //Vacuum Toggle
+            if (gamepad2.dpad_up) {
+                robot.vacuum.setPower(-1);
+            } else if (gamepad2.dpad_down) {
+                robot.vacuum.setPower(1);
+            } else {
+                robot.vacuum.setPower(0);
+            }
 
             //All telemetry
             telemetry.addLine()
