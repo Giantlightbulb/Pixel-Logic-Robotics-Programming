@@ -101,13 +101,13 @@ public class MatthewDriverOperatorOpMode extends LinearOpMode{
             //Power variable (0,1), average drive train motor speed
             //x component of the direction vector
             //Handles left and right motion
-            robot.frontDrive.setPower(power * (-abs_x + left_t - right_t));
-            robot.backDrive.setPower(power * (abs_x + left_t - right_t));
+            robot.frontDrive.setPower(power * (abs_x - left_t + right_t));
+            robot.backDrive.setPower(power * (-abs_x - left_t + right_t));
 
             //y component of the direction vector
             //Handles forwards and backwards motion
-            robot.leftDrive.setPower(power * (abs_y + left_t - right_t));
-            robot.rightDrive.setPower(power * (-abs_y + left_t - right_t));
+            robot.leftDrive.setPower(power * (abs_y - left_t + right_t));
+            robot.rightDrive.setPower(power * (-abs_y - left_t + right_t));
 
             //Drop Mascot
             if (gamepad1.a) {
@@ -122,6 +122,14 @@ public class MatthewDriverOperatorOpMode extends LinearOpMode{
             downPrev = gamepad1.dpad_down;
 
             //Operator
+            //Sensitivity
+            if (gamepad2.x) {
+                if (sensitivity > 0.2) {
+                    
+                }
+            } else if (gamepad2.b) {
+
+            }
             //Arm
             robot.forklift.setPower(-power*gamepad2.left_stick_y);
 
