@@ -39,14 +39,14 @@ public class JanuaryDepotAutonomous extends LinearOpMode {
         waitForStart();
         robot.timer.reset();
 //----------------------------------------End Initialization
-        robot.encoderRun(robot.frontDrive, robot.backDrive,0.5 , 400, 2);
+        encoderRun(robot.frontDrive, robot.backDrive,0.5 , 400, 2.0);
 
     }
     public void encoderRun(DcMotor firstMotor, DcMotor secondMotor, double power, int distance, double timeOut) {
         firstMotor.setTargetPosition(distance);
-        secondMotor.setTargetPosition(distance);
+        secondMotor.setTargetPosition(-distance);
         firstMotor.setPower(power);
-        secondMotor.setPower(power);
+        secondMotor.setPower(-power);
         robot.timer.reset();
         while ((firstMotor.getTargetPosition() > firstMotor.getCurrentPosition()) &&
                 (secondMotor.getTargetPosition() > secondMotor.getCurrentPosition()) &&
