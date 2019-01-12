@@ -117,42 +117,67 @@ public class MatthewDriverOperatorOpMode extends LinearOpMode{
             }
 
             //Latch
-            if (gamepad1.left_bumper)
-                upPrev = gamepad1.dpad_up;
+            if (gamepad1.left_bumper);
+
+            upPrev = gamepad1.dpad_up;
             downPrev = gamepad1.dpad_down;
 
             //Operator
             //Sensitivity
             if (gamepad2.x) {
-                if (sensitivity > 0.2) {
-                    
+                if (sensitivity + power > 0.05) {
+                    sensitivity -= 0.05;
                 }
             } else if (gamepad2.b) {
-
+                if (sensitivity + power < 0.5) {
+                    sensitivity -= 0.05;
+                }
             }
             //Arm
-            robot.forklift.setPower(-power*gamepad2.left_stick_y);
+            robot.forklift.setPower(-(power+sensitivity)*gamepad2.left_stick_y);
 
             //Extension
-            robot.leftTape.setPower(power*gamepad2.right_stick_x);
-            robot.rightTape.setPower(-power*gamepad2.right_stick_x);
+            robot.leftTape.setPower((power+sensitivity)*gamepad2.right_stick_x);
+            robot.rightTape.setPower(-(power+sensitivity)*gamepad2.right_stick_x);
 
             //Vertical Lift
             robot.verticalLift.setPower(power*gamepad2.right_stick_y);
-
             //Vacuum Toggle
+            /*
             if (gamepad2.dpad_up) {
-                robot.vacuum.setPower(-1);
+                if (!upPrev && robot.vacuum.getPower() == -1) {
+                    robot.vacuum.setPower(0);
+                } else {
+                    robot.vacuum.setPower(-1);
+                }
             } else if (gamepad2.dpad_down) {
+                if (!downPrev && robot.vacuum.getPower() == 1) {
+                    robot.vacuum.setPower(0);
+                } else {
+                    robot.vacuum.setPower(1);
+                }
+            }
+            */
+            if (gamepad1.dpad_up) {
+                robot.vacuum.setPower(-1);
+            } else if (gamepad1.dpad_down) {
                 robot.vacuum.setPower(1);
             } else {
                 robot.vacuum.setPower(0);
             }
+            upPrev = gamepad2.dpad_up;
+            downPrev = gamepad2.dpad_down;
 
             //All telemetry
             telemetry.addLine()
                     .addData("Left Stick X:", left_x)
                     .addData("Left Stick Y:", left_y);
+            telemetry.addLine()
+                    .addData("Power Sensitivity:", (power+sensitivity));
+            telemetry.addLine()
+                    .addData("D-Pad Up", gamepad1.dpad_up);
+            telemetry.addLine()
+                    .addData("D-Pad Down", gamepad1.dpad_down);
             telemetry.update();
         }
     }
