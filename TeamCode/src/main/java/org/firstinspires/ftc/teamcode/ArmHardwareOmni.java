@@ -45,10 +45,10 @@ public class ArmHardwareOmni {
 
     //Initializes hardware variables
     //Drive train motors
-    public DcMotor frontMotor; //
-    public DcMotor backMotor; //
-    public DcMotor leftMotor; //
-    public DcMotor rightMotor; //
+    public DcMotor frontDrive; //
+    public DcMotor backDrive; //
+    public DcMotor leftDrive; //
+    public DcMotor rightDrive; //
 
     public DcMotor arm; //Articulating Arm
     //Telescoping lift motor
@@ -101,10 +101,10 @@ public class ArmHardwareOmni {
 
         //Hardware definitions
         //Drivetrain motors
-        frontMotor = hwMap.get(DcMotor.class, "frontMotor");
-        backMotor = hwMap.get(DcMotor.class, "backMotor");
-        leftMotor = hwMap.get(DcMotor.class, "leftMotor");
-        rightMotor = hwMap.get(DcMotor.class, "rightMotor");
+        frontDrive = hwMap.get(DcMotor.class, "frontDrive");
+        backDrive = hwMap.get(DcMotor.class, "backDrive");
+        leftDrive = hwMap.get(DcMotor.class, "leftDrive");
+        rightDrive = hwMap.get(DcMotor.class, "rightDrive");
         //Articulating Arm
         arm = hwMap.get(DcMotor.class, "arm");
         //Telescoping lift motor
@@ -144,10 +144,10 @@ public class ArmHardwareOmni {
         relativeLayout = ((Activity) hwMap.appContext).findViewById(relativeLayoutId);
 
         //  Set all motors to zero power
-        frontMotor.setPower(0);
-        backMotor.setPower(0);
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
+        frontDrive.setPower(0);
+        backDrive.setPower(0);
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
         arm.setPower(0);
         verticalLift.setPower(0);
         leftTape.setPower(0);

@@ -101,13 +101,13 @@ public class MatthewDriverOperatorOpMode extends LinearOpMode{
             //Power variable (0,1), average drive train motor speed
             //x component of the direction vector
             //Handles left and right motion
-            robot.frontMotor.setPower(power * (abs_x + left_t - right_t));
-            robot.backMotor.setPower(power * (abs_x + left_t - right_t));
+            robot.frontDrive.setPower(power * (abs_x + left_t - right_t));
+            robot.backDrive.setPower(power * (abs_x + left_t - right_t));
 
             //y component of the direction vector
             //Handles forwards and backwards motion
-            robot.leftMotor.setPower(power * (abs_y + left_t - right_t));
-            robot.rightMotor.setPower(power * (-abs_y + left_t - right_t));
+            robot.leftDrive.setPower(power * (abs_y + left_t - right_t));
+            robot.rightDrive.setPower(power * (-abs_y + left_t - right_t));
 
             //Vacuum Toggle
             if (gamepad1.dpad_up) {

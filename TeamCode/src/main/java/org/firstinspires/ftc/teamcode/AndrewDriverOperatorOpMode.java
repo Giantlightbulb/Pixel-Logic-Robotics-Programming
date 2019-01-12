@@ -169,15 +169,15 @@ public class AndrewDriverOperatorOpMode extends LinearOpMode{
 
             //x component vector
             //motor 2
-            robot.frontMotor.setPower(power * (abs_x + left_t - right_t));
+            robot.frontDrive.setPower(power * (abs_x + left_t - right_t));
             //motor4
-            robot.backMotor.setPower(power * (abs_x + left_t - right_t));
+            robot.backDrive.setPower(power * (abs_x + left_t - right_t));
 
             //y vector
             //motor1
-            robot.leftMotor.setPower(power * (abs_y + left_t - right_t));
+            robot.leftDrive.setPower(power * (abs_y + left_t - right_t));
             //motor3
-            robot.rightMotor.setPower(power * (-abs_y + left_t - right_t));
+            robot.rightDrive.setPower(power * (-abs_y + left_t - right_t));
             telemetry.update();
         }
     }
