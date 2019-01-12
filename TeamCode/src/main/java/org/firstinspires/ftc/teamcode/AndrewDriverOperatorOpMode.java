@@ -67,10 +67,10 @@ public class AndrewDriverOperatorOpMode extends LinearOpMode{
 
             //Forklift
             if(sensitivityControl) {
-                robot.arm.setPower(0.3 * gamepad2.left_stick_y);
+                robot.forklift.setPower(0.3 * gamepad2.left_stick_y);
             }
             else {
-                robot.arm.setPower(0.8 * gamepad2.left_stick_y);
+                robot.forklift.setPower(0.8 * gamepad2.left_stick_y);
             }
 
             //Tape Extensions

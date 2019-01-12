@@ -127,7 +127,7 @@ public class MatthewDriverOperatorOpMode extends LinearOpMode{
 
             //Operator
             //Arm
-            robot.arm.setPower(-power*gamepad2.left_stick_y);
+            robot.forklift.setPower(-power*gamepad2.left_stick_y);
 
             //Extension
             robot.leftTape.setPower(power*gamepad2.right_stick_x);

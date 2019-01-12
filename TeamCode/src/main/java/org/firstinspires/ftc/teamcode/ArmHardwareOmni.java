@@ -50,7 +50,7 @@ public class ArmHardwareOmni {
     public DcMotor leftDrive; //
     public DcMotor rightDrive; //
 
-    public DcMotor arm; //Articulating Arm
+    public DcMotor forklift; //Articulating Arm
     //Telescoping lift motor
     public DcMotor verticalLift; //Vertical Extension
 
@@ -106,7 +106,7 @@ public class ArmHardwareOmni {
         leftDrive = hwMap.get(DcMotor.class, "leftDrive");
         rightDrive = hwMap.get(DcMotor.class, "rightDrive");
         //Articulating Arm
-        arm = hwMap.get(DcMotor.class, "arm");
+        forklift = hwMap.get(DcMotor.class, "forklift");
         //Telescoping lift motor
         verticalLift = hwMap.get(DcMotor.class, "verticalLift");
         //Tape Measure Extensions
@@ -148,7 +148,7 @@ public class ArmHardwareOmni {
         backDrive.setPower(0);
         leftDrive.setPower(0);
         rightDrive.setPower(0);
-        arm.setPower(0);
+        forklift.setPower(0);
         verticalLift.setPower(0);
         leftTape.setPower(0);
         rightTape.setPower(0);
