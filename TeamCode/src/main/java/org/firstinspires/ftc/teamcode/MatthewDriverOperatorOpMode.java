@@ -159,11 +159,9 @@ public class MatthewDriverOperatorOpMode extends LinearOpMode{
             }
             */
             if (gamepad1.dpad_up) {
-                robot.vacuum.setPower(-1);
+                robot.vacuum.setPower(-0.5);
             } else if (gamepad1.dpad_down) {
-                robot.vacuum.setPower(1);
-            } else {
-                robot.vacuum.setPower(0);
+                robot.vacuum.setPower(0.5);
             }
             upPrev = gamepad2.dpad_up;
             downPrev = gamepad2.dpad_down;
