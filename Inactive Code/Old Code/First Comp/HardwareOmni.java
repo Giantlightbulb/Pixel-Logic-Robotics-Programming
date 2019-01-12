@@ -156,23 +156,21 @@ public class HardwareOmni {
         //motor8.setPower(0);
 
     }
-<<<<<<< HEAD
-
+/*
     public void encoderRun(DcMotor firstMotor, DcMotor secondMotor, double power, double distance, double timeOut){
         firstMotor.setPower(power);
         secondMotor.setPower(power*-1);
         firstMotor.setTargetPosition((int) distance);
         secondMotor.setTargetPosition((int) distance*-1);
         timer.reset();
-=======
-/*
+*/
+
     public void encoderRun(DcMotor.class firstMotor, DcMotor.class secondMotor, double power, double distance, double timeOut){
-        firstMotor.setPower(speed);
-        secondMotor.setPower(speed*-1);
         firstMotor.setTargetPosition(distance);
-        secondMotor.setTargetPosition(distance*-1);
+        secondMotor.setTargetPosition(distance);
+        firstMotor.setPower(speed);
+        secondMotor.setPower(speed);
         robot.timer.reset;
->>>>>>> d9dd4666cf97d140c696f06e774d024d9576a259
             while((firstMotor.getTargetPosition > firstMotor.currentPosition) &&
               (secondMotor.getTargetPosition > secondMotor.currentPosition) &&
                (timer.seconds() < timeOut ) &&
@@ -183,7 +181,7 @@ public class HardwareOmni {
 
             }
         }
-        */
+
     }
 
     // robot.encoderRun(motor1, motor3, 0.5, 2, 1.0)

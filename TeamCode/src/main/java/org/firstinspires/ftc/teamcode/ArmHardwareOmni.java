@@ -154,4 +154,20 @@ public class ArmHardwareOmni {
         rightTape.setPower(0);
 
     }
+    public void encoderRun(DcMotor firstMotor, DcMotor secondMotor, double power, double distance, double timeOut){
+        firstMotor.setTargetPosition(distance);
+        secondMotor.setTargetPosition(distance);
+        firstMotor.setPower(power);
+        secondMotor.setPower(power);
+        robot.timer.reset;
+        while((firstMotor.getTargetPosition() > firstMotor.getCurrentPosition()) &&
+                (secondMotor.getTargetPosition() > secondMotor.getCurrentPosition()) &&
+                (timer.seconds() < timeOut ) &&
+                (opModeIsActive())) {
+
+            telemetry.addData("Running", "%2.5f distance left (firstMotor) %2.5f time left",(firstMotor.getTargetPosition - firstMotor.currentPosition), (timeOut - timer.seconds);
+            telemetry.update();
+
+        }
+    }
 }
