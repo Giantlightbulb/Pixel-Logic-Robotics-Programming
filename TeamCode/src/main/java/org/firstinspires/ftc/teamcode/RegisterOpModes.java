@@ -46,8 +46,9 @@ public class RegisterOpModes
     public static void registerMyOpModes(OpModeManager manager) {
 
         //Operating Op-Modes
-        manager.register("VProjControl", VProjControl.class);
-        manager.register("AbsoluteControlColor", AbsoluteControlColor.class);
+        manager.register("ArmDriverOpMode", AndrewDriverOperatorOpMode.class);
+        manager.register("MatthewArmDriverOpMode", MatthewDriverOperatorOpMode.class);
+        //Old Op-Modes
         //Drive Op-Modes
         //manager.register("Drive Now",       DriveNow.class);
         //manager.register( "MFC", MFC.class);

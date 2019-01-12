@@ -38,19 +38,19 @@ import android.graphics.Color;
 import android.view.View;
 
 
-public class JanuaryHardwareOmni {
+public class ArmHardwareOmni {
     /* local OpMode members. */
     HardwareMap hwMap = null;
     public ElapsedTime timer = new ElapsedTime();
 
     //Initializes hardware variables
     //Drive train motors
-    public DcMotor frontDrive; //
-    public DcMotor backDrive; //
-    public DcMotor leftDrive; //
-    public DcMotor rightDrive; //
+    public DcMotor frontMotor; //
+    public DcMotor backMotor; //
+    public DcMotor leftMotor; //
+    public DcMotor rightMotor; //
 
-    public DcMotor forklift; //Articulating Arm
+    public DcMotor arm; //Articulating Arm
     //Telescoping lift motor
     public DcMotor verticalLift; //Vertical Extension
 
@@ -66,7 +66,7 @@ public class JanuaryHardwareOmni {
     //Bucket Arm
     public Servo latch;
     //Whipper
-    public CRServo vaccuum;
+    public CRServo vacuum;
 
     //Initializes Sensors
     //  Gyro
@@ -90,7 +90,7 @@ public class JanuaryHardwareOmni {
     View relativeLayout;
 
     //Constructor (Currently empty)
-    public JanuaryHardwareOmni() {
+    public ArmHardwareOmni() {
     }
 
     /* Initialize standard Hardware interfaces */
@@ -101,12 +101,12 @@ public class JanuaryHardwareOmni {
 
         //Hardware definitions
         //Drivetrain motors
-        frontDrive = hwMap.get(DcMotor.class, "frontDrive");
-        backDrive = hwMap.get(DcMotor.class, "backDrive");
-        leftDrive = hwMap.get(DcMotor.class, "leftDrive");
-        rightDrive = hwMap.get(DcMotor.class, "rightDrive");
+        frontMotor = hwMap.get(DcMotor.class, "frontMotor");
+        backMotor = hwMap.get(DcMotor.class, "backMotor");
+        leftMotor = hwMap.get(DcMotor.class, "leftMotor");
+        rightMotor = hwMap.get(DcMotor.class, "rightMotor");
         //Articulating Arm
-        forklift = hwMap.get(DcMotor.class, "forklift");
+        arm = hwMap.get(DcMotor.class, "arm");
         //Telescoping lift motor
         verticalLift = hwMap.get(DcMotor.class, "verticalLift");
         //Tape Measure Extensions
@@ -119,7 +119,7 @@ public class JanuaryHardwareOmni {
         //servo2 = Robot Lock
         latch = hwMap.get(Servo.class, "latch");
         //servo3 = Vacuum Whipper
-        vaccuum = hwMap.get(CRServo.class, "vaccuum");
+        vacuum = hwMap.get(CRServo.class, "vacuum");
 
         //  Sensors
         //  Gyro
@@ -144,11 +144,11 @@ public class JanuaryHardwareOmni {
         relativeLayout = ((Activity) hwMap.appContext).findViewById(relativeLayoutId);
 
         //  Set all motors to zero power
-        frontDrive.setPower(0);
-        backDrive.setPower(0);
-        leftDrive.setPower(0);
-        rightDrive.setPower(0);
-        forklift.setPower(0);
+        frontMotor.setPower(0);
+        backMotor.setPower(0);
+        leftMotor.setPower(0);
+        rightMotor.setPower(0);
+        arm.setPower(0);
         verticalLift.setPower(0);
         leftTape.setPower(0);
         rightTape.setPower(0);

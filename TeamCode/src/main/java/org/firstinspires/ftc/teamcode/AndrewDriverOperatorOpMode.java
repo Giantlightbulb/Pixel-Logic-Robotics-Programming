@@ -4,18 +4,16 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import com.qualcomm.robotcore.hardware.SwitchableLight;
-
 //Gyro References
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
-@TeleOp(name="JanRobotics", group="Tele-Op")
+@TeleOp(name="", group="Tele-Op")
 
-public class JanRobotics extends LinearOpMode{
+public class AndrewDriverOperatorOpMode extends LinearOpMode{
     //Initializes the robot hardware variables
-    JanuaryHardwareOmni robot = new JanuaryHardwareOmni();
+    ArmHardwareOmni robot = new ArmHardwareOmni();
     public void runOpMode() {
         //Retrieves the mappings from runtime
         robot.init(hardwareMap);
@@ -69,10 +67,10 @@ public class JanRobotics extends LinearOpMode{
 
             //Forklift
             if(sensitivityControl) {
-                robot.forklift.setPower(0.3 * gamepad2.left_stick_y);
+                robot.arm.setPower(0.3 * gamepad2.left_stick_y);
             }
             else {
-                robot.forklift.setPower(0.8 * gamepad2.left_stick_y);
+                robot.arm.setPower(0.8 * gamepad2.left_stick_y);
             }
 
             //Tape Extensions
@@ -121,11 +119,11 @@ public class JanRobotics extends LinearOpMode{
 
 
             if (gamepad1.a) {
-                robot.vaccuum.setPower(-1); //suck
+                robot.vacuum.setPower(-1); //suck
             } else if (gamepad1.b) {
-                robot.vaccuum.setPower(1); //spit
+                robot.vacuum.setPower(1); //spit
             } else{
-                robot.vaccuum.setPower(0);
+                robot.vacuum.setPower(0);
             }
 
             //Vertical Extension
@@ -171,15 +169,15 @@ public class JanRobotics extends LinearOpMode{
 
             //x component vector
             //motor 2
-            robot.frontDrive.setPower(power * (abs_x + left_t - right_t));
+            robot.frontMotor.setPower(power * (abs_x + left_t - right_t));
             //motor4
-            robot.backDrive.setPower(power * (abs_x + left_t - right_t));
+            robot.backMotor.setPower(power * (abs_x + left_t - right_t));
 
             //y vector
             //motor1
-            robot.leftDrive.setPower(power * (abs_y + left_t - right_t));
+            robot.leftMotor.setPower(power * (abs_y + left_t - right_t));
             //motor3
-            robot.rightDrive.setPower(power * (-abs_y + left_t - right_t));
+            robot.rightMotor.setPower(power * (-abs_y + left_t - right_t));
             telemetry.update();
         }
     }
