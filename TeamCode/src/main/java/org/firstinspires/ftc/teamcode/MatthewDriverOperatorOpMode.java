@@ -134,13 +134,7 @@ public class MatthewDriverOperatorOpMode extends LinearOpMode{
             robot.rightTape.setPower(-power*gamepad2.right_stick_x);
 
             //Vertical Lift
-            if (gamepad2.dpad_up) {
-                robot.verticalLift.setPower(0.8);
-            } else if (gamepad2.dpad_down) {
-                robot.verticalLift.setPower(-0.5);
-            } else {
-                robot.verticalLift.setPower(0);
-            }
+            robot.verticalLift.setPower(gamepad2.right_stick_y);
 
 
             //Latch
