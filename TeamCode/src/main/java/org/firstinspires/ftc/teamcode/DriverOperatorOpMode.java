@@ -9,9 +9,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
-@TeleOp(name="", group="Tele-Op")
+@TeleOp(name="DriverOperatorOpMode", group="Tele-Op")
 
-public class MatthewDriverOperatorOpMode extends LinearOpMode{
+public class DriverOperatorOpMode extends LinearOpMode{
     //Initializes the robot hardware variables
     ArmHardwareOmni robot = new ArmHardwareOmni();
     public void runOpMode() {
@@ -111,9 +111,9 @@ public class MatthewDriverOperatorOpMode extends LinearOpMode{
 
             //Drop Mascot
             if (gamepad1.a) {
-                robot.mascot.setPosition(1);
-            } else {
                 robot.mascot.setPosition(0);
+            } else {
+                robot.mascot.setPosition(100);
             }
 
             //Latch
@@ -123,22 +123,12 @@ public class MatthewDriverOperatorOpMode extends LinearOpMode{
             downPrev = gamepad1.dpad_down;
 
             //Operator
-            //Sensitivity
-            if (gamepad2.x) {
-                if (sensitivity + power > 0.05) {
-                    sensitivity -= 0.05;
-                }
-            } else if (gamepad2.b) {
-                if (sensitivity + power < 0.5) {
-                    sensitivity -= 0.05;
-                }
-            }
             //Arm
-            robot.forklift.setPower(-(power+sensitivity)*gamepad2.left_stick_y);
+            robot.forklift.setPower(gamepad2.left_stick_y);
 
             //Extension
-            robot.leftTape.setPower((power+sensitivity)*gamepad2.right_stick_x);
-            robot.rightTape.setPower(-(power+sensitivity)*gamepad2.right_stick_x);
+            robot.leftTape.setPower(-gamepad2.right_stick_x);
+            robot.rightTape.setPower(gamepad2.right_stick_x);
 
             //Vertical Lift
             robot.verticalLift.setPower(power*gamepad2.right_stick_y);
@@ -158,10 +148,10 @@ public class MatthewDriverOperatorOpMode extends LinearOpMode{
                 }
             }
             */
-            if (gamepad1.dpad_up) {
-                robot.vacuum.setPower(-0.5);
-            } else if (gamepad1.dpad_down) {
-                robot.vacuum.setPower(0.5);
+            if (gamepad2.dpad_up) {
+                robot.vacuum.setPower(-1);
+            } else if (gamepad2.dpad_down) {
+                robot.vacuum.setPower(1);
             }
             upPrev = gamepad2.dpad_up;
             downPrev = gamepad2.dpad_down;
@@ -173,9 +163,9 @@ public class MatthewDriverOperatorOpMode extends LinearOpMode{
             telemetry.addLine()
                     .addData("Power Sensitivity:", (power+sensitivity));
             telemetry.addLine()
-                    .addData("D-Pad Up", gamepad1.dpad_up);
+                    .addData("D-Pad Up", gamepad2.dpad_up);
             telemetry.addLine()
-                    .addData("D-Pad Down", gamepad1.dpad_down);
+                    .addData("D-Pad Down", gamepad2.dpad_down);
             telemetry.update();
         }
     }

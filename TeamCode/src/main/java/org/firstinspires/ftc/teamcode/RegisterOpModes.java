@@ -38,8 +38,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.*;
-
 public class RegisterOpModes
 {
     @OpModeRegistrar
@@ -47,7 +45,7 @@ public class RegisterOpModes
 
         //Operating Op-Modes
         manager.register("AndrewArmDriverOpMode", AndrewDriverOperatorOpMode.class);
-        manager.register("MatthewArmDriverOpMode", MatthewDriverOperatorOpMode.class);
+        manager.register("DriverOperatorOpMode", DriverOperatorOpMode.class);
         //Old Op-Modes
         //Drive Op-Modes
         //manager.register("Drive Now",       DriveNow.class);
