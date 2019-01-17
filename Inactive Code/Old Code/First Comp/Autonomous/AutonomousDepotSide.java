@@ -312,10 +312,10 @@ public class AutonomousDepotSide extends LinearOpMode {
         */
 
 
-        robot.motor2.setPower(0);
         robot.motor4.setPower(0);
         robot.motor1.setPower(0);
         robot.motor3.setPower(0);
+        robot.motor2.setPower(0);
         telemetry.addLine()
                 .addData("Parked:", "Completed");
 
