@@ -35,6 +35,10 @@ public class JanuaryDepotAutonomous extends LinearOpMode {
         telemetry.log().add("Gyro Calibrated. Press Start.");
         telemetry.clear();
         telemetry.update();
+
+        robot.latch.setPosition(1.0); // latched
+        robot.mascot.setPosition(1.0);
+
         waitForStart();
         robot.timer.reset();
 
@@ -43,22 +47,31 @@ public class JanuaryDepotAutonomous extends LinearOpMode {
         robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+
+//----------------------------------------End Initialization---------------------------------
+        robot.leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.frontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.backDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
+
+        //LOWER DOWN (not written) ===========================================================
+
+        robot.latch.setPosition(0.0); // unlatched
+
+
+        /*
+
+        //FIND SAMPLING SPOT =================================================================
         robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.frontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.backDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//----------------------------------------End Initialization---------------------------------
 
-        encoderDrive(0.20, 200, 200 ,10.0);
-
-
+        //encoderDrive(robot.frontDrive, robot.backDrive, 0.05, 1000, 1000 ,10.0);//runs left (hopefully)
         //encoderRun(robot.frontDrive, robot.backDrive,0.15 , 500, 20.0);
 
-        /*
-        //LOWER DOWN (not written) ===========================================================
-
-        encoderRun(robot.frontDrive, robot.backDrive, -0.5,-500,2 ) // 2 inches
-        //FIND SAMPLING SPOT =================================================================
         encoderRun(robot.leftDrive, robot.rightDrive, 0.5,500,8 ) // 19 inches
         encoderRun(robot.frontDrive, robot.backDrive, -0.5,-500,5 ) // 14 inches
         //BEGIN SAMPLING =====================================================================
@@ -172,29 +185,31 @@ public class JanuaryDepotAutonomous extends LinearOpMode {
         }
 
     }
-    public void encoderDrive(double speed,
-                             int left, int right,
+    public void encoderDrive(DcMotor firstMotor, DcMotor secondMotor,
+                             double speed,
+                             int first, int second,
                              double timeoutS) {
-        int newLeftTarget;
-        int newRightTarget;
+        int newFirstTarget;
+        int newSecondTarget;
 
         // Ensure that the op-mode is still active
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newLeftTarget = robot.leftDrive.getCurrentPosition() + (left);
-            newRightTarget = robot.rightDrive.getCurrentPosition() + (right);
-            robot.leftDrive.setTargetPosition(newLeftTarget);
-            robot.rightDrive.setTargetPosition(newRightTarget);
+            newFirstTarget = firstMotor.getCurrentPosition() - (first);
+            newSecondTarget = secondMotor.getCurrentPosition() + (second);
+
+            firstMotor.setTargetPosition(newFirstTarget);
+            secondMotor.setTargetPosition(newSecondTarget);
 
             // Turn On RUN_TO_POSITION
-            robot.leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            firstMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            secondMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
             robot.timer.reset();
-            robot.leftDrive.setPower(Math.abs(speed));
-            robot.rightDrive.setPower(-Math.abs(speed));
+            firstMotor.setPower(1);
+            secondMotor.setPower(Math.abs(speed));
 
 
 
@@ -206,25 +221,21 @@ public class JanuaryDepotAutonomous extends LinearOpMode {
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
                     (robot.timer.seconds() < timeoutS) &&
-                    (robot.leftDrive.isBusy() || robot.rightDrive.isBusy())) {
+                    (firstMotor.isBusy() || secondMotor.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
+                telemetry.addData("Path1",  "Running to %7d :%7d", newFirstTarget,  newSecondTarget);
                 telemetry.addData("Path2",  "Running at %7d :%7d",
-                        robot.leftDrive.getCurrentPosition(),
-                        robot.rightDrive.getCurrentPosition());
+                        firstMotor.getCurrentPosition(),
+                        secondMotor.getCurrentPosition());
                 telemetry.update();
             }
 
             // Stop all motion;
-            robot.leftDrive.setPower(0);
-            robot.rightDrive.setPower(0);
+            firstMotor.setPower(0);
+            secondMotor.setPower(0);
 
-            // Turn off RUN_TO_POSITION
-            robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            //  sleep(250);   // optional pause after each move
+              sleep(250);   // optional pause after each move
         }
     }
 }

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 //TeleOp and Hardware
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 //Gyro References
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -54,6 +55,12 @@ public class AndrewDriverOperatorOpMode extends LinearOpMode{
         //Resets timer
         robot.timer.reset();
         robot.latch.setPosition(1.0);
+
+        robot.leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.frontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.backDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         //While loop for robot operation
         while (opModeIsActive()) {
 
