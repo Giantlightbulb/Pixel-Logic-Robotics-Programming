@@ -113,48 +113,37 @@ public class DriverOperatorOpMode extends LinearOpMode{
             if (gamepad1.a) {
                 robot.mascot.setPosition(0);
             } else {
-                robot.mascot.setPosition(100);
+                robot.mascot.setPosition(1);
             }
 
             //Latch
-            if (gamepad1.left_bumper);
+            if (gamepad1.left_bumper) {
+                robot.latch.setPosition(0);
+            } else if (gamepad1.right_bumper) {
+                robot.latch.setPosition(0.75);
+            }
 
             upPrev = gamepad1.dpad_up;
             downPrev = gamepad1.dpad_down;
 
             //Operator
             //Arm
-            robot.forklift.setPower(gamepad2.left_stick_y);
+            robot.forklift.setPower(gamepad2.right_stick_y);
 
             //Extension
-            robot.leftTape.setPower(-gamepad2.right_stick_x);
-            robot.rightTape.setPower(gamepad2.right_stick_x);
+            robot.leftTape.setPower(-gamepad2.right_stick_x*0.75);
+            robot.rightTape.setPower(gamepad2.right_stick_x*0.75);
 
             //Vertical Lift
-            robot.verticalLift.setPower(power*gamepad2.right_stick_y);
-            //Vacuum Toggle
-            /*
-            if (gamepad2.dpad_up) {
-                if (!upPrev && robot.vacuum.getPower() == -1) {
-                    robot.vacuum.setPower(0);
-                } else {
-                    robot.vacuum.setPower(-1);
-                }
-            } else if (gamepad2.dpad_down) {
-                if (!downPrev && robot.vacuum.getPower() == 1) {
-                    robot.vacuum.setPower(0);
-                } else {
-                    robot.vacuum.setPower(1);
-                }
-            }
-            */
+            robot.verticalLift.setPower(power*gamepad2.left_stick_y);
+            //Vacuum
             if (gamepad2.dpad_up) {
                 robot.vacuum.setPower(-1);
             } else if (gamepad2.dpad_down) {
                 robot.vacuum.setPower(1);
+            } else if (gamepad2.dpad_left) {
+                robot.vacuum.setPower(0);
             }
-            upPrev = gamepad2.dpad_up;
-            downPrev = gamepad2.dpad_down;
 
             //All telemetry
             telemetry.addLine()
