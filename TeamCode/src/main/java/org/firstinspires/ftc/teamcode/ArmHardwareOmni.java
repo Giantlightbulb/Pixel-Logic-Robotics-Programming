@@ -3,6 +3,7 @@
 package org.firstinspires.ftc.teamcode;
 
 //TeleOp and Hardware
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsTouchSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -42,7 +43,7 @@ import android.view.View;
 
 public class ArmHardwareOmni {
     /* local OpMode members. */
-    HardwareMap hwMap = null;
+    private HardwareMap hwMap = null;
     public ElapsedTime timer = new ElapsedTime();
 
     //Initializes hardware variables
@@ -75,21 +76,26 @@ public class ArmHardwareOmni {
     public IntegratingGyroscope gyro;
     public ModernRoboticsI2cGyro modernRoboticsI2cGyro;
 
+    //  Touch Sensor
+    public TouchSensor touch;
+
     //Axes
     public AxesReference aRefInt = AxesReference.INTRINSIC;
     public AxesOrder aOrderXYZ = AxesOrder.XYZ;
     public AngleUnit aUnit = AngleUnit.DEGREES;
     NormalizedRGBA colors = new NormalizedRGBA();
     //  ODS
-    OpticalDistanceSensor ods;
+    public OpticalDistanceSensor ods;
     //  Color Sensor
-    NormalizedColorSensor colorSensor;
-    //  Compass Sensor
-    ModernRoboticsI2cCompassSensor compass;
+    public NormalizedColorSensor colorSensor;
+    //  Compass Sensors
+    public ModernRoboticsI2cCompassSensor compass1;
+    public ModernRoboticsI2cCompassSensor compass2;
+
     //  Range Sensor
-    ModernRoboticsI2cRangeSensor rangeSensor;
+    public ModernRoboticsI2cRangeSensor rangeSensor;
     //  Initializes layout
-    View relativeLayout;
+    public View relativeLayout;
 
     //Constructor (Currently empty)
     public ArmHardwareOmni() {
@@ -124,6 +130,8 @@ public class ArmHardwareOmni {
         vacuum = hwMap.get(CRServo.class, "vacuum");
 
         //  Sensors
+        //  Touch Sensor
+        touch = hwMap.get(ModernRoboticsTouchSensor.class, "touch");
         //  Gyro
         modernRoboticsI2cGyro = hwMap.get(ModernRoboticsI2cGyro.class, "gyro");
         gyro = (IntegratingGyroscope) modernRoboticsI2cGyro;
@@ -136,8 +144,9 @@ public class ArmHardwareOmni {
         if (colorSensor instanceof SwitchableLight) {
             ((SwitchableLight) colorSensor).enableLight(true);
         }
-        //  Compass
-        compass = hwMap.get(ModernRoboticsI2cCompassSensor.class, "compass");
+        //  Compasses
+        compass1 = hwMap.get(ModernRoboticsI2cCompassSensor.class, "compass1");
+        compass2 = hwMap.get(ModernRoboticsI2cCompassSensor.class, "compass2");
         //  Range Sensor
         rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "range");
 
