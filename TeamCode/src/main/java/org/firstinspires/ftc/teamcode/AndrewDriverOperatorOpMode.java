@@ -99,7 +99,7 @@ public class AndrewDriverOperatorOpMode extends LinearOpMode{
             if (gamepad2.a) {
                 robot.latch.setPosition(0);
             } else if(gamepad2.b){
-                robot.latch.setPosition(1);
+                robot.latch.setPosition(1.0);
             }
 
             /*

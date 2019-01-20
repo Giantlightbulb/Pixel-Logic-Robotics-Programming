@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 //TeleOp and Hardware
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 //Gyro References
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -15,6 +16,8 @@ public class DriverOperatorOpMode extends LinearOpMode{
     //Initializes the robot hardware variables
     ArmHardwareOmni robot = new ArmHardwareOmni();
     public void runOpMode() {
+
+
         /*
         Driver:
         -Drivetrain
@@ -29,8 +32,14 @@ public class DriverOperatorOpMode extends LinearOpMode{
          */
         //Retrieves the mappings from runtime
         robot.init(hardwareMap);
+
+        robot.frontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.backDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         double sensitivity = 0.3;
-        double power = 0.2;
+        double power = 0.4;
 
         //Drive train vector
         double left_y, left_x;
@@ -67,7 +76,7 @@ public class DriverOperatorOpMode extends LinearOpMode{
         //Resets timer
         robot.timer.reset();
         //Ensures the latch is clear
-        robot.latch.setPosition(1.0);
+        robot.latch.setPosition(1.0);//unlatch
         //While loop for robot operation
         while (opModeIsActive()) {
             //Driver
@@ -101,26 +110,29 @@ public class DriverOperatorOpMode extends LinearOpMode{
             //Power variable (0,1), average drive train motor speed
             //x component of the direction vector
             //Handles left and right motion
-            robot.frontDrive.setPower(power * (abs_x - left_t + right_t));
-            robot.backDrive.setPower(power * (-abs_x - left_t + right_t));
+            robot.frontDrive.setPower(0.55 * (abs_x - left_t + right_t));
+            robot.backDrive.setPower(0.55 * (-abs_x - left_t + right_t));
 
             //y component of the direction vector
             //Handles forwards and backwards motion
-            robot.leftDrive.setPower(power * (abs_y - left_t + right_t));
-            robot.rightDrive.setPower(power * (-abs_y - left_t + right_t));
+            robot.leftDrive.setPower(0.55 * (abs_y - left_t + right_t));
+            robot.rightDrive.setPower(0.55 * (-abs_y - left_t + right_t));
 
             //Drop Mascot
             if (gamepad1.a) {
-                robot.mascot.setPosition(0);
+                robot.mascot.setPosition(0.3);
             } else {
-                robot.mascot.setPosition(1);
+                robot.mascot.setPosition(0.8);
             }
 
             //Latch
-            if (gamepad1.left_bumper) {
-                robot.latch.setPosition(0);
-            } else if (gamepad1.right_bumper) {
-                robot.latch.setPosition(0.75);
+            if (gamepad2.right_bumper) {
+                if (robot.latch.getPosition() == 1.0) {
+                    robot.latch.setPosition(0.6);
+                }
+                else{
+                    robot.latch.setPosition(1.0);
+                }
             }
 
             upPrev = gamepad1.dpad_up;
@@ -128,14 +140,14 @@ public class DriverOperatorOpMode extends LinearOpMode{
 
             //Operator
             //Arm
-            robot.forklift.setPower(gamepad2.right_stick_y);
+            robot.forklift.setPower(-gamepad2.right_stick_y/0.6);
 
             //Extension
-            robot.leftTape.setPower(-gamepad2.right_stick_x*0.75);
-            robot.rightTape.setPower(gamepad2.right_stick_x*0.75);
+            robot.leftTape.setPower(gamepad2.right_stick_x*0.35);
+            robot.rightTape.setPower(-gamepad2.right_stick_x*0.35);
 
             //Vertical Lift
-            robot.verticalLift.setPower(power*gamepad2.left_stick_y);
+            robot.verticalLift.setPower(0.9*gamepad1.right_stick_y);
             //Vacuum
             if (gamepad2.dpad_up) {
                 robot.vacuum.setPower(-1);

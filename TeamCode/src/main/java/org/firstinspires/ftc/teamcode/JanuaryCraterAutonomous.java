@@ -10,9 +10,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 import android.graphics.Color;
-@Autonomous(name="JanuaryDepotAutonomous", group="Autonomous")
+@Autonomous(name="JanuaryCraterAutonomous", group="Autonomous")
 
-public class JanuaryDepotAutonomous extends LinearOpMode {
+public class JanuaryCraterAutonomous extends LinearOpMode {
     ArmHardwareOmni robot = new ArmHardwareOmni();
 
     public void runOpMode() {
@@ -56,22 +56,19 @@ public class JanuaryDepotAutonomous extends LinearOpMode {
         robot.frontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.backDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        //LOWER DOWN ===========================================================
 
 
-        //LOWER DOWN (not written) ===========================================================
-
-
-
-
-        robot.verticalLift.setPower(1.0); // lifts robot up
-
-        while (opModeIsActive() && (robot.timer.seconds() < 2.0)) {
+        robot.verticalLift.setPower(0.85); // lifts robot up
+        while (opModeIsActive() && (robot.timer.seconds() < 1.8)) {
             telemetry.addData("Lower Down", "Lift: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
         }
         robot.timer.reset();
-        robot.latch.setPosition(1.0);// UNLATCH----------
 
+
+        //Sideways motion to clear hook
+        robot.latch.setPosition(1.0);// UNLATCH----------
         robot.verticalLift.setPower(0);
         sleep(1000);
 
@@ -87,7 +84,6 @@ public class JanuaryDepotAutonomous extends LinearOpMode {
         robot.leftDrive.setPower(0.5);
         robot.rightDrive.setPower(-0.5);
 
-        robot.timer.reset();
         while (opModeIsActive() && (robot.timer.seconds() < 5.0)){
             telemetry.addData("Depot", "Left and Right: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
@@ -95,26 +91,20 @@ public class JanuaryDepotAutonomous extends LinearOpMode {
         robot.rightDrive.setPower(0);
         robot.leftDrive.setPower(0);
         robot.timer.reset();
-        sleep(1000);//-------------------
+        sleep(2000);//-------------------
 
-        robot.timer.reset();
-        robot.frontDrive.setPower(0.2);
-        robot.backDrive.setPower(0.2);
-        robot.leftDrive.setPower(0.2);
-        robot.rightDrive.setPower(0.2);
 
-        while (opModeIsActive() && (robot.timer.seconds() < 1.7)){
+        robot.leftDrive.setPower(0.5);
+        robot.rightDrive.setPower(-0.5);
+
+        while (opModeIsActive() && (robot.timer.seconds() < 1.0)){
             telemetry.addData("Depot", "Left and Right: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
         }
-        robot.frontDrive.setPower(0);
-        robot.backDrive.setPower(0);
         robot.rightDrive.setPower(0);
         robot.leftDrive.setPower(0);
-
-        sleep(1000);//-----------------------
-
-        robot.mascot.setPosition(0.3);
+        robot.timer.reset();
+        sleep(1000);//-------------------
 
         /*
 
@@ -203,96 +193,5 @@ public class JanuaryDepotAutonomous extends LinearOpMode {
         robot.leftDrive.setPower(0);
         telemetry.addLine()
                 .addData("Parked:", "Completed");
-
-    }
-    public void encoderRun(DcMotor firstMotor, DcMotor secondMotor, double power, int distance, double timeOut) {
-
-        robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        int firstTarget = firstMotor.getCurrentPosition() + distance;
-        int secondTarget = secondMotor.getCurrentPosition() - distance;
-
-
-        firstMotor.setTargetPosition(firstTarget);
-        secondMotor.setTargetPosition(secondTarget);
-
-        firstMotor.setPower(power);
-        secondMotor.setPower(-power);
-        robot.timer.reset();
-
-        if (distance > 0) {
-            while (((firstMotor.getTargetPosition() >= firstMotor.getCurrentPosition()) ||
-                    (secondMotor.getTargetPosition() <= secondMotor.getCurrentPosition())) && (opModeIsActive()) &&
-                    (robot.timer.seconds() < timeOut)) {
-
-//            telemetry.addData("Running", "%2.5f distance left (firstMotor) %2.5f time left", (firstMotor.getTargetPosition() - firstMotor.getCurrentPosition()), (timeOut - robot.timer.seconds()));
-                telemetry.addData("Path1",  "Going to %7d ,  currently at %7d and %7d.", firstMotor.getTargetPosition(),  firstMotor.getCurrentPosition(), secondMotor.getCurrentPosition());
-                telemetry.update();
-            }
-        }
-        else{
-            while (((firstMotor.getTargetPosition() <= firstMotor.getCurrentPosition()) ||
-                    (secondMotor.getTargetPosition() >= secondMotor.getCurrentPosition())) && (opModeIsActive()) &&
-                    (robot.timer.seconds() < timeOut)) {
-                telemetry.update();
-            }
-        }
-
-    }
-    public void encoderDrive(DcMotor firstMotor, DcMotor secondMotor,
-                             double speed,
-                             int first, int second,
-                             double timeoutS) {
-        int newFirstTarget;
-        int newSecondTarget;
-
-        // Ensure that the op-mode is still active
-        if (opModeIsActive()) {
-
-            // Determine new target position, and pass to motor controller
-            newFirstTarget = firstMotor.getCurrentPosition() - (first);
-            newSecondTarget = secondMotor.getCurrentPosition() + (second);
-
-            firstMotor.setTargetPosition(newFirstTarget);
-            secondMotor.setTargetPosition(newSecondTarget);
-
-            // Turn On RUN_TO_POSITION
-            firstMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            secondMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // reset the timeout time and start motion.
-            robot.timer.reset();
-            firstMotor.setPower(1);
-            secondMotor.setPower(Math.abs(speed));
-
-
-
-            // keep looping while we are still active, and there is time left, and both motors are running.
-            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
-            // its target position, the motion will stop.  This is "safer" in the event that the robot will
-            // always end the motion as soon as possible.
-            // However, if you require that BOTH motors have finished their moves before the robot continues
-            // onto the next step, use (isBusy() || isBusy()) in the loop test.
-            while (opModeIsActive() &&
-                    (robot.timer.seconds() < timeoutS) &&
-                    (firstMotor.isBusy() || secondMotor.isBusy())) {
-
-                // Display it for the driver.
-                telemetry.addData("Path1",  "Running to %7d :%7d", newFirstTarget,  newSecondTarget);
-                telemetry.addData("Path2",  "Running at %7d :%7d",
-                        firstMotor.getCurrentPosition(),
-                        secondMotor.getCurrentPosition());
-                telemetry.update();
-            }
-
-            // Stop all motion;
-            firstMotor.setPower(0);
-            secondMotor.setPower(0);
-
-              sleep(250);   // optional pause after each move
-        }
     }
 }
-
-
