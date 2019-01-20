@@ -14,8 +14,15 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 //   Gyro
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
+//Gyro References
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 //  ODS
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
+
+//Touch Sensor
+import com.qualcomm.robotcore.hardware.TouchSensor;
 //  Color Sensor
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
@@ -26,11 +33,6 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 
 //Compass Sensor
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cCompassSensor;
-
-//Gyro References
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 //Android App Control
 import android.app.Activity;
@@ -79,7 +81,7 @@ public class ArmHardwareOmni {
     public AngleUnit aUnit = AngleUnit.DEGREES;
     NormalizedRGBA colors = new NormalizedRGBA();
     //  ODS
-    public OpticalDistanceSensor ods;
+    OpticalDistanceSensor ods;
     //  Color Sensor
     NormalizedColorSensor colorSensor;
     //  Compass Sensor
