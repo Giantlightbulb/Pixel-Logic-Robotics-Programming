@@ -129,9 +129,15 @@ public class DriverOperatorOpMode extends LinearOpMode{
             if (gamepad2.right_bumper) {
                 if (robot.latch.getPosition() == 1.0) {
                     robot.latch.setPosition(0.6);
+                    while(gamepad2.right_bumper){
+                        telemetry.update();
+                    }
                 }
                 else{
                     robot.latch.setPosition(1.0);
+                    while(gamepad2.right_bumper){
+                        telemetry.update();
+                    }
                 }
             }
 

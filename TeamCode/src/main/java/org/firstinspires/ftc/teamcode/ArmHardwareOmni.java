@@ -111,8 +111,10 @@ public class ArmHardwareOmni {
         //Drivetrain motors
         frontDrive = hwMap.get(DcMotor.class, "frontDrive");
         backDrive = hwMap.get(DcMotor.class, "backDrive");
+        backDrive.setDirection(DcMotor.Direction.REVERSE);
         leftDrive = hwMap.get(DcMotor.class, "leftDrive");
         rightDrive = hwMap.get(DcMotor.class, "rightDrive");
+        rightDrive.setDirection(DcMotor.Direction.REVERSE);
         //Articulating Arm
         forklift = hwMap.get(DcMotor.class, "forklift");
         //Telescoping lift motor
