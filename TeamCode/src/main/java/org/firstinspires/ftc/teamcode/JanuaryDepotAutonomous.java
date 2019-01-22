@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 import android.graphics.Color;
+
 @Autonomous(name="JanuaryDepotAutonomous", group="Autonomous")
 
 public class JanuaryDepotAutonomous extends LinearOpMode {
@@ -59,8 +60,6 @@ public class JanuaryDepotAutonomous extends LinearOpMode {
 
 
         //LOWER DOWN (not written) ===========================================================
-
-
 
 
         robot.verticalLift.setPower(1.0); // lifts robot up
