@@ -59,9 +59,9 @@ public class ArmHardwareOmni {
 
     //Chariot Motors
     //Arm
-    public DcMotor leftTape; //Left Arm Extender
+    public DcMotor leftExtension; //Left Arm Extender
     //Back Flip
-    public DcMotor rightTape; //Right Arm Extender
+    public DcMotor rightExtension; //Right Arm Extender
 
     //Servos
     //Mascot
@@ -120,8 +120,8 @@ public class ArmHardwareOmni {
         //Telescoping lift motor
         verticalLift = hwMap.get(DcMotor.class, "verticalLift");
         //Tape Measure Extensions
-        leftTape = hwMap.get(DcMotor.class, "leftTape");
-        rightTape = hwMap.get(DcMotor.class, "rightTape");
+        leftExtension = hwMap.get(DcMotor.class, "leftExtension");
+        rightExtension = hwMap.get(DcMotor.class, "rightExtension");
 
         //Servos
         //servo1 = Mascot Dump
@@ -163,8 +163,8 @@ public class ArmHardwareOmni {
         rightDrive.setPower(0);
         forklift.setPower(0);
         verticalLift.setPower(0);
-        leftTape.setPower(0);
-        rightTape.setPower(0);
+        leftExtension.setPower(0);
+        rightExtension.setPower(0);
 
     }
 
