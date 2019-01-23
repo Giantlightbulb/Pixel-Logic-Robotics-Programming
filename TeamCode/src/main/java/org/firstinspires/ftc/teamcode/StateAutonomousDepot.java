@@ -56,41 +56,42 @@ public class StateAutonomousDepot extends LinearOpMode {
         robot.frontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.backDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //END INITIALIZATION---------------------------------------------------------------------
-
-        robot.leftDrive.setPower(0.3);
+DriveForwardDistance(robot.leftDrive, robot.rightDrive,0.05, 5000);
+        /*robot.leftDrive.setPower(0.3);
         robot.rightDrive.setPower(0.3);
         targetPosition = 5000;
         while((robot.leftDrive.getCurrentPosition() < targetPosition) || (robot.rightDrive.getCurrentPosition() < targetPosition)){
 
         }
+        */
         // end
     }
-    public void DriveForwardDistance(double power, int distance){
+    public void DriveForwardDistance(DcMotor firstMotor, DcMotor secondMotor, double power, int distance){
 
         // Reset encoders
-        robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        firstMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        secondMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        // Set Target Position
-        robot.leftDrive.setTargetPosition(distance);
-        robot.rightDrive.setTargetPosition(distance);
+        // Set Target Position b
+        firstMotor.setTargetPosition(distance);
+        secondMotor.setTargetPosition(distance);
 
         // Set to RUN_TO_POSITION mode
-        robot.leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        firstMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        secondMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // Set Drive Power
-        robot.leftDrive.setPower(power);
-        robot.rightDrive.setPower(power);
+        firstMotor.setPower(power);
+        secondMotor.setPower(power);
 
-        while(robot.leftDrive.isBusy() || robot.rightDrive.isBusy()){
+        while((opModeIsActive())&&(firstMotor.isBusy() || secondMotor.isBusy())){
             // wait
         }
 
-        robot.leftDrive.setPower(0);
-        robot.rightDrive.setPower(0);
+        firstMotor.setPower(0);
+        secondMotor.setPower(0);
 
-        robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        firstMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        secondMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 }

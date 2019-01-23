@@ -141,7 +141,7 @@ public class ArmHardwareOmni {
         ods = hwMap.opticalDistanceSensor.get("ods");
         ods.enableLed(true);
         //  Color Sensor
-        colorSensor = hwMap.get(NormalizedColorSensor.class, "color_sensor");
+        colorSensor = hwMap.get(NormalizedColorSensor.class, "colorSensor");
         //      Detects switchable light
         if (colorSensor instanceof SwitchableLight) {
             ((SwitchableLight) colorSensor).enableLight(true);
@@ -150,7 +150,7 @@ public class ArmHardwareOmni {
         compass1 = hwMap.get(ModernRoboticsI2cCompassSensor.class, "compass1");
         compass2 = hwMap.get(ModernRoboticsI2cCompassSensor.class, "compass2");
         //  Range Sensor
-        rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "range");
+        rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "rangeSensor");
 
         //  Application Color
         int relativeLayoutId = hwMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hwMap.appContext.getPackageName());

@@ -44,7 +44,6 @@ public class RegisterOpModes
     public static void registerMyOpModes(OpModeManager manager) {
 
         //Operating Op-Modes
-        manager.register("AndrewArmDriverOpMode", AndrewDriverOperatorOpMode.class);
         manager.register("DriverOperatorOpMode", DriverOperatorOpMode.class);
         //Old Op-Modes
         //Drive Op-Modes

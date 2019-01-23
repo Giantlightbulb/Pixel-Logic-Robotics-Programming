@@ -91,8 +91,8 @@ public class StackBasedAutonomous extends LinearOpMode {
             telemetry.addLine()
                     .addData("Compass2:", "");
             telemetry.addLine()
-                    .addData("Acceleration:", robot.compass1.getAcceleration())
-                    .addData("Heading:", robot.compass1.getDirection());
+                    .addData("Acceleration:", robot.compass2.getAcceleration())
+                    .addData("Heading:", robot.compass2.getDirection());
             //Range Sensor
             telemetry.addLine()
                     .addData("Range Sensor:", "");
