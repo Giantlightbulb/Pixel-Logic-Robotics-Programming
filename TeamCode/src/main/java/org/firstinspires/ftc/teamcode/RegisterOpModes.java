@@ -45,6 +45,7 @@ public class RegisterOpModes
 
         //Operating Op-Modes
         manager.register("DriverOperatorOpMode", DriverOperatorOpMode.class);
+        manager.register("SensorTest", SensorTest.class);
         //Old Op-Modes
         //Drive Op-Modes
         //manager.register("Drive Now",       DriveNow.class);

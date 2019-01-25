@@ -14,9 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@Autonomous(name="StackBasedAutonomous", group="Autonomous")
-
-public class StackBasedAutonomous extends LinearOpMode {
+public class SensorTest extends LinearOpMode {
     ArmHardwareOmni robot = new ArmHardwareOmni();
 
     public void runOpMode() {
