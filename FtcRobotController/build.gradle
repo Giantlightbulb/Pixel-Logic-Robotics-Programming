@@ -3,7 +3,9 @@
 //
 buildscript {
     repositories {
-        mavenCentral()
+        //maven { url 'https://maven.google.com' } // For Gradle < 4.0
+        mavenCentral()          //(This is original)
+        google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.10.1'
