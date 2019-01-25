@@ -56,7 +56,8 @@ public class StateAutonomousDepot extends LinearOpMode {
         robot.frontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.backDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //END INITIALIZATION---------------------------------------------------------------------
-DriveForwardDistance(robot.leftDrive, robot.rightDrive,0.05, 5000);
+
+        DriveForwardDistance(robot.leftDrive, robot.rightDrive,0.05, 5000);
         /*robot.leftDrive.setPower(0.3);
         robot.rightDrive.setPower(0.3);
         targetPosition = 5000;
