@@ -1,17 +1,6 @@
 //
 // build.gradle in FtcRobotController
 //
-buildscript {
-    repositories {
-        //maven { url 'https://maven.google.com' } // For Gradle < 4.0
-        mavenCentral()          //(This is original)
-        google()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:4.10.1'
-    }
-}
-
 apply plugin: 'com.android.library'
 
 android {
@@ -19,7 +8,6 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 19
-
     }
 
     compileSdkVersion 23
@@ -34,7 +22,6 @@ repositories {
     flatDir {
         dirs '../libs'
     }
-    google()
 }
 
 apply from: 'build.release.gradle'
