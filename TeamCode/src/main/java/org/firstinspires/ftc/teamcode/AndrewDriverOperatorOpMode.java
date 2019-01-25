@@ -82,12 +82,12 @@ public class AndrewDriverOperatorOpMode extends LinearOpMode{
 
             //Tape Extensions
             if(gamepad2.right_trigger > 0) {
-                robot.leftTape.setPower(0.8 * gamepad2.right_trigger);
-                robot.rightTape.setPower(0.8 * gamepad2.right_trigger);
+                robot.leftExtension.setPower(0.8 * gamepad2.right_trigger);
+                robot.rightExtension.setPower(0.8 * gamepad2.right_trigger);
             }
             else{
-                robot.leftTape.setPower(0.8 * gamepad2.left_trigger);
-                robot.rightTape.setPower(0.8 * gamepad2.left_trigger);
+                robot.leftExtension.setPower(0.8 * gamepad2.left_trigger);
+                robot.rightExtension.setPower(0.8 * gamepad2.left_trigger);
             }
 
             if (gamepad1.x) {
