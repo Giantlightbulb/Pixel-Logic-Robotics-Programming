@@ -49,6 +49,7 @@ public class ArmHardwareOmni {
     //Initializes hardware variables
     //Drive train motors
     public DcMotor frontDrive; //
+    
     public DcMotor backDrive; //
     public DcMotor leftDrive; //
     public DcMotor rightDrive; //
