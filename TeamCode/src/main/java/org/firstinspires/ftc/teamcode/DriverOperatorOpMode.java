@@ -146,7 +146,12 @@ public class DriverOperatorOpMode extends LinearOpMode{
 
             //Operator
             //Arm
-            robot.forklift.setPower(-gamepad2.right_stick_y/0.6);
+            if(gamepad2.right_stick_y > 0) {
+                robot.forklift.setPower(-gamepad2.right_stick_y / 0.8);
+            }
+            else{
+                robot.forklift.setPower(-gamepad2.right_stick_y / 0.55);
+            }
 
             //Extension
             robot.leftExtension.setPower(gamepad2.right_stick_x*0.35);

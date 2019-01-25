@@ -57,7 +57,26 @@ public class StateAutonomousDepot extends LinearOpMode {
         robot.backDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //END INITIALIZATION---------------------------------------------------------------------
 
-        DriveForwardDistance(robot.leftDrive, robot.rightDrive,0.05, 5000);
+        //Left Motion (hopefully) - to clear the lander.
+        DriveForwardDistance(robot.frontDrive, robot.backDrive,0.2, 600,10.0);
+
+        sleep(3000);
+
+        //Forward Motion (hopefully) - approach Sampling, part 1
+        DriveForwardDistance(robot.leftDrive, robot.rightDrive,0.3, 4000,10.0);
+
+        sleep(3000);
+
+        //Left Motion (hopefully) - approach Sampling, part 2
+        DriveForwardDistance(robot.frontDrive, robot.backDrive,0.3, 2000,10.0);
+
+        sleep(3000);
+
+        //Go Sample yoself
+
+        //Left Motion (hopefully) - approach Sampling, part 2
+
+
         /*robot.leftDrive.setPower(0.3);
         robot.rightDrive.setPower(0.3);
         targetPosition = 5000;
@@ -67,7 +86,7 @@ public class StateAutonomousDepot extends LinearOpMode {
         */
         // end
     }
-    public void DriveForwardDistance(DcMotor firstMotor, DcMotor secondMotor, double power, int distance){
+    public void DriveForwardDistance(DcMotor firstMotor, DcMotor secondMotor, double power, int distance, double timeOut){
 
         // Reset encoders
         firstMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -84,8 +103,9 @@ public class StateAutonomousDepot extends LinearOpMode {
         // Set Drive Power
         firstMotor.setPower(power);
         secondMotor.setPower(power);
+        robot.timer.reset();
 
-        while((opModeIsActive())&&(firstMotor.isBusy() || secondMotor.isBusy())){
+        while((opModeIsActive())&&(firstMotor.isBusy() || secondMotor.isBusy()) && (robot.timer.seconds() < timeOut)){
             // wait
         }
 
