@@ -1,14 +1,18 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CompassSensor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @Autonomous(name="StackBasedAutonomous", group="Autonomous")
 
@@ -16,6 +20,9 @@ public class StackBasedAutonomous extends LinearOpMode {
     ArmHardwareOmni robot = new ArmHardwareOmni();
 
     public void runOpMode() {
+        float[] hsvValues = new float[3];
+        final float values[] = hsvValues;
+
         robot.init(hardwareMap);
         telemetry.log().add("Gyro Calibrating. Do Not Move!");
         //Approximate Speed at full power: 36 inches / 1.75 seconds
@@ -50,6 +57,12 @@ public class StackBasedAutonomous extends LinearOpMode {
         waitForStart();
         robot.timer.reset();
         toggleLights();
+        robot.rangeSensor.enableLed(true);
+        robot.ods.enableLed(true);
+        if (robot.colorSensor instanceof SwitchableLight) {
+            SwitchableLight light = (SwitchableLight)robot.colorSensor;
+            light.enableLight(true);
+        }
         while(opModeIsActive()) {
             //Gyro
             int rawX = robot.modernRoboticsI2cGyro.rawX();
@@ -83,37 +96,88 @@ public class StackBasedAutonomous extends LinearOpMode {
             telemetry.addLine().addData("z offset", zAxisOffset).addData("z coeff", zAxisScalingCoefficient);
             //Compass 1
             telemetry.addLine()
-                    .addData("Compass1:", "");
+                    .addData("Compass1", "");
             telemetry.addLine()
-                    .addData("Acceleration:", robot.compass1.getAcceleration())
-                    .addData("Heading:", robot.compass1.getDirection());
+                    .addData("Acceleration", robot.compass1.getAcceleration())
+                    .addData("Heading", robot.compass1.getDirection());
             //Compass 2
             telemetry.addLine()
-                    .addData("Compass2:", "");
+                    .addData("Compass2", "");
             telemetry.addLine()
-                    .addData("Acceleration:", robot.compass2.getAcceleration())
-                    .addData("Heading:", robot.compass2.getDirection());
+                    .addData("Acceleration", robot.compass2.getAcceleration())
+                    .addData("Heading", robot.compass2.getDirection());
             //Range Sensor
             telemetry.addLine()
                     .addData("Range Sensor:", "");
             telemetry.addLine()
-                    .addData("CM Optical:", robot.rangeSensor.cmOptical())
-                    .addData("CM Ultra Sonic:", robot.rangeSensor.cmUltrasonic());
+                    .addData("CM Optical", robot.rangeSensor.cmOptical())
+                    .addData("CM Ultra Sonic", robot.rangeSensor.cmUltrasonic())
+                    .addData("Distance", robot.rangeSensor.getDistance(DistanceUnit.CM));
             //Color Sensor
             telemetry.addLine()
-                    .addData("Color Sensor:", "");
+                    .addData("Color Sensor", "");
+            NormalizedRGBA colors = robot.colorSensor.getNormalizedColors();
+
+            /** Use telemetry to display feedback on the driver station. We show the conversion
+             * of the colors to hue, saturation and value, and display the the normalized values
+             * as returned from the sensor.
+             * @see <a href="http://infohost.nmt.edu/tcc/help/pubs/colortheory/web/hsv.html">HSV</a>*/
+
+            Color.colorToHSV(colors.toColor(), hsvValues);
             telemetry.addLine()
-                    .addData("Color Sensor", "null");
+                    .addData("H", "%.3f", hsvValues[0])
+                    .addData("S", "%.3f", hsvValues[1])
+                    .addData("V", "%.3f", hsvValues[2]);
+            telemetry.addLine()
+                    .addData("a", "%.3f", colors.alpha)
+                    .addData("r", "%.3f", colors.red)
+                    .addData("g", "%.3f", colors.green)
+                    .addData("b", "%.3f", colors.blue);
+
+            /** We also display a conversion of the colors to an equivalent Android color integer.
+             * @see Color */
+            int color = colors.toColor();
+            telemetry.addLine("raw Android color: ")
+                    .addData("a", "%02x", Color.alpha(color))
+                    .addData("r", "%02x", Color.red(color))
+                    .addData("g", "%02x", Color.green(color))
+                    .addData("b", "%02x", Color.blue(color));
+
+            // Balance the colors. The values returned by getColors() are normalized relative to the
+            // maximum possible values that the sensor can measure. For example, a sensor might in a
+            // particular configuration be able to internally measure color intensity in a range of
+            // [0, 10240]. In such a case, the values returned by getColors() will be divided by 10240
+            // so as to return a value it the range [0,1]. However, and this is the point, even so, the
+            // values we see here may not get close to 1.0 in, e.g., low light conditions where the
+            // sensor measurements don't approach their maximum limit. In such situations, the *relative*
+            // intensities of the colors are likely what is most interesting. Here, for example, we boost
+            // the signal on the colors while maintaining their relative balance so as to give more
+            // vibrant visual feedback on the robot controller visual display.
+            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+            colors.red   /= max;
+            colors.green /= max;
+            colors.blue  /= max;
+            color = colors.toColor();
+
+            telemetry.addLine("normalized color:  ")
+                    .addData("a", "%02x", Color.alpha(color))
+                    .addData("r", "%02x", Color.red(color))
+                    .addData("g", "%02x", Color.green(color))
+                    .addData("b", "%02x", Color.blue(color));
+            telemetry.update();
+
+            // convert the RGB values to HSV values.
+            Color.RGBToHSV(Color.red(color), Color.green(color), Color.blue(color), hsvValues);
             //Touch Sensor
             telemetry.addLine()
-                    .addData("Touch Sensor:", "");
+                    .addData("Touch Sensor", "");
             telemetry.addLine()
-                    .addData("Touch Sensor", robot.touch.getValue());
+                    .addData("Touch", robot.touch.getValue());
             //ODS
             telemetry.addLine()
-                    .addData("ODS:", "");
+                    .addData("ODS", "");
             telemetry.addLine()
-                    .addData("raw light:", robot.ods.getRawLightDetected())
+                    .addData("raw light", robot.ods.getRawLightDetected())
                     .addData("light", robot.ods.getLightDetected());
             telemetry.update();
         }
