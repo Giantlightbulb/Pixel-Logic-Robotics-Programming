@@ -59,7 +59,7 @@ public class StateAutonomousDepot extends LinearOpMode {
 
 
         //Left Motion (hopefully) - to clear the lander.
-        DriveForwardDistance(robot.frontDrive, robot.backDrive,0.2, 600,10.0);
+        DriveForwardDistance(robot.backDrive, robot.frontDrive,0.2, 600,10.0);
 
         sleep(3000);
 
