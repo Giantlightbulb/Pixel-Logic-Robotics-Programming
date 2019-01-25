@@ -109,6 +109,8 @@ public class StateAutonomousDepot extends LinearOpMode {
 
         while((opModeIsActive())&&(firstMotor.isBusy() || secondMotor.isBusy())){
             // wait
+            telemetry.addData("Path1",  "Going to %7d ,  currently at %7d and %7d.", firstMotor.getTargetPosition(),  firstMotor.getCurrentPosition(), secondMotor.getCurrentPosition());
+            telemetry.update();
         }
 
         firstMotor.setPower(0);
