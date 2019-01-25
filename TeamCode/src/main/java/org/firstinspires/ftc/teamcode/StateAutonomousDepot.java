@@ -57,10 +57,12 @@ public class StateAutonomousDepot extends LinearOpMode {
         robot.backDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //END INITIALIZATION---------------------------------------------------------------------
 
+
         //Left Motion (hopefully) - to clear the lander.
         DriveForwardDistance(robot.frontDrive, robot.backDrive,0.2, 600,10.0);
 
         sleep(3000);
+
 
         //Forward Motion (hopefully) - approach Sampling, part 1
         DriveForwardDistance(robot.leftDrive, robot.rightDrive,0.3, 4000,10.0);
@@ -105,7 +107,7 @@ public class StateAutonomousDepot extends LinearOpMode {
         secondMotor.setPower(power);
         robot.timer.reset();
 
-        while((opModeIsActive())&&(firstMotor.isBusy() || secondMotor.isBusy()) && (robot.timer.seconds() < timeOut)){
+        while((opModeIsActive())&&(firstMotor.isBusy() || secondMotor.isBusy())){
             // wait
         }
 
