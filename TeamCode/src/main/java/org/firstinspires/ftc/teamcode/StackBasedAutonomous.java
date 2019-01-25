@@ -125,23 +125,23 @@ public class StackBasedAutonomous extends LinearOpMode {
 
             Color.colorToHSV(colors.toColor(), hsvValues);
             telemetry.addLine()
-                    .addData("H", "%.3f", hsvValues[0])
-                    .addData("S", "%.3f", hsvValues[1])
-                    .addData("V", "%.3f", hsvValues[2]);
+                    .addData("H", hsvValues[0])
+                    .addData("S", hsvValues[1])
+                    .addData("V", hsvValues[2]);
             telemetry.addLine()
-                    .addData("a", "%.3f", colors.alpha)
-                    .addData("r", "%.3f", colors.red)
-                    .addData("g", "%.3f", colors.green)
-                    .addData("b", "%.3f", colors.blue);
+                    .addData("a", colors.alpha)
+                    .addData("r", colors.red)
+                    .addData("g", colors.green)
+                    .addData("b", colors.blue);
 
             /** We also display a conversion of the colors to an equivalent Android color integer.
              * @see Color */
             int color = colors.toColor();
             telemetry.addLine("raw Android color: ")
-                    .addData("a", "%02x", Color.alpha(color))
-                    .addData("r", "%02x", Color.red(color))
-                    .addData("g", "%02x", Color.green(color))
-                    .addData("b", "%02x", Color.blue(color));
+                    .addData("a", Color.alpha(color))
+                    .addData("r", Color.red(color))
+                    .addData("g", Color.green(color))
+                    .addData("b", Color.blue(color));
 
             // Balance the colors. The values returned by getColors() are normalized relative to the
             // maximum possible values that the sensor can measure. For example, a sensor might in a
@@ -160,11 +160,10 @@ public class StackBasedAutonomous extends LinearOpMode {
             color = colors.toColor();
 
             telemetry.addLine("normalized color:  ")
-                    .addData("a", "%02x", Color.alpha(color))
-                    .addData("r", "%02x", Color.red(color))
-                    .addData("g", "%02x", Color.green(color))
-                    .addData("b", "%02x", Color.blue(color));
-            telemetry.update();
+                    .addData("a", Color.alpha(color))
+                    .addData("r", Color.red(color))
+                    .addData("g", Color.green(color))
+                    .addData("b",  Color.blue(color));
 
             // convert the RGB values to HSV values.
             Color.RGBToHSV(Color.red(color), Color.green(color), Color.blue(color), hsvValues);
@@ -182,6 +181,12 @@ public class StackBasedAutonomous extends LinearOpMode {
             telemetry.update();
         }
         telemetry.clear();
+        robot.rangeSensor.enableLed(false);
+        robot.ods.enableLed(false);
+        if (robot.colorSensor instanceof SwitchableLight) {
+            SwitchableLight light = (SwitchableLight)robot.colorSensor;
+            light.enableLight(false);
+        }
     }
 
     private void toggleLights() {

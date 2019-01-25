@@ -111,12 +111,12 @@ public class DriverOperatorOpMode extends LinearOpMode{
             //x component of the direction vector
             //Handles left and right motion
             robot.frontDrive.setPower(0.55 * (abs_x - left_t + right_t));
-            robot.backDrive.setPower(0.55 * (-abs_x - left_t + right_t));
+            robot.backDrive.setPower(0.55 * (abs_x + left_t - right_t));
 
             //y component of the direction vector
             //Handles forwards and backwards motion
             robot.leftDrive.setPower(0.55 * (abs_y - left_t + right_t));
-            robot.rightDrive.setPower(0.55 * (-abs_y - left_t + right_t));
+            robot.rightDrive.setPower(0.55 * (abs_y + left_t - right_t));
 
             //Drop Mascot
             if (gamepad1.a) {
