@@ -59,7 +59,7 @@ public class StateAutonomousDepot extends LinearOpMode {
 
 
         //Left Motion (hopefully) - to clear the lander.
-        DriveForwardDistance(robot.backDrive, robot.frontDrive,0.2, 600,10.0);
+        DriveForwardDistance(robot.frontDrive, robot.backDrive,0.2, 600,10.0);
 
         sleep(3000);
 
@@ -70,7 +70,7 @@ public class StateAutonomousDepot extends LinearOpMode {
         sleep(3000);
 
         //Left Motion (hopefully) - approach Sampling, part 2
-        DriveForwardDistance(robot.frontDrive, robot.backDrive,0.3, 2000,10.0);
+        DriveSidewaysDistance(robot.frontDrive, robot.backDrive,0.3, 2000,10.0);
 
         sleep(3000);
 
@@ -108,6 +108,37 @@ public class StateAutonomousDepot extends LinearOpMode {
         robot.timer.reset();
 
         while((opModeIsActive())&&(firstMotor.isBusy() || secondMotor.isBusy())){
+            // wait
+            telemetry.addData("Path1",  "Going to %7d ,  currently at %7d and %7d.", firstMotor.getTargetPosition(),  firstMotor.getCurrentPosition(), secondMotor.getCurrentPosition());
+            telemetry.update();
+        }
+
+        firstMotor.setPower(0);
+        secondMotor.setPower(0);
+
+        firstMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        secondMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+    public void DriveSidewaysDistance(DcMotor firstMotor, DcMotor secondMotor, double power, int distance, double timeOut){
+
+        // Reset encoders
+        firstMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        secondMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        // Set Target Position b
+        firstMotor.setTargetPosition(distance);
+        secondMotor.setTargetPosition(distance);
+
+        // Set to RUN_TO_POSITION mode
+        firstMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        secondMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        // Set Drive Power
+        firstMotor.setPower(power);
+        secondMotor.setPower(power);
+        robot.timer.reset();
+
+        while((opModeIsActive())&&(secondMotor.isBusy())){
             // wait
             telemetry.addData("Path1",  "Going to %7d ,  currently at %7d and %7d.", firstMotor.getTargetPosition(),  firstMotor.getCurrentPosition(), secondMotor.getCurrentPosition());
             telemetry.update();

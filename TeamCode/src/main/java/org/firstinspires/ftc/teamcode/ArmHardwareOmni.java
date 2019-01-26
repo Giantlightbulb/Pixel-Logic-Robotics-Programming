@@ -5,6 +5,7 @@ package org.firstinspires.ftc.teamcode;
 //TeleOp and Hardware
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsTouchSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.CRServoImpl;
@@ -110,9 +111,11 @@ public class ArmHardwareOmni {
         //Hardware definitions
         //Drivetrain motors
         frontDrive = hwMap.get(DcMotor.class, "frontDrive");
+        frontDrive.setDirection(DcMotor.Direction.REVERSE);
         backDrive = hwMap.get(DcMotor.class, "backDrive");
-        backDrive.setDirection(DcMotor.Direction.REVERSE);
+        backDrive.setDirection(DcMotor.Direction.FORWARD);
         leftDrive = hwMap.get(DcMotor.class, "leftDrive");
+        leftDrive.setDirection(DcMotor.Direction.FORWARD);
         rightDrive = hwMap.get(DcMotor.class, "rightDrive");
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
         //Articulating Arm
