@@ -162,10 +162,13 @@ public class DriverOperatorOpMode extends LinearOpMode{
             //Vacuum
             if (gamepad2.dpad_up) {
                 robot.vacuum.setPower(-1);
+                //robot.innerVac.setPower(1);
             } else if (gamepad2.dpad_down) {
                 robot.vacuum.setPower(1);
+                //robot.innerVac.setPower(-1);
             } else if (gamepad2.dpad_left) {
                 robot.vacuum.setPower(0);
+                //robot.innerVac.setPower(0);
             }
 
             //All telemetry
