@@ -148,28 +148,28 @@ public class DriverOperatorOpMode extends LinearOpMode{
 
             //Arm
             if(gamepad2.right_stick_y < 0) {
-                robot.forklift.setPower(0.3 * gamepad2.right_stick_y);
+                robot.forklift.setPower(0.5 * gamepad2.right_stick_y);
             }
             else {
-                robot.forklift.setPower(0.8 * gamepad2.right_stick_y);
+                robot.forklift.setPower(0.25 * gamepad2.right_stick_y);
             }
 
             //Extension
-            robot.leftExtension.setPower(gamepad2.right_stick_x*0.35);
-            robot.rightExtension.setPower(-gamepad2.right_stick_x*0.35);
+            robot.leftExtension.setPower(-gamepad2.right_stick_x*0.15);
+            robot.rightExtension.setPower(gamepad2.right_stick_x*0.15);
 
             //Vertical Lift
             robot.verticalLift.setPower(0.9*gamepad1.right_stick_y);
             //Vacuum
             if (gamepad2.dpad_up) {
                 robot.vacuum.setPower(-1);
-                //robot.innerVac.setPower(1);
+                robot.innerVac.setPower(1);
             } else if (gamepad2.dpad_down) {
                 robot.vacuum.setPower(1);
-                //robot.innerVac.setPower(-1);
+                robot.innerVac.setPower(-1);
             } else if (gamepad2.dpad_left) {
                 robot.vacuum.setPower(0);
-                //robot.innerVac.setPower(0);
+                robot.innerVac.setPower(0);
             }
 
             //All telemetry

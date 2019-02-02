@@ -51,7 +51,7 @@ public class StateAutonomousCrater extends LinearOpMode {
 
         //1. Lower Down and Clearance
         //Lifts the robot up to release latch tension
-        runMotor(robot.verticalLift, 0.85, 1.8, "Lift Up");
+        runMotor(robot.verticalLift, 0.85, 0.4, "Lift Up");
 
         //Lowers the robot down
         runMotor(robot.verticalLift, -0.2, 1.7, "Lower Down");
@@ -172,5 +172,35 @@ public class StateAutonomousCrater extends LinearOpMode {
     public boolean checkColor() {
         return false;
     }
+    public void DriveForwardDistance(DcMotor firstMotor, DcMotor secondMotor, double power, int distance, double timeOut){
 
+        // Reset encoders
+        firstMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        secondMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        // Set Target Position b
+        firstMotor.setTargetPosition(distance);
+        secondMotor.setTargetPosition(distance);
+
+        // Set to RUN_TO_POSITION mode
+        firstMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        secondMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        // Set Drive Power
+        firstMotor.setPower(power);
+        secondMotor.setPower(power);
+        robot.timer.reset();
+
+        while((opModeIsActive())&&(firstMotor.isBusy() || secondMotor.isBusy())){
+            // wait
+            telemetry.addData("Path1",  "Going to %7d ,  currently at %7d and %7d.", firstMotor.getTargetPosition(),  firstMotor.getCurrentPosition(), secondMotor.getCurrentPosition());
+            telemetry.update();
+        }
+
+        firstMotor.setPower(0);
+        secondMotor.setPower(0);
+
+        firstMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        secondMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
 }

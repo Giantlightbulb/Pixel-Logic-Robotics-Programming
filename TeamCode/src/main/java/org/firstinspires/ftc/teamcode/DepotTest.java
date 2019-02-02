@@ -53,7 +53,7 @@ public class DepotTest extends LinearOpMode {
 
         //1. Lower Down and Clearance
         //Lifts the robot up to release latch tension
-        runMotor(robot.verticalLift, 0.85, 1.8, "Lift Up");
+        runMotor(robot.verticalLift, 0.85, 0.4, "Lift Up");
 
         //Lowers the robot down
         runMotor(robot.verticalLift, -0.2, 1.7, "Lower Down");
@@ -94,6 +94,8 @@ public class DepotTest extends LinearOpMode {
 
         //6. Approach Field Wall
         runDriveTrain(robot.leftDrive, robot.rightDrive, -0.25, 3, "Approaching Field Wall");
+        DriveForwardDistance(robot.leftDrive, robot.rightDrive, 0.25, 10000, 10.0);
+
 
         //7. Approach Depot
         runDriveTrain(robot.frontDrive, robot.backDrive, 0.25, 3, "Approaching Depot");
@@ -183,6 +185,36 @@ public class DepotTest extends LinearOpMode {
                 (Math.abs(green - 107) < 75 ) &&
                 (Math.abs(blue) < 30 ));
     }
+    public void DriveForwardDistance(DcMotor firstMotor, DcMotor secondMotor, double power, int distance, double timeOut){
 
+        // Reset encoders
+        firstMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        secondMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        // Set Target Position b
+        firstMotor.setTargetPosition(distance);
+        secondMotor.setTargetPosition(distance);
+
+        // Set to RUN_TO_POSITION mode
+        firstMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        secondMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        // Set Drive Power
+        firstMotor.setPower(power);
+        secondMotor.setPower(power);
+        robot.timer.reset();
+
+        while((opModeIsActive())&&(firstMotor.isBusy() || secondMotor.isBusy())){
+            // wait
+            telemetry.addData("Path1",  "Going to %7d ,  currently at %7d and %7d.", firstMotor.getTargetPosition(),  firstMotor.getCurrentPosition(), secondMotor.getCurrentPosition());
+            telemetry.update();
+        }
+
+        firstMotor.setPower(0);
+        secondMotor.setPower(0);
+
+        firstMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        secondMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
 
 }

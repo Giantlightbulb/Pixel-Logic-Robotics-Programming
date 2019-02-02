@@ -71,6 +71,7 @@ public class ArmHardwareOmni {
     public Servo latch;
     //Whipper
     public CRServo vacuum;
+    public CRServo innerVac;
 
     //Initializes Sensors
     //  Gyro
@@ -133,6 +134,8 @@ public class ArmHardwareOmni {
         latch = hwMap.get(Servo.class, "latch");
         //servo3 = Vacuum Whipper
         vacuum = hwMap.get(CRServo.class, "vacuum");
+        //servo4 = Inner Vacuum Whipper
+        innerVac = hwMap.get(CRServo.class, "innerVacuum");
 
         //  Sensors
         //  Touch Sensor
