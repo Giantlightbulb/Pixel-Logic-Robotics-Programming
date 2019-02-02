@@ -120,25 +120,9 @@ public class DriverOperatorOpMode extends LinearOpMode{
 
             //Drop Mascot
             if (gamepad1.a) {
-                robot.mascot.setPosition(0.3);
+                robot.mascot.setPosition(robot.setPosition);
             } else {
-                robot.mascot.setPosition(0.8);
-            }
-
-            //Latch
-            if (gamepad2.right_bumper) {
-                if (robot.latch.getPosition() == 1.0) {
-                    robot.latch.setPosition(0.6);
-                    while(gamepad2.right_bumper){
-                        telemetry.update();
-                    }
-                }
-                else{
-                    robot.latch.setPosition(1.0);
-                    while(gamepad2.right_bumper){
-                        telemetry.update();
-                    }
-                }
+                robot.mascot.setPosition(robot.basePosition);
             }
 
             upPrev = gamepad1.dpad_up;
@@ -155,8 +139,8 @@ public class DriverOperatorOpMode extends LinearOpMode{
             }
 
             //Extension
-            robot.leftExtension.setPower(-gamepad2.right_stick_x*0.15);
-            robot.rightExtension.setPower(gamepad2.right_stick_x*0.15);
+            robot.leftExtension.setPower(-gamepad2.right_stick_x*0.29);
+            robot.rightExtension.setPower(gamepad2.right_stick_x*0.29);
 
             //Vertical Lift
             robot.verticalLift.setPower(0.9*gamepad1.right_stick_y);

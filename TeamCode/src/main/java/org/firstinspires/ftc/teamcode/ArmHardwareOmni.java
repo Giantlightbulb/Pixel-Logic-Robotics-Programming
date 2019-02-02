@@ -54,6 +54,9 @@ public class ArmHardwareOmni {
     public DcMotor leftDrive; //
     public DcMotor rightDrive; //
 
+    public final double basePosition = 0.25;
+    public final double setPosition = 0.7;
+
     public DcMotor forklift; //Articulating Arm
     //Telescoping lift motor
     public DcMotor verticalLift; //Vertical Extension

@@ -30,7 +30,7 @@ public class StateAutonomousCrater extends LinearOpMode {
         telemetry.update();
 
         //Initiate Servos
-        robot.mascot.setPosition(0.8);//mascot up
+        robot.mascot.setPosition(robot.basePosition);//mascot up
 
         // Start Button
         waitForStart();
@@ -97,7 +97,7 @@ public class StateAutonomousCrater extends LinearOpMode {
         runDriveTrain(robot.leftDrive, robot.rightDrive, -0.25, 3, "Approaching Depot");
 
         //8. Drop Mascot
-        robot.mascot.setPosition(0.3);
+        robot.mascot.setPosition(robot.setPosition);
 
         //9. Approach Crater
         runDriveTrain(robot.leftDrive, robot.rightDrive, 0.25, 3, "Approaching Crater");
