@@ -145,8 +145,14 @@ public class DriverOperatorOpMode extends LinearOpMode{
             downPrev = gamepad1.dpad_down;
 
             //Operator
+
             //Arm
-            robot.forklift.setPower(-gamepad2.right_stick_y);
+            if(gamepad2.right_stick_y < 0) {
+                robot.forklift.setPower(0.3 * gamepad2.right_stick_y);
+            }
+            else {
+                robot.forklift.setPower(0.8 * gamepad2.right_stick_y);
+            }
 
             //Extension
             robot.leftExtension.setPower(gamepad2.right_stick_x*0.35);
@@ -176,6 +182,9 @@ public class DriverOperatorOpMode extends LinearOpMode{
                     .addData("D-Pad Up", gamepad2.dpad_up);
             telemetry.addLine()
                     .addData("D-Pad Down", gamepad2.dpad_down);
+            telemetry.update();
+            telemetry.addLine()
+                    .addData("Forklift Encoder", robot.forklift.getCurrentPosition());
             telemetry.update();
         }
     }
