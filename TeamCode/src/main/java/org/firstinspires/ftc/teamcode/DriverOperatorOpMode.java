@@ -119,10 +119,10 @@ public class DriverOperatorOpMode extends LinearOpMode{
             robot.rightDrive.setPower(0.55 * (abs_y + left_t - right_t));
 
             //Drop Mascot
-            if (!gamepad1.a) {
-                robot.mascot.setPosition(0.2);
+            if (gamepad1.a) {
+                robot.mascot.setPosition(robot.setPosition);
             } else {
-                robot.mascot.setPosition(0.65);
+                robot.mascot.setPosition(robot.basePosition);
             }
 
             upPrev = gamepad1.dpad_up;
