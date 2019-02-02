@@ -54,7 +54,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
  */
 @TeleOp(name = "Color Test", group = "Sensor")
 
-public class ColorTest extends LinearOpMode {
+public class DetectionTest extends LinearOpMode {
 
     /** The colorSensor field will contain a reference to our color sensor hardware object */
     NormalizedColorSensor colorSensor;
@@ -130,6 +130,8 @@ public class ColorTest extends LinearOpMode {
 
             Color.colorToHSV(colors.toColor(), hsvValues);
             telemetry.addLine()
+                    .addData("Sample Detection", checkColor());
+            telemetry.addLine()
                     .addData("Color Sensor", "");
             telemetry.addLine()
                     .addData("H", hsvValues[0])
@@ -189,5 +191,21 @@ public class ColorTest extends LinearOpMode {
                 }
             });
         }
+    }
+    public boolean checkColor() {
+        robot.colors = robot.colorSensor.getNormalizedColors();
+        float max = Math.max(Math.max(Math.max(robot.colors.red, robot.colors.green), robot.colors.blue), robot.colors.alpha);
+        robot.colors.red   /= max;
+        robot.colors.green /= max;
+        robot.colors.blue  /= max;
+        int color = robot.colors.toColor();
+        int alpha = Color.alpha(color);
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        return ((Math.abs(alpha - 70) < 75 ) &&
+                (Math.abs(red - 255) < 75 ) &&
+                (Math.abs(green - 107) < 75 ) &&
+                (Math.abs(blue) < 30 ));
     }
 }
