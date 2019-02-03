@@ -75,8 +75,6 @@ public class DriverOperatorOpMode extends LinearOpMode{
         waitForStart();
         //Resets timer
         robot.timer.reset();
-        //Ensures the latch is clear
-        robot.latch.setPosition(1.0);//unlatch
         //While loop for robot operation
         while (opModeIsActive()) {
             //Driver
@@ -128,7 +126,14 @@ public class DriverOperatorOpMode extends LinearOpMode{
             upPrev = gamepad1.dpad_up;
             downPrev = gamepad1.dpad_down;
 
-            //Operator
+            //fakeCR
+            if (gamepad2.right_bumper) {
+                robot.fakeCR.setPosition(1);
+            } else if (gamepad2.left_bumper) {
+                robot.fakeCR.setPosition(0);
+            } else {
+                robot.fakeCR.setPosition(0.5);
+            }
 
             //Arm
             if(gamepad2.right_stick_y < 0) {

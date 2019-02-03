@@ -70,8 +70,8 @@ public class ArmHardwareOmni {
     //Servos
     //Mascot
     public Servo mascot;
-    //Bucket Arm
-    public Servo latch;
+    //Replacement CR
+    public Servo fakeCR;
     //Whipper
     public CRServo vacuum;
     public CRServo innerVac;
@@ -134,7 +134,7 @@ public class ArmHardwareOmni {
         //servo1 = Mascot Dump
         mascot = hwMap.get(Servo.class, "mascot");
         //servo2 = Robot Lock
-        latch = hwMap.get(Servo.class, "latch");
+        fakeCR = hwMap.get(Servo.class, "fakeCR");
         //servo3 = Vacuum Whipper
         vacuum = hwMap.get(CRServo.class, "vacuum");
         //servo4 = Inner Vacuum Whipper
