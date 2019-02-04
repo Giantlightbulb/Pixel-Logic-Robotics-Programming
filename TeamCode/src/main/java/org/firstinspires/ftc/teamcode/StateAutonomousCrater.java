@@ -31,6 +31,8 @@ public class StateAutonomousCrater extends LinearOpMode {
 
         //Initiate Servos
         robot.mascot.setPosition(robot.basePosition);//mascot up
+        robot.innerVac.setPower(0);
+        robot.vacuum.setPower(0);
 
         // Start Button
         waitForStart();
@@ -50,8 +52,9 @@ public class StateAutonomousCrater extends LinearOpMode {
         //Finalized startup
 
         //1. Lower Down and Clearance
+        /*
         //Lifts the robot up to release latch tension
-        runMotor(robot.verticalLift, 0.85, 0.4, "Lift Up");
+        runMotor(robot.verticalLift, 0.85, 0.3, "Lift Up");
 
         //Lowers the robot down
         runMotor(robot.verticalLift, -0.2, 1.7, "Lower Down");
@@ -60,19 +63,24 @@ public class StateAutonomousCrater extends LinearOpMode {
         //Clears the latch
         runDriveTrain(robot.frontDrive, robot.backDrive, 0.25, 0.75, "Clearance");
         //Rotates to align
-        rotateToTheta(1.0, 0, "Rotating");
+        */
+
+        //rotateToTheta(1.0, 0, "Rotating");
+
         //Approaches the sampling field
-        runDriveTrain(robot.leftDrive, robot.rightDrive, 0.25, 3, "Sample Approach");
-        rotateToTheta(1.0, 0, "Rotating");
-        runDriveTrain(robot.frontDrive, robot.backDrive, -0.25, 3, "Approach Initial Sample");
+        //runDriveTrain(robot.leftDrive, robot.rightDrive, 0.25, 3, "Sample Approach");
+        DriveForwardDistance(robot.leftDrive, robot.rightDrive, 0.35, 1727,6.0);
+
+
+        runDriveTrain(robot.frontDrive, robot.backDrive, 0.35, 2, "Approach Initial Sample");
 
         //3-4. Sample Positioning and Sampling
         boolean sampleFound = false; //Whether the sample is found
-        double sampleClearance = 5.0; //Time to clear sampling field
-        double remainingSampleClearance = 0; //Time remaining after sampling
-        rotateToTheta(1.0, 0, "Rotating");
-        robot.frontDrive.setPower(0.25);
-        robot.backDrive.setPower(0.25);
+        double sampleClearance = 6; //Time to clear sampling field
+        double remainingSampleClearance = 20; //Time remaining after sampling
+
+        robot.frontDrive.setPower(-0.35);
+        robot.backDrive.setPower(-0.35);
         while (opModeIsActive() && robot.timer.seconds() < sampleClearance && !checkColor()) {
             telemetry.addData("Sampling", "%2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
@@ -88,13 +96,13 @@ public class StateAutonomousCrater extends LinearOpMode {
         //Clear of sampling
 
         //5. Rotate 45 degrees
-        rotateToTheta(1.0, -45, "Rotating");
+        rotateToTheta(2.0, -22.5, "Rotating");
 
         //6. Approach Field Wall
-        runDriveTrain(robot.frontDrive, robot.backDrive, 0.25, 3, "Approaching Field Wall");
+        runDriveTrain(robot.frontDrive, robot.backDrive, 0.35, 3, "Approaching Field Wall");
 
         //7. Approach Depot
-        runDriveTrain(robot.leftDrive, robot.rightDrive, -0.25, 3, "Approaching Depot");
+        runDriveTrain(robot.leftDrive, robot.rightDrive, -0.35, 3, "Approaching Depot");
 
         //8. Drop Mascot
         robot.mascot.setPosition(robot.setPosition);
@@ -103,7 +111,7 @@ public class StateAutonomousCrater extends LinearOpMode {
         runDriveTrain(robot.leftDrive, robot.rightDrive, 0.25, 3, "Approaching Crater");
 
         //10. Rotate robot
-        rotateToTheta(1.0, -135, "Rotating");
+        rotateToTheta(2.0, -135, "Rotating");
 
         //11.Center Crater
         runDriveTrain(robot.leftDrive, robot.rightDrive, 0.25, 3, "Centering Crater");
@@ -117,6 +125,7 @@ public class StateAutonomousCrater extends LinearOpMode {
     }
 
     public void runMotor(DcMotor motor, double power, double time, String label) {
+        robot.timer.reset();
         motor.setPower(power);
         while (opModeIsActive() && (robot.timer.seconds() < time)) {
             telemetry.addData(label, "%2.5f S Elapsed", robot.timer.seconds());
@@ -127,6 +136,7 @@ public class StateAutonomousCrater extends LinearOpMode {
     }
 
     public void runDriveTrain(DcMotor motor1, DcMotor motor2, double power, double time, String label) {
+        robot.timer.reset();
         motor1.setPower(power);
         motor2.setPower(power);
         while (opModeIsActive() && (robot.timer.seconds() < time)) {
@@ -139,12 +149,14 @@ public class StateAutonomousCrater extends LinearOpMode {
     }
 
     public void rotateToTheta(double time, double theta, String label) {
+        robot.timer.reset();
         while (opModeIsActive() && (robot.timer.seconds() < time) && getAngle() != theta) {
             robot.frontDrive.setPower(getRotationPower(theta));
             robot.backDrive.setPower(-getRotationPower(theta));
             robot.leftDrive.setPower(getRotationPower(theta));
             robot.rightDrive.setPower(-getRotationPower(theta));
             telemetry.addData(label, "%2.5f S Elapsed", robot.timer.seconds());
+            telemetry.addData("Angle", getAngle());
             telemetry.update();
         }
         robot.frontDrive.setPower(0);
@@ -159,13 +171,9 @@ public class StateAutonomousCrater extends LinearOpMode {
     }
 
     public double getRotationPower(double theta) {
-        double angle = getAngle();
+        double angle = theta - getAngle();
         double power;
-        if (!(Math.abs(theta - angle) < 1)) {
-            power = 0.3 * Math.cbrt(angle/180);
-        } else {
-            power = 0;
-        }
+        power = 0.3 * Math.cbrt(angle/180);
         return power;
     }
 

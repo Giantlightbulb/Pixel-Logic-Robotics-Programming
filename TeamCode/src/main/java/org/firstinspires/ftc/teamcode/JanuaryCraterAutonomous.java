@@ -37,7 +37,6 @@ public class JanuaryCraterAutonomous extends LinearOpMode {
         telemetry.update();
 
         //Initiate Servos
-        robot.latch.setPosition(0.65); // latched
         robot.mascot.setPosition(0.8);//mascot up
 
         // Start Button
@@ -68,7 +67,6 @@ public class JanuaryCraterAutonomous extends LinearOpMode {
 
 
         //Sideways motion to clear hook
-        robot.latch.setPosition(1.0);// UNLATCH----------
         robot.verticalLift.setPower(0);
         sleep(1000);
 

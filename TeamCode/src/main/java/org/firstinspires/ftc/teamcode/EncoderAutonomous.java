@@ -40,7 +40,6 @@ public class EncoderAutonomous extends LinearOpMode {
         telemetry.update();
 
         //Initiate Servos
-        robot.latch.setPosition(0.6); // latched
         robot.mascot.setPosition(0.8);//mascot up
 
         // Start Button
@@ -66,10 +65,21 @@ public class EncoderAutonomous extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+        //===================================
+        //===================================
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(robot.frontDrive, robot.backDrive, 0.1, 10, -10, 5);  // S1: Forward 47 Inches with 5 Sec timeout
+        telemetry.addLine()
+                .addData("Encoder Drive", "");
+        telemetry.update();
+        DriveForwardDistance(robot.leftDrive, robot.rightDrive, 0.35, 4000,10.0); // 44 in
+        sleep(3000);
+
+        runDriveTrain(robot.leftDrive, robot.rightDrive, 0.35, 3, "Drive by Time"); // 28 in
+
+        //===================================
+        //===================================
 
         sleep(1000);     // pause for servos to move
 
@@ -133,6 +143,50 @@ public class EncoderAutonomous extends LinearOpMode {
 
             //  sleep(250);   // optional pause after each move
         }
+    }
+    public void DriveForwardDistance(DcMotor firstMotor, DcMotor secondMotor, double power, int distance, double timeOut){
+
+        // Reset encoders
+        firstMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        secondMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        // Set Target Position b
+        firstMotor.setTargetPosition(distance);
+        secondMotor.setTargetPosition(distance);
+
+        // Set to RUN_TO_POSITION mode
+        firstMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        secondMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        // Set Drive Power
+        firstMotor.setPower(power);
+        secondMotor.setPower(power);
+        robot.timer.reset();
+
+        while((opModeIsActive())&&(firstMotor.isBusy() || secondMotor.isBusy())){
+            // wait
+            telemetry.addData("Path1",  "Going to %7d ,  currently at %7d and %7d.", firstMotor.getTargetPosition(),  firstMotor.getCurrentPosition(), secondMotor.getCurrentPosition());
+            telemetry.update();
+        }
+
+        firstMotor.setPower(0);
+        secondMotor.setPower(0);
+
+        firstMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        secondMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void runDriveTrain(DcMotor motor1, DcMotor motor2, double power, double time, String label) {
+        motor1.setPower(power);
+        motor2.setPower(power);
+        robot.timer.reset();
+        while (opModeIsActive() && (robot.timer.seconds() < time)) {
+            telemetry.addData(label, "%2.5f S Elapsed", robot.timer.seconds());
+            telemetry.update();
+        }
+        motor1.setPower(0);
+        motor2.setPower(0);
+        robot.timer.reset();
     }
 }
 

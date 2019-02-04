@@ -48,7 +48,6 @@ public class SensorTest extends LinearOpMode {
         telemetry.update();
 
         //Initiate Servos
-        robot.latch.setPosition(0.65); // latched
         robot.mascot.setPosition(0.8);//mascot up
 
         // Start Button

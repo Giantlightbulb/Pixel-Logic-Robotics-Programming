@@ -38,8 +38,9 @@ public class StateAutonomousDepot extends LinearOpMode {
         telemetry.update();
 
         //Initiate Servos
-        robot.latch.setPosition(0.65); // latched
         robot.mascot.setPosition(0.8);//mascot up
+        robot.innerVac.setPower(0);
+        robot.vacuum.setPower(0);
 
         // Start Button
         waitForStart();
@@ -58,7 +59,7 @@ public class StateAutonomousDepot extends LinearOpMode {
         //END INITIALIZATION---------------------------------------------------------------------
 
         robot.verticalLift.setPower(0.85); // lifts robot up
-        while (opModeIsActive() && (robot.timer.seconds() < 0.4)) {
+        while (opModeIsActive() && (robot.timer.seconds() < 0.3)) {
             telemetry.addData("Lower Down", "Lift: %2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
         }

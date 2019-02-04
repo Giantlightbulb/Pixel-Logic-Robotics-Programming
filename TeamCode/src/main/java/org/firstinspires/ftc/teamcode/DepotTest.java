@@ -53,7 +53,7 @@ public class DepotTest extends LinearOpMode {
 
         //1. Lower Down and Clearance
         //Lifts the robot up to release latch tension
-        runMotor(robot.verticalLift, 0.85, 0.4, "Lift Up");
+        runMotor(robot.verticalLift, 0.85, 0.3, "Lift Up");
 
         //Lowers the robot down
         runMotor(robot.verticalLift, -0.2, 1.7, "Lower Down");
