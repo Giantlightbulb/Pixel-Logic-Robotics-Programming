@@ -228,10 +228,10 @@ public class ArmHardwareOmni {
         timer.reset();
         while (linearOpMode.opModeIsActive() && (timer.seconds() < time) && getAngle() != rotation) {
             double power = getRotationPower(rotation);
-            frontDrive.setPower(power);
-            backDrive.setPower(-power);
-            leftDrive.setPower(power);
-            rightDrive.setPower(-power);
+            frontDrive.setPower(-power);
+            backDrive.setPower(power);
+            leftDrive.setPower(-power);
+            rightDrive.setPower(power);
             localTelemetry.addData(label, "%2.5f S Elapsed", timer.seconds());
             localTelemetry.addData("angle", "%s deg", formatFloat(getAngle()));
             localTelemetry.update();
@@ -246,10 +246,10 @@ public class ArmHardwareOmni {
     public double getRotationPower(double theta) {
         double angle = theta - getAngle();
         double power;
-        power = 0.3 * Math.cbrt(angle/180);
+        power = 0.25 * Math.cbrt(angle/180);
         localTelemetry.addLine()
                 .addData("Power", power);
-        return 0;
+        return power;
     }
 
     public boolean checkColor() {

@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 import android.graphics.Color;
-@Autonomous(name="EncoderAutonomous", group="Autonomous")
+@Autonomous(name="MethodAutonomous", group="Autonomous")
 
 public class MethodAutonomous extends LinearOpMode {
     ArmHardwareOmni robot = new ArmHardwareOmni();

@@ -31,8 +31,8 @@ public class StateAutonomousCrater extends LinearOpMode {
 
         //Initiate Servos
         robot.mascot.setPosition(robot.basePosition);//mascot up
-        //robot.innerVac.setPower(0);
-        //robot.vacuum.setPower(0);
+        robot.innerVac.setPower(0);
+        robot.vacuum.setPower(0);
 
         // Start Button
         waitForStart();
@@ -69,18 +69,20 @@ public class StateAutonomousCrater extends LinearOpMode {
 
         //Approaches the sampling field
         //runDriveTrain(robot.leftDrive, robot.rightDrive, 0.25, 3, "Sample Approach");
-        robot.DriveForwardDistance(robot.leftDrive, robot.rightDrive, 0.35, 1727,6.0);
+        robot.DriveForwardDistance(robot.leftDrive, robot.rightDrive, 0.35, 1650,6.0);
+
+        sleep(500);
 
 
-        robot.runDriveTrain(robot.frontDrive, robot.backDrive, 0.35, 2, "Approach Initial Sample");
+        robot.runDriveTrain(robot.frontDrive, robot.backDrive, 0.30, 2.5, "Approach Initial Sample");
 
         //3-4. Sample Positioning and Sampling
         boolean sampleFound = false; //Whether the sample is found
-        double sampleClearance = 6; //Time to clear sampling field
+        double sampleClearance = 7; //Time to clear sampling field
         double remainingSampleClearance = 20; //Time remaining after sampling
 
-        robot.frontDrive.setPower(-0.35);
-        robot.backDrive.setPower(-0.35);
+        robot.frontDrive.setPower(-0.3);
+        robot.backDrive.setPower(-0.3);
         while (opModeIsActive() && robot.timer.seconds() < sampleClearance && !robot.checkColor()) {
             telemetry.addData("Sampling", "%2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
@@ -89,32 +91,27 @@ public class StateAutonomousCrater extends LinearOpMode {
         remainingSampleClearance = sampleClearance - robot.timer.seconds();
         robot.timer.reset();
         if (sampleFound) {
-            robot.runDriveTrain(robot.leftDrive, robot.rightDrive, 0.25, 1.5, "Sampling");
-            robot.runDriveTrain(robot.leftDrive, robot.rightDrive, -0.25, 1.5, "Exiting Sampling");
-            robot.runDriveTrain(robot.frontDrive, robot.backDrive, 0.25, remainingSampleClearance, "Clearing Sampling");
+            robot.runDriveTrain(robot.leftDrive, robot.rightDrive, 0.30, 1.5, "Sampling");
+            robot.runDriveTrain(robot.leftDrive, robot.rightDrive, -0.30, 1.5, "Exiting Sampling");
+            robot.runDriveTrain(robot.frontDrive, robot.backDrive, 0.30, remainingSampleClearance, "Clearing Sampling");
         }
         //Clear of sampling
 
         //5. Rotate 45 degrees
-        robot.rotateTheta(2.0, -22.5, "Rotating");
+        robot.rotateTheta(2.0, 45, "Rotating");
 
-        //6. Approach Field Wall
-        robot.runDriveTrain(robot.frontDrive, robot.backDrive, 0.35, 3, "Approaching Field Wall");
-
-        //7. Approach Depot
-        robot.runDriveTrain(robot.leftDrive, robot.rightDrive, -0.35, 3, "Approaching Depot");
+        //6. Apoproach Depot
+        robot.runDriveTrain(robot.frontDrive, robot.backDrive, -0.35, 3, "Approaching Depot");
 
         //8. Drop Mascot
         robot.mascot.setPosition(robot.setPosition);
 
         //9. Approach Crater
-        robot.runDriveTrain(robot.leftDrive, robot.rightDrive, 0.25, 3, "Approaching Crater");
+        robot.runDriveTrain(robot.frontDrive, robot.backDrive, 0.35, 3, "Approaching Crater");
 
         //10. Rotate robot
-        robot.rotateTheta(2.0, -135, "Rotating");
+        robot.rotateTheta(2.0, -180, "Rotating");
 
-        //11.Center Crater
-        robot.runDriveTrain(robot.leftDrive, robot.rightDrive, 0.25, 3, "Centering Crater");
 
         //12. Extending arm over crater
         //Misnomer, runDriveTrain is used to run motor pair
