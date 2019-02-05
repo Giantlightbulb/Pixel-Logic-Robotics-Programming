@@ -79,7 +79,7 @@ public class DetectionTest extends LinearOpMode {
         // color of the Robot Controller app to match the hue detected by the RGB sensor.
         int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
         relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
-        robot.init(hardwareMap);
+        robot.init(this, hardwareMap, telemetry);
         try {
             runSample(); // actually execute the sample
         } finally {
@@ -130,7 +130,7 @@ public class DetectionTest extends LinearOpMode {
 
             Color.colorToHSV(colors.toColor(), hsvValues);
             telemetry.addLine()
-                    .addData("Sample Detection", checkColor());
+                    .addData("Sample Detection", robot.checkColor());
             telemetry.addLine()
                     .addData("Color Sensor", "");
             telemetry.addLine()
@@ -191,21 +191,5 @@ public class DetectionTest extends LinearOpMode {
                 }
             });
         }
-    }
-    public boolean checkColor() {
-        robot.colors = robot.colorSensor.getNormalizedColors();
-        float max = Math.max(Math.max(Math.max(robot.colors.red, robot.colors.green), robot.colors.blue), robot.colors.alpha);
-        robot.colors.red   /= max;
-        robot.colors.green /= max;
-        robot.colors.blue  /= max;
-        int color = robot.colors.toColor();
-        int alpha = Color.alpha(color);
-        int red = Color.red(color);
-        int green = Color.green(color);
-        int blue = Color.blue(color);
-        return ((Math.abs(alpha - 70) < 75 ) &&
-                (Math.abs(red - 255) < 75 ) &&
-                (Math.abs(green - 107) < 75 ) &&
-                (Math.abs(blue) < 30 ));
     }
 }
