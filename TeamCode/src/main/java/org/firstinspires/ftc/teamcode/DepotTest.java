@@ -61,10 +61,14 @@ public class DepotTest extends LinearOpMode {
         //2. Approach Sampling
         //Clears the latch
         runDriveTrain(robot.frontDrive, robot.backDrive, 0.25, 0.75, "Clearance");
+
+
         //Rotates to align
         rotateToTheta(1.0, 0, "Rotating");
         //Approaches the sampling field
-        runDriveTrain(robot.leftDrive, robot.rightDrive, 0.25, 3, "Sample Approach");
+        //runDriveTrain(robot.leftDrive, robot.rightDrive, 0.25, 3, "Sample Approach");
+        DriveForwardDistance(robot.leftDrive, robot.rightDrive, 0.25, 8000, 10.0);
+        
         rotateToTheta(1.0, 0, "Rotating");
         runDriveTrain(robot.frontDrive, robot.backDrive, -0.25, 3, "Approach Initial Sample");
 
@@ -93,8 +97,8 @@ public class DepotTest extends LinearOpMode {
         rotateToTheta(1.0, -135, "Rotating");
 
         //6. Approach Field Wall
-        runDriveTrain(robot.leftDrive, robot.rightDrive, -0.25, 3, "Approaching Field Wall");
-        DriveForwardDistance(robot.leftDrive, robot.rightDrive, 0.25, 10000, 10.0);
+        //runDriveTrain(robot.leftDrive, robot.rightDrive, -0.25, 3, "Approaching Field Wall");
+        DriveForwardDistance(robot.leftDrive, robot.rightDrive, 0.25, 5000, 10.0);
 
 
         //7. Approach Depot
