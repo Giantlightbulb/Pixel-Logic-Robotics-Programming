@@ -21,7 +21,7 @@ public class SensorTest extends LinearOpMode {
         float[] hsvValues = new float[3];
         final float values[] = hsvValues;
 
-        robot.init(hardwareMap);
+        robot.init(this, hardwareMap, telemetry);
         telemetry.log().add("Gyro Calibrating. Do Not Move!");
         //Approximate Speed at full power: 36 inches / 1.75 seconds
         // Left motion motor 2 positive, motor 4 negative

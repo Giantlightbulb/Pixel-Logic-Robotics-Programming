@@ -1,27 +1,20 @@
 package org.firstinspires.ftc.teamcode;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.hardware.SwitchableLight;
-import android.graphics.Color;
-
-@Autonomous(name="StateAutonomousDepot", group="Autonomous")
+@Autonomous(name="DepotTest", group="Autonomous")
 
 public class StateAutonomousDepot extends LinearOpMode {
     ArmHardwareOmni robot = new ArmHardwareOmni();
 
     public void runOpMode() {
-        robot.init(hardwareMap);
+        robot.init(this, hardwareMap, telemetry);
         int targetPosition;
         telemetry.log().add("Gyro Calibrating. Do Not Move!");
-        //Approximate Speed at full power: 36 inches / 1.75 seconds
-        // Left motion motor 2 positive, motor 4 negative
-        // Forward motion motor 1 positive motor 3 negative
+        // Left motion motor 2 positive, motor 4 positive
+        // Forward motion motor 1 positive motor 3 positive
         //Gyro calibating
         robot.modernRoboticsI2cGyro.calibrate();
 
@@ -38,9 +31,7 @@ public class StateAutonomousDepot extends LinearOpMode {
         telemetry.update();
 
         //Initiate Servos
-        robot.mascot.setPosition(0.8);//mascot up
-        robot.innerVac.setPower(0);
-        robot.vacuum.setPower(0);
+        robot.mascot.setPosition(robot.basePosition);//mascot up
 
         // Start Button
         waitForStart();
@@ -56,77 +47,72 @@ public class StateAutonomousDepot extends LinearOpMode {
         robot.rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.frontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.backDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //END INITIALIZATION---------------------------------------------------------------------
 
-        robot.verticalLift.setPower(0.85); // lifts robot up
-        while (opModeIsActive() && (robot.timer.seconds() < 0.3)) {
-            telemetry.addData("Lower Down", "Lift: %2.5f S Elapsed", robot.timer.seconds());
+        //Finalized startup
+
+        //1. Lower Down and Clearance
+        //Lifts the robot up to release latch tension
+        robot.runMotor(robot.verticalLift, 0.85, 0.3, "Lift Up");
+
+        //Lowers the robot down
+        robot.runMotor(robot.verticalLift, -0.2, 1.7, "Lower Down");
+
+        //2. Approach Sampling
+        //Clears the latch
+        robot.runDriveTrain(robot.frontDrive, robot.backDrive, 0.25, 0.75, "Clearance");
+        //Rotates to align
+        robot.rotateTheta(1.0, 0, "Rotating");
+        //Approaches the sampling field
+        robot.runDriveTrain(robot.leftDrive, robot.rightDrive, 0.25, 3, "Sample Approach");
+        robot.rotateTheta(1.0, 0, "Rotating");
+        robot.runDriveTrain(robot.frontDrive, robot.backDrive, -0.25, 3, "Approach Initial Sample");
+
+        //3-4. Sample Positioning and Sampling
+        boolean sampleFound = false; //Whether the sample is found
+        double sampleClearance = 5.0; //Time to clear sampling field
+        double remainingSampleClearance = 0; //Time remaining after sampling
+        robot.rotateTheta(1.0, 0, "Rotating");
+        robot.frontDrive.setPower(0.25);
+        robot.backDrive.setPower(0.25);
+        while (opModeIsActive() && robot.timer.seconds() < sampleClearance && !robot.checkColor()) {
+            telemetry.addData("Sampling", "%2.5f S Elapsed", robot.timer.seconds());
             telemetry.update();
+            sampleFound = robot.checkColor();
         }
+        remainingSampleClearance = sampleClearance - robot.timer.seconds();
         robot.timer.reset();
-
-        robot.verticalLift.setPower(-0.2); // lowers robot down
-        while (opModeIsActive() && (robot.timer.seconds() < 1.7)){
-            telemetry.addData("Lower Down", "Lift: %2.5f S Elapsed", robot.timer.seconds());
-            telemetry.update();
+        if (sampleFound) {
+            robot.runDriveTrain(robot.leftDrive, robot.rightDrive, 0.25, 1.5, "Sampling");
+            robot.runDriveTrain(robot.leftDrive, robot.rightDrive, -0.25, 1.5, "Exiting Sampling");
+            robot.runDriveTrain(robot.frontDrive, robot.backDrive, 0.25, remainingSampleClearance, "Clearing Sampling");
         }
-        robot.verticalLift.setPower(0);
+        //Clear of sampling
+
+        //5. Rotate 45 degrees
+        robot.rotateTheta(1.0, -135, "Rotating");
+
+        //6. Approach Field Wall
+        robot.runDriveTrain(robot.leftDrive, robot.rightDrive, -0.25, 3, "Approaching Field Wall");
+        robot.DriveForwardDistance(robot.leftDrive, robot.rightDrive, 0.25, 10000, 10.0);
 
 
+        //7. Approach Depot
+        robot.runDriveTrain(robot.frontDrive, robot.backDrive, 0.25, 3, "Approaching Depot");
 
+        //8. Drop Mascot
+        robot.mascot.setPosition(robot.setPosition);
 
-        //Forward Motion (works) - approach Sampling, part 1
-        DriveForwardDistance(robot.leftDrive, robot.rightDrive,0.3, 4000,10.0);
+        //9. Approach Crater
+        robot.runDriveTrain(robot.frontDrive, robot.backDrive, -0.25, 3, "Approaching Crater");
 
-        sleep(500);
+        //10. Rotate robot
+        robot.rotateTheta(1.0, 45, "Rotating");
 
-        sleep(500);
+        //11. Extending arm over crater
+        //Misnomer, runDriveTrain is used to run motor pair
+        robot.runDriveTrain(robot.leftExtension, robot.rightExtension, 0.25, 1, "Extending");
 
-        //Sampling
-
-
-        //Left Motion (hopefully) - approach Sampling, part 2
-
-
-        /*robot.leftDrive.setPower(0.3);
-        robot.rightDrive.setPower(0.3);
-        targetPosition = 5000;
-        while((robot.leftDrive.getCurrentPosition() < targetPosition) || (robot.rightDrive.getCurrentPosition() < targetPosition)){
-
-        }
-        */
-        // end
+        telemetry.addData("Autonomous Completed", "Please Wait");
+        telemetry.update();
     }
-    public void DriveForwardDistance(DcMotor firstMotor, DcMotor secondMotor, double power, int distance, double timeOut){
-
-        // Reset encoders
-        firstMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        secondMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        // Set Target Position b
-        firstMotor.setTargetPosition(distance);
-        secondMotor.setTargetPosition(distance);
-
-        // Set to RUN_TO_POSITION mode
-        firstMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        secondMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        // Set Drive Power
-        firstMotor.setPower(power);
-        secondMotor.setPower(power);
-        robot.timer.reset();
-
-        while((opModeIsActive())&&(firstMotor.isBusy() || secondMotor.isBusy())){
-            // wait
-            telemetry.addData("Path1",  "Going to %7d ,  currently at %7d and %7d.", firstMotor.getTargetPosition(),  firstMotor.getCurrentPosition(), secondMotor.getCurrentPosition());
-            telemetry.update();
-        }
-
-        firstMotor.setPower(0);
-        secondMotor.setPower(0);
-
-        firstMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        secondMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
-
 }

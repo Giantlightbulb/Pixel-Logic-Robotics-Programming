@@ -12,6 +12,10 @@ import com.qualcomm.robotcore.hardware.CRServoImpl;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 //Sensors
 //   Gyro
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
@@ -47,15 +51,19 @@ public class ArmHardwareOmni {
     private HardwareMap hwMap = null;
     public ElapsedTime timer = new ElapsedTime();
 
+    //Constants
+    public final double basePosition = 0.25;
+    public final double setPosition = 0.7;
+
+    //Base rotation
+    public double rotation = 0;
+
     //Initializes hardware variables
     //Drive train motors
     public DcMotor frontDrive; //
     public DcMotor backDrive; //
     public DcMotor leftDrive; //
     public DcMotor rightDrive; //
-
-    public final double basePosition = 0.25;
-    public final double setPosition = 0.7;
 
     public DcMotor forklift; //Articulating Arm
     //Telescoping lift motor
@@ -102,15 +110,20 @@ public class ArmHardwareOmni {
     //  Initializes layout
     public View relativeLayout;
 
+    public Telemetry localTelemetry;
+    
+    public LinearOpMode linearOpMode;
+
     //Constructor (Currently empty)
     public ArmHardwareOmni() {
     }
 
     /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap ahwMap) {
+    public void init(LinearOpMode linearOpMode, HardwareMap ahwMap, Telemetry telemetry) {
         // Save reference to Hardware map
+        this.linearOpMode = linearOpMode;
         hwMap = ahwMap;
-
+        localTelemetry = localTelemetry;
 
         //Hardware definitions
         //Drivetrain motors
@@ -174,7 +187,116 @@ public class ArmHardwareOmni {
         verticalLift.setPower(0);
         leftExtension.setPower(0);
         rightExtension.setPower(0);
-
     }
 
+    public void runMotor(DcMotor motor, double power, double time, String label) {
+        timer.reset();
+        motor.setPower(power);
+        while (linearOpMode.opModeIsActive() && (timer.seconds() < time)) {
+            localTelemetry.addData(label, "%2.5f S Elapsed", timer.seconds());
+            localTelemetry.update();
+        }
+        motor.setPower(0);
+        timer.reset();
+    }
+
+    public void runDriveTrain(DcMotor motor1, DcMotor motor2, double power, double time, String label) {
+        timer.reset();
+        motor1.setPower(power);
+        motor2.setPower(power);
+        while (linearOpMode.opModeIsActive() && (timer.seconds() < time)) {
+            localTelemetry.addData(label, "%2.5f S Elapsed", timer.seconds());
+            localTelemetry.update();
+        }
+        motor1.setPower(0);
+        motor2.setPower(0);
+        timer.reset();
+    }
+
+    public float getAngle() {
+        return gyro.getAngularOrientation(aRefInt, aOrderXYZ, aUnit).firstAngle;
+    }
+
+    public void rotateTheta(double time, double theta, String label) {
+        //Rotates to a certain angle
+        rotation += theta;
+        if (rotation > 180) {
+            rotation %= 180;
+            rotation -= 180;
+        } else if (rotation < -180) {
+            rotation %= 180;
+            rotation += 180;
+        }
+        timer.reset();
+        while (linearOpMode.opModeIsActive() && (timer.seconds() < time) && getAngle() != rotation) {
+            double power = getRotationPower(rotation);
+            frontDrive.setPower(power);
+            backDrive.setPower(-power);
+            leftDrive.setPower(power);
+            rightDrive.setPower(-power);
+            localTelemetry.addData(label, "%2.5f S Elapsed", timer.seconds());
+            localTelemetry.addData("Angle", getAngle());
+            localTelemetry.update();
+        }
+        frontDrive.setPower(0);
+        backDrive.setPower(0);
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        timer.reset();
+    }
+
+    public double getRotationPower(double theta) {
+        double angle = theta - getAngle();
+        double power;
+        power = 0.3 * Math.cbrt(angle/180);
+        return power;
+    }
+
+    public boolean checkColor() {
+        colors = colorSensor.getNormalizedColors();
+        float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+        colors.red   /= max;
+        colors.green /= max;
+        colors.blue  /= max;
+        int color = colors.toColor();
+        int alpha = Color.alpha(color);
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        return ((Math.abs(alpha - 70) < 75 ) &&
+                (Math.abs(red - 255) < 75 ) &&
+                (Math.abs(green - 107) < 75 ) &&
+                (Math.abs(blue) < 30 ));
+    }
+    public void DriveForwardDistance(DcMotor firstMotor, DcMotor secondMotor, double power, int distance, double timeOut){
+
+        // Reset encoders
+        firstMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        secondMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        // Set Target Position b
+        firstMotor.setTargetPosition(distance);
+        secondMotor.setTargetPosition(distance);
+
+        // Set to RUN_TO_POSITION mode
+        firstMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        secondMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        // Set Drive Power
+        firstMotor.setPower(power);
+        secondMotor.setPower(power);
+        timer.reset();
+
+        while((linearOpMode.opModeIsActive())&&(firstMotor.isBusy() || secondMotor.isBusy())){
+            // wait
+            localTelemetry.addData("Path1",  "Going to %7d ,  currently at %7d and %7d.", firstMotor.getTargetPosition(),  firstMotor.getCurrentPosition(), secondMotor.getCurrentPosition());
+            localTelemetry.update();
+        }
+
+        firstMotor.setPower(0);
+        secondMotor.setPower(0);
+
+        firstMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        secondMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
 }

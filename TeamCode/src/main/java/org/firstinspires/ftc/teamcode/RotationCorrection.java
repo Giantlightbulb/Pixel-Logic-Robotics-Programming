@@ -27,7 +27,7 @@ public class RotationCorrection extends LinearOpMode {
         -vertical lift
          */
         //Retrieves the mappings from runtime
-        robot.init(hardwareMap);
+        robot.init(this, hardwareMap, telemetry);
 
         robot.frontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.backDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

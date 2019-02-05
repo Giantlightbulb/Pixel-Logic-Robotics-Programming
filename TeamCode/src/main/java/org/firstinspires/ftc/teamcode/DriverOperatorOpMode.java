@@ -31,7 +31,7 @@ public class DriverOperatorOpMode extends LinearOpMode{
         -vertical lift
          */
         //Retrieves the mappings from runtime
-        robot.init(hardwareMap);
+        robot.init(this, hardwareMap, telemetry);
 
         robot.frontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.backDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -136,7 +136,7 @@ public class DriverOperatorOpMode extends LinearOpMode{
             }
 
             //Arm
-            if(gamepad2.right_stick_y < 0) {
+            if(gamepad2.left_stick_y < 0) {
                 robot.forklift.setPower(gamepad2.right_stick_y);
             }
             else {
