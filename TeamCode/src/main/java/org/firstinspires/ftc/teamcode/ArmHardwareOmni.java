@@ -18,8 +18,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 //Sensors
 //   Gyro
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
+import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 //Gyro References
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -93,9 +94,6 @@ public class ArmHardwareOmni {
     public TouchSensor touch;
 
     //Axes
-    public AxesReference aRefInt = AxesReference.INTRINSIC;
-    public AxesOrder aOrderXYZ = AxesOrder.XYZ;
-    public AngleUnit aUnit = AngleUnit.DEGREES;
     NormalizedRGBA colors = new NormalizedRGBA();
     //  ODS
     public OpticalDistanceSensor ods;
@@ -123,7 +121,7 @@ public class ArmHardwareOmni {
         // Save reference to Hardware map
         this.linearOpMode = linearOpMode;
         hwMap = ahwMap;
-        localTelemetry = localTelemetry;
+        localTelemetry = telemetry;
 
         //Hardware definitions
         //Drivetrain motors
@@ -214,7 +212,7 @@ public class ArmHardwareOmni {
     }
 
     public float getAngle() {
-        return gyro.getAngularOrientation(aRefInt, aOrderXYZ, aUnit).firstAngle;
+        return gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
     }
 
     public void rotateTheta(double time, double theta, String label) {
@@ -235,7 +233,7 @@ public class ArmHardwareOmni {
             leftDrive.setPower(power);
             rightDrive.setPower(-power);
             localTelemetry.addData(label, "%2.5f S Elapsed", timer.seconds());
-            localTelemetry.addData("Angle", getAngle());
+            localTelemetry.addData("angle", "%s deg", formatFloat(getAngle()));
             localTelemetry.update();
         }
         frontDrive.setPower(0);
@@ -249,7 +247,9 @@ public class ArmHardwareOmni {
         double angle = theta - getAngle();
         double power;
         power = 0.3 * Math.cbrt(angle/180);
-        return power;
+        localTelemetry.addLine()
+                .addData("Power", power);
+        return 0;
     }
 
     public boolean checkColor() {
@@ -298,5 +298,8 @@ public class ArmHardwareOmni {
 
         firstMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         secondMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+    String formatFloat(float rate) {
+        return String.format("%.3f", rate);
     }
 }

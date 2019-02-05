@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name="DepotTest", group="Autonomous")
+@Autonomous(name="StateAutonomousDepot", group="Autonomous")
 
 public class StateAutonomousDepot extends LinearOpMode {
     ArmHardwareOmni robot = new ArmHardwareOmni();

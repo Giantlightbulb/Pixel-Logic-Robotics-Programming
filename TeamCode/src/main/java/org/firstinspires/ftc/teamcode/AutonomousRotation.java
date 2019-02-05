@@ -44,7 +44,7 @@ public class AutonomousRotation extends LinearOpMode {
         robot.backDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //Rotates 90 degrees left
-        robot.rotateTheta(5, 90, "Left Rotation");
+        robot.rotateTheta(10, 90, "Left Rotation");
         sleep(3000);
 
         //Rotates 90 degrees right

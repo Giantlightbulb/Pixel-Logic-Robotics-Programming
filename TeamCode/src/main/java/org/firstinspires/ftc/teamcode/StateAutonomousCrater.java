@@ -31,8 +31,8 @@ public class StateAutonomousCrater extends LinearOpMode {
 
         //Initiate Servos
         robot.mascot.setPosition(robot.basePosition);//mascot up
-        robot.innerVac.setPower(0);
-        robot.vacuum.setPower(0);
+        //robot.innerVac.setPower(0);
+        //robot.vacuum.setPower(0);
 
         // Start Button
         waitForStart();
